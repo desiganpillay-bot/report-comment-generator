@@ -3035,5 +3035,17 @@ renderSavedPhrases();
 renderHistory();
 showNoPupil();
 </script>
+
+  <!-- Email capture strip -->
+  <div id="email-capture-bar" style="position:fixed;bottom:0;left:0;right:0;background:#1F3864;color:white;padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:12px;z-index:9999;flex-wrap:wrap;">
+    <span style="font-weight:600;">✉ Get notified when Pro launches</span>
+    <form action="https://myreportcomments.us4.list-manage.com/subscribe/post?u=70e74df9b58f0e0de873629bf&id=8f279ff28d&f_id=006556e2f0" method="post" target="_blank" style="display:flex;gap:6px;align-items:center;" onsubmit="document.getElementById('email-capture-bar').style.display='none'">
+      <input type="email" name="EMAIL" placeholder="your@email.com" required
+        style="padding:5px 10px;border-radius:5px;border:none;font-size:12px;width:200px;outline:none;">
+      <div style="display:none;" aria-hidden="true"><input type="text" name="b_70e74df9b58f0e0de873629bf_8f279ff28d" tabindex="-1" value=""></div>
+      <button type="submit" style="padding:5px 12px;background:#C9A84C;color:#1a1a2e;border:none;border-radius:5px;font-weight:700;font-size:12px;cursor:pointer;">Notify me</button>
+    </form>
+    <button onclick="document.getElementById('email-capture-bar').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;">×</button>
+  </div>
 </body>
 </html>
