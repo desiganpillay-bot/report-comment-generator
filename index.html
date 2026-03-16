@@ -1495,10 +1495,10 @@ function renderPupilList(){
   const empty=document.getElementById('sb-empty');
   if(pupils.length===0){
     list.innerHTML='';
-    empty.style.display='block';
+    if(empty) empty.style.display='block';
     return;
   }
-  empty.style.display='none';
+  if(empty) empty.style.display='none';
   list.innerHTML=pupils.map(p=>{
     const initials=p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
     const status=p.comment?'done':p.draft?'draft':'empty';
