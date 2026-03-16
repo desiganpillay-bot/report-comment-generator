@@ -531,6 +531,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
         <!-- Custom phrases -->
         <div class="phrase-section">
           <div class="panel-head" style="margin-top:8px">My phrase bank</div>
+          <div class="phrase-hint">&#128161; Generate a comment first, then click <strong>Insert</strong> on any phrase to add it to the end of your comment. Edit and reposition in the box below.</div>
           <div class="phrase-tabs">
             <div class="phrase-tab active" onclick="switchPhraseTab('saved',this)">Saved phrases</div>
             <div class="phrase-tab" onclick="switchPhraseTab('session',this)">Session phrases</div>
@@ -1565,7 +1566,8 @@ function renderPhrases(){
   list.innerHTML=customPhrases.map((ph,i)=>`
     <div class="phrase-item">
       <span>${ph}</span>
-      <button onclick="deletePhrase(${i})" title="Remove">&#10005;</button>
+      <button class="ph-insert" onclick="insertPhrase('${ph.replace(/'/g,"\\\'")}')" title="Add to comment">Insert</button>
+      <button class="ph-del" onclick="deletePhrase(${i})" title="Remove">&#10005;</button>
     </div>`).join('');
 }
 
@@ -1710,7 +1712,8 @@ function renderSavedPhrases(){
   list.innerHTML=savedPhrases.map((ph,i)=>`
     <div class="phrase-item">
       <span>${ph}</span>
-      <button onclick="deleteSavedPhrase(${i})" title="Remove">&#10005;</button>
+      <button class="ph-insert" onclick="insertPhrase('${ph.replace(/'/g,"\\\'")}')" title="Add to comment">Insert</button>
+      <button class="ph-del" onclick="deleteSavedPhrase(${i})" title="Remove">&#10005;</button>
     </div>`).join('');
 }
 
@@ -1816,13 +1819,10 @@ function buildComment(name){
   if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
   const excelPhrase2 = buildSubjExcelPhrase(excelled, tone, pron, name, pr, nameUsed);
   const effortPhrase2 = buildSubjEffortPhrase(effort, tone, pron, name, pr, nameUsed);
-  const allPhrases=getAllCustomPhrases();
-  const customPhrase2 = allPhrases.length>0&&Math.random()>0.5?pron(pick(allPhrases)):null;
   if(sport!=='omit') parts.push(get(PB.sport,sport));
   const closerPhrase2 = pron(getVariant(PB.closer,tone));
   if(excelPhrase2) parts.push(excelPhrase2);
   if(effortPhrase2) parts.push(effortPhrase2);
-  if(customPhrase2) parts.push(customPhrase2);
   parts.push(closerPhrase2);
   const pinned2 = [excelPhrase2, effortPhrase2, closerPhrase2].filter(Boolean);
   const sentences=parts.filter(Boolean);
@@ -2047,15 +2047,12 @@ function generate(){
   if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
   const excelPhrase = buildSubjExcelPhrase(excelled, tone, pron, name, pr, nameUsed);
   const effortPhrase = buildSubjEffortPhrase(effort, tone, pron, name, pr, nameUsed);
-  const allPhrases=getAllCustomPhrases();
-  const customPhrase = allPhrases.length>0&&Math.random()>0.5 ? pron(pick(allPhrases)) : null;
   const sportPhrase = sport!=='omit' ? get(PB.sport,sport) : null;
   const yearEndCloser = isYearEnd() ? pron(getVariant(YEAREND_CLOSERS,tone)) : null;
   const closerPhrase = yearEndCloser || pron(getVariant(PB.closer,tone));
   // Build parts — subject phrases and closer are pinned (never trimmed)
   if(excelPhrase) parts.push(excelPhrase);
   if(effortPhrase) parts.push(effortPhrase);
-  if(customPhrase) parts.push(customPhrase);
   if(sportPhrase) parts.push(sportPhrase);
   parts.push(closerPhrase);
   const pinned = [excelPhrase, effortPhrase, closerPhrase].filter(Boolean);
@@ -2485,11 +2482,6 @@ function generateAF(){
     let raw=getVariant(bank,tone);
     raw=raw.replace(/\{SUBJ\}/g,subj);
     parts.push(pron(raw));
-  }
-
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0 && Math.random()>0.5){
-    parts.push(pron(pick(allPhrases)));
   }
 
   if(sport!=='omit') parts.push(get(PB_AF.sport,sport));
@@ -2992,6 +2984,22 @@ function generateFoundation(){
   renderHistory();
   saveCriteria();
   saveState();
+}
+
+
+function insertPhrase(phrase){
+  if(!activePupilId){ alert('Please select a pupil and generate a comment first.'); return; }
+  const edit = document.getElementById('edit-area');
+  const current = edit.value.trim();
+  if(!current){ alert('Generate a comment first, then insert a phrase.'); return; }
+  const sep = (current.endsWith('.')||current.endsWith('!')||current.endsWith('?')) ? ' ' : '. ';
+  edit.value = current + sep + phrase;
+  document.getElementById('wc-badge').textContent = wc(edit.value) + ' words';
+  edit.style.borderColor = '#C9A84C';
+  edit.focus();
+  edit.setSelectionRange(edit.value.length, edit.value.length);
+  setTimeout(()=>{ edit.style.borderColor=''; }, 1000);
+  showToast('Phrase inserted — edit and reposition as needed.');
 }
 
 // ══════════════════════════════════════════════════════════════
