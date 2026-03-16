@@ -1385,10 +1385,12 @@ function addPupil(){
   pupils.push({id,name,criteria:{},comment:null,draft:null});
   input.value='';
   saveState();
-  renderPupilList();
-  selectPupil(id);
-  scrollToActivePupil();
-  showToast(name+' added — criteria panel is ready.');
+  requestAnimationFrame(()=>{
+    renderPupilList();
+    selectPupil(id);
+    scrollToActivePupil();
+    showToast(name+' added — criteria panel is ready.');
+  });
 }
 
 function deletePupil(id, e){
@@ -1641,11 +1643,13 @@ function confirmImport(){
     }
   });
   saveState();
-  renderPupilList();
-  closeImport();
   const added = pendingImport.length;
-  showSidebarBanner(`${added} pupil${added!==1?'s':''} imported successfully`);
-  if(firstNewId) setTimeout(()=>{ selectPupil(firstNewId); scrollToActivePupil(); }, 150);
+  requestAnimationFrame(()=>{
+    renderPupilList();
+    closeImport();
+    showSidebarBanner(`${added} pupil${added!==1?'s':''} imported successfully`);
+    if(firstNewId) requestAnimationFrame(()=>{ selectPupil(firstNewId); scrollToActivePupil(); });
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
