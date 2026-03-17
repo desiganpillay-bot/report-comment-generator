@@ -49,12 +49,29 @@
   
     .nav-home { background: var(--warm); border: 1px solid var(--border); border-radius: 100px; padding: .3rem .85rem !important; font-size: .8rem !important; color: var(--ink) !important; }
     .nav-home:hover { background: var(--gold); color: #fff !important; border-color: var(--gold); }
+  
+    .nav-links { display: flex; gap: 1.4rem; list-style: none; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .84rem; font-weight: 500; transition: color .18s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.nav-cta { background: var(--ink); color: var(--cream); padding: .4rem 1.1rem; border-radius: 100px; transition: background .18s; }
+    .nav-links a.nav-cta:hover { background: var(--gold); color: var(--ink); }
+    .nav-home { background: var(--warm); border: 1px solid var(--border); border-radius: 100px; padding: .3rem .85rem !important; font-size: .8rem !important; color: var(--ink) !important; }
+    .nav-home:hover { background: var(--gold) !important; color: #fff !important; border-color: var(--gold); }
+    @media(max-width:640px){ .nav-links { display: none; } }
   </style>
 </head>
 <body>
   <nav>
-    <a class="nav-logo" href="/">MyReport<span>Comments</span></a>
-  </nav>
+  <a class="nav-logo" href="https://myreportcomments.com">My<span>Report</span>Comments</a>
+  <ul class="nav-links">
+    <li><a href="https://myreportcomments.com" class="nav-home">← Home</a></li>
+    <li><a href="https://myreportcomments.com/#how">How it works</a></li>
+    <li><a href="https://myreportcomments.com/#pricing">Pricing</a></li>
+    <li><a href="/legal.html">Legal</a></li>
+    <li><a href="/user-guide.html">Help</a></li>
+    <li><a href="https://magic.myreportcomments.com/wheremagichappens.html" class="nav-cta">Try free</a></li>
+  </ul>
+</nav>
 
   <div class="legal-wrap">
     <p class="legal-eyebrow">Legal</p>
