@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Policy — MyReportComments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #3d224d; --cream: #fbf5f7; --warm: #f7eef1;
+      --gold: #c4518c; --gold2: #d4729e; --text: #3d224d;
+      --muted: #7a6480; --border: #e9e3e5;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.75; }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.032'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem; background: rgba(251,245,247,.93); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: var(--ink); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo span { color: var(--gold); }
+    .legal-wrap { max-width: 760px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+    .legal-eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .legal-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: var(--ink); letter-spacing: -1px; line-height: 1.1; margin-bottom: .5rem; }
+    .legal-meta { font-size: .85rem; color: var(--muted); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .legal-body h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin: 2.2rem 0 .6rem; }
+    .legal-body h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 1.4rem 0 .4rem; }
+    .legal-body p { font-size: .95rem; color: var(--text); margin-bottom: .9rem; }
+    .legal-body ul, .legal-body ol { margin: .5rem 0 1rem 1.4rem; }
+    .legal-body li { font-size: .95rem; color: var(--text); margin-bottom: .4rem; }
+    .legal-body a { color: var(--gold); text-decoration: none; }
+    .legal-body a:hover { text-decoration: underline; }
+    .highlight-box { background: var(--warm); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; padding: 1rem 1.2rem; margin: 1.5rem 0; font-size: .9rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: .88rem; }
+    th { background: var(--warm); text-align: left; padding: .6rem .8rem; font-weight: 700; border: 1px solid var(--border); }
+    td { padding: .6rem .8rem; border: 1px solid var(--border); vertical-align: top; }
+    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); margin-top: 3rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="/">MyReport<span>Comments</span></a>
+  </nav>
+
+  <div class="legal-wrap">
+    <p class="legal-eyebrow">Legal</p>
+    <h1 class="legal-title">Cookie Policy</h1>
+    <p class="legal-meta">Last updated: March 2026 · This policy explains how MyReportComments uses cookies and similar technologies</p>
+
+    <div class="legal-body">
+      <div class="highlight-box">
+        MyReportComments uses only essential cookies necessary for the site and app to function. We do not use advertising cookies, tracking cookies, or third-party analytics cookies.
+      </div>
+
+      <h2>1. What Are Cookies</h2>
+      <p>Cookies are small text files stored on your device by a website when you visit it. They allow the website to remember information about your visit — for example, whether you are logged in — making it easier and more useful for you to return to the site.</p>
+      <p>Similar technologies include local storage and session storage, which work in the same way but store data in your browser rather than as a file. MyReportComments uses both cookies and browser storage; this policy covers all of them.</p>
+
+      <h2>2. Cookies We Use</h2>
+      <p>We use only essential (strictly necessary) cookies. These cookies are required for the site and app to function and cannot be disabled without breaking core features. No consent is required for strictly necessary cookies under South African law.</p>
+
+      <table>
+        <tr><th>Cookie / Storage Key</th><th>Purpose</th><th>Duration</th><th>Type</th></tr>
+        <tr><td><code>sb-access-token</code></td><td>Supabase authentication — keeps you logged in to the web app</td><td>Session / 1 hour</td><td>Essential</td></tr>
+        <tr><td><code>sb-refresh-token</code></td><td>Supabase session refresh — renews your login session automatically</td><td>60 days</td><td>Essential</td></tr>
+        <tr><td><code>rcg_*</code> (localStorage)</td><td>Free HTML tool — stores your class list, saved comments, custom phrases, and settings locally in your browser. This data never leaves your device.</td><td>Until cleared</td><td>Essential (local only)</td></tr>
+      </table>
+
+      <h2>3. Cookies We Do Not Use</h2>
+      <p>We do not use:</p>
+      <ul>
+        <li><strong>Advertising cookies</strong> — we run no paid advertising and have no ad network integrations</li>
+        <li><strong>Analytics cookies</strong> — we do not use Google Analytics, Hotjar, Facebook Pixel, or similar tracking tools</li>
+        <li><strong>Social media cookies</strong> — we have no social login buttons or embedded social media feeds on the main site</li>
+        <li><strong>Third-party tracking</strong> — no third party sets cookies on your device through our site</li>
+      </ul>
+      <div class="highlight-box">If we ever introduce analytics or other non-essential cookies in the future, we will update this policy, add a cookie consent banner, and request your permission before setting those cookies.</div>
+
+      <h2>4. Browser Storage in the Free Tool</h2>
+      <p>The free downloadable HTML tool uses your browser's <code>localStorage</code> to save your class list, generated comments, custom phrases, and settings between sessions. This data:</p>
+      <ul>
+        <li>Is stored only on your device — it is never transmitted to our servers</li>
+        <li>Can be cleared at any time by clearing your browser's site data or using the tool's built-in clear/reset options</li>
+        <li>Is not accessible to any other website or third party</li>
+      </ul>
+
+      <h2>5. How to Control Cookies</h2>
+      <p>You can control and delete cookies through your browser settings. Note that disabling essential cookies will prevent you from logging in to the MyReportComments web app. The free HTML tool does not require cookies and will continue to work using localStorage.</p>
+      <p>Browser-specific instructions for managing cookies:</p>
+      <ul>
+        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Google Chrome</a></li>
+        <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank">Mozilla Firefox</a></li>
+        <li><a href="https://support.apple.com/en-za/guide/safari/sfri11471/mac" target="_blank">Safari</a></li>
+        <li><a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank">Microsoft Edge</a></li>
+      </ul>
+
+      <h2>6. Changes to This Policy</h2>
+      <p>If we introduce new cookies or change how we use existing ones, we will update this policy and notify registered users by email at least 14 days before any changes take effect.</p>
+
+      <h2>7. Contact</h2>
+      <p>Questions about cookies or how we use your data? Email us at <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a> or refer to our <a href="/popia-privacy-policy.html">Privacy Policy</a> for full details.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+    <p style="margin-top:.4rem;">
+      <a href="/popia-privacy-policy.html">Privacy Policy</a> ·
+      <a href="/terms-and-conditions.html">Terms &amp; Conditions</a> ·
+      <a href="/refund-policy.html">Refund Policy</a> ·
+      <a href="/cookie-policy.html">Cookie Policy</a> ·
+      <a href="/acceptable-use-policy.html">Acceptable Use</a> ·
+      <a href="/ect-disclosures.html">ECT Disclosures</a> ·
+      <a href="/user-guide.html">Help</a>
+    </p>
+  </footer>
+</body>
+</html>

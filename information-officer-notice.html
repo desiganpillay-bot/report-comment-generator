@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Information Officer Notice — MyReportComments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #3d224d; --cream: #fbf5f7; --warm: #f7eef1;
+      --gold: #c4518c; --gold2: #d4729e; --text: #3d224d;
+      --muted: #7a6480; --border: #e9e3e5;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.75; }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.032'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem; background: rgba(251,245,247,.93); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: var(--ink); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo span { color: var(--gold); }
+    .legal-wrap { max-width: 760px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+    .legal-eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .legal-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: var(--ink); letter-spacing: -1px; line-height: 1.1; margin-bottom: .5rem; }
+    .legal-meta { font-size: .85rem; color: var(--muted); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .legal-body h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin: 2.2rem 0 .6rem; }
+    .legal-body h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 1.4rem 0 .4rem; }
+    .legal-body p { font-size: .95rem; color: var(--text); margin-bottom: .9rem; }
+    .legal-body ul, .legal-body ol { margin: .5rem 0 1rem 1.4rem; }
+    .legal-body li { font-size: .95rem; color: var(--text); margin-bottom: .4rem; }
+    .legal-body a { color: var(--gold); text-decoration: none; }
+    .legal-body a:hover { text-decoration: underline; }
+    .highlight-box { background: var(--warm); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; padding: 1rem 1.2rem; margin: 1.5rem 0; font-size: .9rem; }
+    .placeholder { background: #fff0f4; border: 1px dashed #c4518c; padding: .15rem .45rem; border-radius: 4px; font-style: italic; color: #7a3060; font-size: .88rem; }
+    .contact-card { background: var(--warm); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem 1.8rem; margin: 1.5rem 0; }
+    .contact-card .cc-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: .3rem; }
+    .contact-card .cc-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin-bottom: 1rem; }
+    .contact-card .cc-row { display: flex; gap: .5rem; font-size: .9rem; margin-bottom: .35rem; color: var(--text); }
+    .contact-card .cc-label { font-weight: 700; min-width: 80px; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: .88rem; }
+    th { background: var(--warm); text-align: left; padding: .6rem .8rem; font-weight: 700; border: 1px solid var(--border); }
+    td { padding: .6rem .8rem; border: 1px solid var(--border); vertical-align: top; }
+    td:first-child { font-weight: 600; color: var(--muted); }
+    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); margin-top: 3rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="/">MyReport<span>Comments</span></a>
+  </nav>
+
+  <div class="legal-wrap">
+    <p class="legal-eyebrow">Legal</p>
+    <h1 class="legal-title">Information Officer Notice</h1>
+    <p class="legal-meta">Last updated: March 2026 · Published in terms of Section 55 of the Protection of Personal Information Act 4 of 2013 (POPIA)</p>
+
+    <div class="legal-body">
+      <div class="highlight-box">
+        POPIA requires every private body (including companies and sole proprietors) to designate an Information Officer and register that officer with the Information Regulator of South Africa. This notice fulfils our public disclosure obligation.
+      </div>
+
+      <h2>1. Responsible Party</h2>
+      <table>
+        <tr><th>Field</th><th>Detail</th></tr>
+        <tr><td>Responsible party</td><td>PKR Consultancy (Pty) Ltd</td></tr>
+        <tr><td>Trading name</td><td>MyReportComments</td></tr>
+        <tr><td>CIPC registration number</td><td>2013/151940/07</td></tr>
+        <tr><td>Registered address</td><td>20 San Briano, Dennis Road, Lonehill, Gauteng, 2191</td></tr>
+        <tr><td>Website</td><td><a href="https://myreportcomments.com">myreportcomments.com</a></td></tr>
+      </table>
+
+      <h2>2. Designated Information Officer</h2>
+      <div class="contact-card">
+        <div class="cc-name">Desigan Pillay</div>
+        <div class="cc-title">Information Officer — MyReportComments</div>
+        <div class="cc-row"><span class="cc-label">Email</span><a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></div>
+        <div class="cc-row"><span class="cc-label">Address</span><span>20 San Briano, Dennis Road, Lonehill, Gauteng, 2191</span></div>
+        <div class="cc-row"><span class="cc-label">Appointed</span><span>17 March 2026</span></div>
+        <div class="cc-row"><span class="cc-label">IR Reg No.</span><span>2026-003893</span></div>
+      </div>
+
+      <div class="contact-card" style="margin-top:1rem;">
+        <div class="cc-name">Vanessa Sivanand</div>
+        <div class="cc-title">Deputy Information Officer — MyReportComments</div>
+        <div class="cc-row"><span class="cc-label">Email</span><a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></div>
+        <div class="cc-row"><span class="cc-label">Appointed</span><span>17 March 2026</span></div>
+      </div>
+
+      <h2>3. Responsibilities of the Information Officer</h2>
+      <p>In terms of POPIA, the Information Officer is responsible for:</p>
+      <ul>
+        <li>Encouraging compliance with POPIA throughout the organisation</li>
+        <li>Dealing with requests made to MyReportComments pursuant to POPIA</li>
+        <li>Working with the Information Regulator in relation to any investigations</li>
+        <li>Ensuring that a POPIA compliance framework is developed, implemented, monitored, and maintained</li>
+        <li>Developing internal measures and systems to process requests for access to information</li>
+        <li>Conducting internal awareness sessions regarding POPIA provisions</li>
+      </ul>
+
+      <h2>4. How to Submit a POPIA Request</h2>
+      <p>As a data subject, you have the right to request access to, correction of, or deletion of your personal information held by MyReportComments. To exercise these rights:</p>
+      <ol>
+        <li>Email our Information Officer at <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></li>
+        <li>Include your full name, email address associated with your account, and a description of your request</li>
+        <li>We will acknowledge your request within <strong>3 business days</strong></li>
+        <li>We will respond fully within <strong>30 days</strong>, or notify you if an extension is required</li>
+      </ol>
+      <div class="highlight-box">There is no fee for submitting a POPIA data access request. If your request requires significant work to fulfil, we will notify you and may request a reasonable fee as permitted under POPIA before proceeding.</div>
+
+      <h2>5. Grounds for Refusal</h2>
+      <p>We may decline a request for access to information where disclosure would:</p>
+      <ul>
+        <li>Involve unreasonable disclosure of another person's personal information</li>
+        <li>Breach legal professional privilege</li>
+        <li>Prejudice a law enforcement process</li>
+        <li>Be prohibited by law</li>
+      </ul>
+      <p>If we refuse a request, we will provide written reasons for the refusal.</p>
+
+      <h2>6. Complaints to the Information Regulator</h2>
+      <p>If you are not satisfied with how we have handled your personal information or a POPIA request, you may lodge a complaint directly with the Information Regulator of South Africa:</p>
+      <ul>
+        <li><strong>Website:</strong> <a href="https://www.justice.gov.za/inforeg/" target="_blank">www.justice.gov.za/inforeg</a></li>
+        <li><strong>Email:</strong> <a href="mailto:inforeg@justice.gov.za">inforeg@justice.gov.za</a></li>
+        <li><strong>Address:</strong> JD House, 27 Stiemens Street, Braamfontein, Johannesburg, 2001</li>
+      </ul>
+
+      <h2>7. PAIA Manual</h2>
+      <p>In addition to POPIA, the Promotion of Access to Information Act 2 of 2000 (PAIA) requires private bodies with more than 50 employees to compile a PAIA manual. As a small business, MyReportComments is currently exempt from this requirement. Should our employee count reach 50, a PAIA manual will be compiled and published on this page.</p>
+
+      <h2>8. Updates to This Notice</h2>
+      <p>This notice will be updated if the designated Information Officer changes or if the Information Regulator issues new requirements. Material changes will be communicated to registered users by email.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+    <p style="margin-top:.4rem;">
+      <a href="/popia-privacy-policy.html">Privacy Policy</a> ·
+      <a href="/terms-and-conditions.html">Terms &amp; Conditions</a> ·
+      <a href="/refund-policy.html">Refund Policy</a> ·
+      <a href="/cookie-policy.html">Cookie Policy</a> ·
+      <a href="/acceptable-use-policy.html">Acceptable Use</a> ·
+      <a href="/ect-disclosures.html">ECT Disclosures</a> ·
+      <a href="/user-guide.html">Help</a>
+    </p>
+  </footer>
+</body>
+</html>

@@ -5,22 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MyReportComments — Professional Report Comments for Teachers</title>
   <meta name="description" content="Generate unique, warm, professionally phrased report comments in seconds. Built for South African teachers. Free to try — no login needed." />
+  <link rel="canonical" href="https://myreportcomments.com" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="MyReportComments — Professional Report Comments for Teachers" />
+  <meta property="og:description" content="Generate unique, warm, professionally phrased report comments in seconds. Built for South African teachers. Free to try — no login needed." />
+  <meta property="og:url" content="https://myreportcomments.com" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://myreportcomments.com/og-image.jpg" />
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MyReportComments — Report Comments for SA Teachers" />
+  <meta name="twitter:description" content="Generate unique, warm, professionally phrased report comments in seconds. Free to try — no login needed." />
+  <meta name="twitter:image" content="https://myreportcomments.com/og-image.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:    #3b1f4e;
-      --cream:  #fdf6f9;
-      --warm:   #f9eef4;
-      --gold:   #c06b9a;
-      --gold2:  #b988c8;
-      --rust:   #9b3075;
-      --sage:   #7b5ea7;
-      --text:   #3b1f4e;
-      --muted:  #8e6080;
-      --border: #e8cedd;
+      --ink:    #3d224d;
+      --cream:  #fbf5f7;
+      --warm:   #f7eef1;
+      --gold:   #c4518c;
+      --gold2:  #d4729e;
+      --rust:   #c4518c;
+      --sage:   #5a3d6e;
+      --text:   #3d224d;
+      --muted:  #7a6480;
+      --border: #e9e3e5;
       --white:  #ffffff;
     }
 
@@ -30,8 +46,8 @@
     /* grain */
     body::after {
       content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.032'/%3E%3C/svg%3E");
-      opacity: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.022'/%3E%3C/svg%3E");
+      opacity: 1; contain: strict; will-change: transform;
     }
 
     /* ── UTILS ─────────────────────────── */
@@ -67,7 +83,7 @@
       white-space: nowrap;
     }
     .btn-dark { background: var(--ink); color: var(--cream); border-color: var(--ink); }
-    .btn-dark:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(196,127,42,.3); }
+    .btn-dark:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(196,81,140,.3); }
     .btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
     .btn-outline:hover { border-color: var(--ink); color: var(--ink); }
     .btn-gold { background: var(--gold); color: var(--ink); border-color: var(--gold); }
@@ -82,7 +98,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 500;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 3rem;
-      background: rgba(250,247,242,.93); backdrop-filter: blur(16px);
+      background: rgba(251,245,247,.93); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
     .nav-logo {
@@ -94,8 +110,8 @@
     .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
     .nav-links a { text-decoration: none; color: var(--muted); font-size: .86rem; font-weight: 500; transition: color .18s; }
     .nav-links a:hover { color: var(--ink); }
-    .nav-cta { background: var(--ink) !important; color: var(--cream) !important; padding: .48rem 1.25rem; border-radius: 100px; transition: background .18s !important; }
-    .nav-cta:hover { background: var(--gold) !important; color: var(--ink) !important; }
+    .nav-links a.nav-cta { background: var(--ink); color: var(--cream); padding: .48rem 1.25rem; border-radius: 100px; transition: background .18s; }
+    .nav-links a.nav-cta:hover { background: var(--gold); color: var(--ink); }
 
     /* ── HERO ──────────────────────────── */
     .hero {
@@ -143,7 +159,7 @@
     .mockup {
       background: var(--white); border-radius: 18px;
       border: 1px solid var(--border);
-      box-shadow: 0 40px 80px rgba(24,16,8,.13), 0 4px 14px rgba(24,16,8,.07);
+      box-shadow: 0 40px 80px rgba(61,34,77,.13), 0 4px 14px rgba(61,34,77,.07);
       padding: 1.8rem;
       transform: rotate(1.3deg);
       animation: float 6s ease-in-out infinite;
@@ -171,8 +187,8 @@
     }
     .ms::after { content: '▾'; color: var(--muted); font-size: .65rem; }
     .mo {
-      background: linear-gradient(135deg,#fef9f0,#fdf3e2);
-      border: 1px solid #e6d0a8; border-radius: 9px;
+      background: linear-gradient(135deg,#fdf0f8,#f9e8f5);
+      border: 1px solid #e0c8d8; border-radius: 9px;
       padding: .85rem .9rem; margin-top: .85rem;
       font-size: .76rem; line-height: 1.62; color: var(--text);
       position: relative;
@@ -207,7 +223,7 @@
     .how-inner { max-width: 1360px; margin: 0 auto; }
     .how .label { color: var(--gold2); }
     .how .title { color: var(--cream); }
-    .how .sub { color: rgba(250,247,242,.55); margin-bottom: 3.5rem; }
+    .how .sub { color: rgba(251,245,247,.55); margin-bottom: 3.5rem; }
 
     .steps {
       display: grid; grid-template-columns: repeat(4,1fr);
@@ -229,7 +245,7 @@
       font-size: 1rem; font-weight: 700;
       color: var(--cream); margin-bottom: .45rem;
     }
-    .step p { font-size: .82rem; line-height: 1.65; color: rgba(250,247,242,.55); font-weight: 300; }
+    .step p { font-size: .82rem; line-height: 1.65; color: rgba(251,245,247,.55); font-weight: 300; }
     .step-icon {
       width: 40px; height: 40px; border-radius: 10px;
       background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
@@ -254,7 +270,7 @@
       background: linear-gradient(90deg,var(--gold),var(--rust));
       transform: scaleX(0); transform-origin: left; transition: transform .28s;
     }
-    .fcard:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(24,16,8,.09); }
+    .fcard:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(61,34,77,.09); }
     .fcard:hover::after { transform: scaleX(1); }
     .fcard-icon {
       width: 44px; height: 44px; border-radius: 11px;
@@ -294,7 +310,7 @@
     .sample-output {
       background: var(--white); border: 1px solid var(--border);
       border-radius: 16px; padding: 2.2rem;
-      box-shadow: 0 20px 40px rgba(24,16,8,.07);
+      box-shadow: 0 20px 40px rgba(61,34,77,.07);
     }
     .sample-output-label {
       font-size: .65rem; font-weight: 800; text-transform: uppercase;
@@ -333,11 +349,11 @@
       border-radius: 20px; padding: 1.8rem;
       position: relative; transition: all .28s;
     }
-    .pcard:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(24,16,8,.1); }
+    .pcard:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(61,34,77,.1); }
     .pcard.dark { background: var(--ink); border-color: var(--ink); }
-    .pcard.dark .ptier { background: rgba(255,255,255,.1); color: rgba(250,247,242,.6); }
+    .pcard.dark .ptier { background: rgba(255,255,255,.1); color: rgba(251,245,247,.6); }
     .pcard.dark h3, .pcard.dark .pprice, .pcard.dark .pcred, .pcard.dark .pli li { color: var(--cream); }
-    .pcard.dark .psub { color: rgba(250,247,242,.4); }
+    .pcard.dark .psub { color: rgba(251,245,247,.4); }
     .pcard.dark .pli li::before { color: var(--gold2); }
     .pbest {
       position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
@@ -414,10 +430,10 @@
     .cta-inner { max-width: 640px; margin: 0 auto; position: relative; }
     .cta .label { color: var(--gold2); }
     .cta .title { color: var(--cream); font-size: clamp(2.3rem,4.2vw,3.6rem); margin-bottom: 1.1rem; }
-    .cta-desc { font-size: 1rem; color: rgba(250,247,242,.6); font-weight: 300; line-height: 1.74; margin-bottom: 2.3rem; }
+    .cta-desc { font-size: 1rem; color: rgba(251,245,247,.7); font-weight: 300; line-height: 1.74; margin-bottom: 2.3rem; }
     .cta-url {
       display: inline-block; margin-top: 1.5rem;
-      font-size: .8rem; color: rgba(250,247,242,.35);
+      font-size: .8rem; color: rgba(251,245,247,.4);
       font-weight: 300; letter-spacing: .03em;
     }
 
@@ -425,11 +441,51 @@
     footer {
       background: var(--ink);
       border-top: 1px solid rgba(255,255,255,.06);
-      color: rgba(250,247,242,.3);
+      color: rgba(251,245,247,.35);
       text-align: center; padding: 1.6rem 3rem;
       font-size: .75rem;
     }
     footer a { color: var(--gold2); text-decoration: none; }
+
+    .pprice-soon { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--muted); line-height: 1; margin: .7rem 0 .18rem; }
+    .pcard.dark .pprice-soon { color: rgba(251,245,247,.5); }
+    .psub-soon { font-size: .72rem; color: var(--muted); margin-top: .5rem; margin-bottom: 1.1rem; }
+    .pbtn-disabled { display: block; width: 100%; padding: .75rem; border-radius: 10px; font-size: .84rem; font-weight: 600; text-align: center; background: transparent; border: 1.5px solid var(--border); color: var(--muted); opacity: .45; cursor: default; }
+    .pbtn-disabled-g { display: block; width: 100%; padding: .75rem; border-radius: 10px; font-size: .84rem; font-weight: 600; text-align: center; background: var(--gold); color: var(--ink); opacity: .45; cursor: default; border: none; }
+
+    /* waitlist */
+    .waitlist {
+      margin-top: 2.5rem; text-align: center;
+    }
+    .waitlist p { font-size: .84rem; color: var(--muted); font-weight: 300; margin-bottom: .9rem; }
+    .waitlist-form {
+      display: inline-flex; gap: .5rem; flex-wrap: wrap; justify-content: center;
+    }
+    .waitlist-form input[type="email"] {
+      padding: .7rem 1.1rem; border-radius: 100px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: .86rem; color: var(--text);
+      outline: none; transition: border-color .2s; min-width: 230px;
+    }
+    .waitlist-form input[type="email"]:focus { border-color: var(--gold); }
+    .waitlist-form button {
+      padding: .7rem 1.4rem; border-radius: 100px;
+      background: var(--ink); color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: .86rem; font-weight: 600;
+      border: none; cursor: pointer; transition: background .2s;
+    }
+    .waitlist-form button:hover { background: var(--gold); color: var(--ink); }
+    .waitlist-thanks { display: none; font-size: .86rem; color: var(--sage); font-weight: 500; margin-top: .5rem; }
+
+    .btn-cta-lg { margin: 0 auto; font-size: .95rem; padding: .95rem 2.3rem; }
+
+    /* ── REDUCED MOTION ────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .mockup { animation: none; transform: rotate(1.3deg); }
+      .hchip-a, .hchip-b { animation: none; }
+      .hero-eyebrow::before { animation: none; }
+      .up { transition: none; }
+    }
 
     /* ── RESPONSIVE ────────────────────── */
     @media (max-width: 1020px) {
@@ -454,12 +510,14 @@
 
   <!-- NAV -->
   <nav>
-    <a class="nav-logo" href="https://magic.myreportcomments.com/wheremagichappens.html">My<span>Report</span>Comments</a>
+    <a class="nav-logo" href="https://myreportcomments.com">My<span>Report</span>Comments</a>
     <ul class="nav-links">
       <li><a href="#how">How it works</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="/legal.html">Legal</a></li>
+      <li><a href="/user-guide.html">Help</a></li>
       <li><a href="#try" class="nav-cta">Try free</a></li>
     </ul>
   </nav>
@@ -471,7 +529,7 @@
       <h1>Report season<br/>used to take<br/><em>3 nights.</em></h1>
       <p class="hero-desc">Now it takes one evening. MyReportComments generates unique, warm, professionally phrased report comments from a few dropdown selections — free to try, no login needed.</p>
       <div class="hero-btns">
-        <a href="https://magic.myreportcomments.com/wheremagichappens.html" class="btn btn-dark">Try free — 10 comments →</a>
+        <a href="https://myreportcomments.com" class="btn btn-dark">Try free — 10 comments →</a>
         <a href="#how" class="hero-link">See how it works ↓</a>
       </div>
     </div>
@@ -632,8 +690,8 @@
       <div class="pcard up">
         <div class="ptier">Free</div>
         <h3>Try it out</h3>
-        <div class="pprice" style="font-size:1.4rem; color:var(--muted);">Coming Soon</div>
-        <div class="psub" style="margin-top:.5rem;">10 free comments · No login needed</div>
+        <div class="pprice-soon">Coming Soon</div>
+        <div class="psub-soon">10 free comments · No login needed</div>
         <ul class="pli">
           <li>10 free comments</li>
           <li>All 9 input criteria</li>
@@ -641,55 +699,64 @@
           <li>Class manager</li>
           <li>One-click export</li>
         </ul>
-        <span class="pbtn pbtn-o" style="text-align:center; opacity:.5; cursor:default;">Coming soon</span>
+        <span class="pbtn-disabled">Coming soon</span>
       </div>
 
       <div class="pcard up">
         <div class="ptier">Starter</div>
         <h3>One class</h3>
-        <div class="pprice" style="font-size:1.4rem; color:var(--muted);">Coming Soon</div>
-        <div class="psub" style="margin-top:.5rem;">30 credits · one-time pack</div>
+        <div class="pprice-soon">Coming Soon</div>
+        <div class="psub-soon">30 credits · one-time pack</div>
         <ul class="pli">
           <li>30 comments</li>
           <li>Everything in Free</li>
           <li>3-month repeat memory</li>
           <li>Credits never expire</li>
         </ul>
-        <span class="pbtn pbtn-o" style="text-align:center; opacity:.5; cursor:default;">Coming soon</span>
+        <span class="pbtn-disabled">Coming soon</span>
       </div>
 
       <div class="pcard dark up">
         <div class="pbest">Best value</div>
         <div class="ptier">Standard</div>
         <h3>Full school term</h3>
-        <div class="pprice" style="font-size:1.4rem; color:rgba(250,247,242,.5);">Coming Soon</div>
-        <div class="psub" style="margin-top:.5rem;">100 credits · one-time pack</div>
+        <div class="pprice-soon">Coming Soon</div>
+        <div class="psub-soon">100 credits · one-time pack</div>
         <ul class="pli">
           <li>100 comments</li>
           <li>Everything in Starter</li>
           <li>Covers 3–4 classes</li>
           <li>Credits never expire</li>
         </ul>
-        <span class="pbtn pbtn-g" style="text-align:center; opacity:.5; cursor:default;">Coming soon</span>
+        <span class="pbtn-disabled-g">Coming soon</span>
       </div>
 
       <div class="pcard up">
         <div class="ptier">Pro Annual</div>
         <h3>Unlimited all year</h3>
-        <div class="pprice" style="font-size:1.4rem; color:var(--muted);">Coming Soon</div>
-        <div class="psub" style="margin-top:.5rem;">Unlimited · all four report seasons</div>
+        <div class="pprice-soon">Coming Soon</div>
+        <div class="psub-soon">Unlimited · all four report seasons</div>
         <ul class="pli">
           <li>Unlimited comments</li>
           <li>All four SA report seasons</li>
           <li>Priority support</li>
           <li>Early access to new features</li>
         </ul>
-        <span class="pbtn pbtn-o" style="text-align:center; opacity:.5; cursor:default;">Coming soon</span>
+        <span class="pbtn-disabled">Coming soon</span>
       </div>
     </div>
 
     <p class="pricing-foot">Pricing launching soon. The free tier is available now — no card required.</p>
     <div><span class="secure-tag">🔒 Payments via Stripe · Credits never expire · No monthly fees</span></div>
+
+    <div class="waitlist up">
+      <p>Want to know the moment pricing goes live? Drop your email and we'll ping you.</p>
+      <div class="waitlist-form">
+        <input type="email" id="waitlist-email" placeholder="your@email.com" aria-label="Email address for pricing waitlist" />
+        <button onclick="joinWaitlist()">Notify me →</button>
+      </div>
+      <p class="waitlist-thanks" id="waitlist-thanks">✓ You're on the list — we'll be in touch soon!</p>
+    </div>
   </section>
 
   <!-- ── FAQ ── -->
@@ -700,51 +767,30 @@
 
       <div class="faq-list up">
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Will the comments sound generic or AI-written?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Will the comments sound generic or AI-written?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>No. Every comment is built from professionally written template variants, personalised by your exact inputs. The goal is language that sounds like it came from a thoughtful teacher — because it did. You set the criteria; MyReportComments saves you the drafting time. Every comment is also yours to edit before copying.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">What is a credit?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">What is a credit?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>One credit = one generated comment. Free users get 10 credits with no login required. Starter gives 30 for R89, Standard gives 100 for R179, Pro Annual gives unlimited for R359/year. Credits never expire — buy them when report season arrives and use them at your own pace.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Can the same comment appear for two different learners?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Can the same comment appear for two different learners?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>Extremely unlikely. 9 criteria × 3 options per criterion plus free text subjects produces thousands of distinct combinations. The 3-month memory system also actively tracks and avoids recently used comments — so even across a class of 30, every learner gets genuinely different wording.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">What happens to my learner data?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">What happens to my learner data?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>The free version runs entirely in your browser — no learner data is ever sent to a server. The web app uses Supabase (POPIA compliant) for secure cloud storage so your class list persists across devices. Your data is never shared or sold.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Does it work for Foundation Phase through High School?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Does it work for Foundation Phase through High School?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>Yes. The language is calibrated to work across all grades and uses CAPS-aligned terminology throughout. Comments adjust in tone and vocabulary depending on the grade band you select. International users (UK, Australia) can switch terminology between learner and student on request.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Do I need to install anything?<span class="faq-arr">+</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Do I need to install anything?<span class="faq-arr" aria-hidden="true">+</span></button>
           <div class="faq-a"><p>Nothing at all. MyReportComments runs in your browser on any device — Mac, Windows, iPad, or Chromebook. No download, no app store, no installation. Just open myreportcomments.com and start.</p></div>
         </div>
       </div>
-    </div>
-  </section>
-
-
-  <!-- ── EMAIL CAPTURE ── -->
-  <section style="background:var(--warm);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:4rem 3rem;text-align:center;">
-    <div style="max-width:560px;margin:0 auto;">
-      <p style="font-size:.7rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;">Stay in the loop</p>
-      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--ink);margin-bottom:.6rem;letter-spacing:-0.5px;">Get notified when Pro launches.</h2>
-      <p style="font-size:.88rem;color:var(--muted);font-weight:300;margin-bottom:1.6rem;">Paid plans, Afrikaans improvements, bulk tools — we'll email you first.</p>
-      <form action="https://myreportcomments.us4.list-manage.com/subscribe/post?u=70e74df9b58f0e0de873629bf&id=8f279ff28d&f_id=006556e2f0" method="post" target="_blank" style="display:flex;gap:.6rem;max-width:440px;margin:0 auto;flex-wrap:wrap;justify-content:center;">
-        <input type="email" name="EMAIL" placeholder="Your email address" required
-          style="flex:1;min-width:220px;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);background:white;outline:none;">
-        <div style="display:none;" aria-hidden="true">
-          <input type="text" name="b_70e74df9b58f0e0de873629bf_8f279ff28d" tabindex="-1" value="">
-        </div>
-        <button type="submit"
-          style="padding:.75rem 1.4rem;background:var(--ink);color:var(--cream);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;">
-          Notify me →
-        </button>
-      </form>
     </div>
   </section>
 
@@ -754,7 +800,7 @@
       <p class="label up">Ready?</p>
       <h2 class="title up">Start your first comment<br/>right now.</h2>
       <p class="cta-desc up">No signup. No card. 10 free comments the moment you open it. Your future self — staring at 28 comments at 11pm — will thank you.</p>
-      <a href="https://magic.myreportcomments.com/wheremagichappens.html" class="btn btn-gold up" style="margin: 0 auto; font-size: .95rem; padding: .95rem 2.3rem;">
+      <a href="https://myreportcomments.com" class="btn btn-gold btn-cta-lg up">
         Open MyReportComments free →
       </a>
       <div class="cta-url up">myreportcomments.com</div>
@@ -763,14 +809,35 @@
 
   <footer>
     <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+    <p style="margin-top:.5rem; font-size:.78rem;"><a href="/legal.html">Legal &amp; Compliance</a> · <a href="/popia-privacy-policy.html">Privacy Policy</a> · <a href="/terms-and-conditions.html">Terms &amp; Conditions</a> · <a href="/refund-policy.html">Refund Policy</a></p>
   </footer>
 
   <script>
     function toggleFaq(btn) {
       const item = btn.closest('.faq-item');
       const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function joinWaitlist() {
+      const email = document.getElementById('waitlist-email').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('waitlist-email').focus();
+        return;
+      }
+      // Store locally — replace this fetch with your actual endpoint when ready
+      const existing = JSON.parse(localStorage.getItem('mrc-waitlist') || '[]');
+      if (!existing.includes(email)) existing.push(email);
+      localStorage.setItem('mrc-waitlist', JSON.stringify(existing));
+      document.querySelector('.waitlist-form').style.display = 'none';
+      document.getElementById('waitlist-thanks').style.display = 'block';
     }
 
     const io = new IntersectionObserver((entries) => {
@@ -779,6 +846,64 @@
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.up').forEach(el => io.observe(el));
+  </script>
+
+  <!-- FAQ structured data for Google rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Will the comments sound generic or AI-written?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Every comment is built from professionally written template variants, personalised by your exact inputs. The goal is language that sounds like it came from a thoughtful teacher — because it did. You set the criteria; MyReportComments saves you the drafting time. Every comment is also yours to edit before copying."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a credit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "One credit = one generated comment. Free users get 10 credits with no login required. Starter gives 30 for R89, Standard gives 100 for R179, Pro Annual gives unlimited for R359/year. Credits never expire — buy them when report season arrives and use them at your own pace."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can the same comment appear for two different learners?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Extremely unlikely. 9 criteria × 3 options per criterion plus free text subjects produces thousands of distinct combinations. The 3-month memory system also actively tracks and avoids recently used comments — so even across a class of 30, every learner gets genuinely different wording."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to my learner data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The free version runs entirely in your browser — no learner data is ever sent to a server. The web app uses Supabase (POPIA compliant) for secure cloud storage so your class list persists across devices. Your data is never shared or sold."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work for Foundation Phase through High School?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The language is calibrated to work across all grades and uses CAPS-aligned terminology throughout. Comments adjust in tone and vocabulary depending on the grade band you select."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nothing at all. MyReportComments runs in your browser on any device — Mac, Windows, iPad, or Chromebook. No download, no app store, no installation. Just open myreportcomments.com and start."
+        }
+      }
+    ]
+  }
   </script>
 </body>
 </html>

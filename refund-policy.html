@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Refund Policy — MyReportComments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #3d224d; --cream: #fbf5f7; --warm: #f7eef1;
+      --gold: #c4518c; --gold2: #d4729e; --text: #3d224d;
+      --muted: #7a6480; --border: #e9e3e5;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.75; }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.032'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem; background: rgba(250,247,242,.93); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: var(--ink); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo span { color: var(--gold); }
+    .legal-wrap { max-width: 760px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+    .legal-eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .legal-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: var(--ink); letter-spacing: -1px; line-height: 1.1; margin-bottom: .5rem; }
+    .legal-meta { font-size: .85rem; color: var(--muted); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .legal-body h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin: 2.2rem 0 .6rem; }
+    .legal-body h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 1.4rem 0 .4rem; }
+    .legal-body p { font-size: .95rem; color: var(--text); margin-bottom: .9rem; }
+    .legal-body ul { margin: .5rem 0 1rem 1.4rem; }
+    .legal-body ul li { font-size: .95rem; color: var(--text); margin-bottom: .4rem; }
+    .legal-body a { color: var(--gold); text-decoration: none; }
+    .legal-body a:hover { text-decoration: underline; }
+    .highlight-box { background: var(--warm); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; padding: 1rem 1.2rem; margin: 1.5rem 0; font-size: .9rem; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .summary-card { background: var(--warm); border: 1px solid var(--border); border-radius: 8px; padding: 1.1rem; }
+    .summary-card .sc-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: .3rem; }
+    .summary-card .sc-val { font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+    .summary-card .sc-sub { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+    @media (max-width: 560px) { .summary-grid { grid-template-columns: 1fr; } }
+    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); margin-top: 3rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="/">MyReport<span>Comments</span></a>
+  </nav>
+
+  <div class="legal-wrap">
+    <p class="legal-eyebrow">Legal</p>
+    <h1 class="legal-title">Refund Policy</h1>
+    <p class="legal-meta">Last updated: March 2026 · We want you to feel confident every time you purchase</p>
+
+    <div class="legal-body">
+      <div class="highlight-box">
+        We stand behind MyReportComments. If you're not satisfied with your purchase for any reason, reach out to us and we'll make it right.
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="sc-label">Credit Packs</div>
+          <div class="sc-val">7 days</div>
+          <div class="sc-sub">Full refund window from purchase</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">Pro Annual</div>
+          <div class="sc-val">14 days</div>
+          <div class="sc-sub">Full refund if under 20 comments used</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">Processing time</div>
+          <div class="sc-val">5–10 days</div>
+          <div class="sc-sub">Back to your original payment method</div>
+        </div>
+      </div>
+
+      <h2>1. Credit Packs</h2>
+      <h3>1.1 Refund Eligibility</h3>
+      <p>You are eligible for a full refund on any credit pack purchase if:</p>
+      <ul>
+        <li>The refund is requested within <strong>7 days</strong> of the purchase date, and</li>
+        <li>Fewer than <strong>5 credits</strong> from that pack have been used</li>
+      </ul>
+      <p>If more than 5 credits have been used, we will issue a pro-rata refund for the remaining unused credits, at our discretion.</p>
+
+      <h3>1.2 How to Request</h3>
+      <p>Email <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a> with the subject line "Refund Request — Credit Pack" and include:</p>
+      <ul>
+        <li>Your registered email address</li>
+        <li>Your Stripe order reference or payment confirmation</li>
+        <li>The reason for your refund request (optional but helpful)</li>
+      </ul>
+
+      <h2>2. Pro Annual Subscription</h2>
+      <h3>2.1 Refund Eligibility</h3>
+      <p>You are eligible for a full refund on a Pro Annual subscription if:</p>
+      <ul>
+        <li>The refund is requested within <strong>14 days</strong> of the initial subscription date, and</li>
+        <li>No more than <strong>20 comments</strong> have been generated under the subscription</li>
+      </ul>
+      <p>No refunds are issued after the 14-day window or if the usage threshold has been exceeded.</p>
+
+      <h3>2.2 Cancellations</h3>
+      <p>You may cancel your Pro Annual subscription at any time. Cancellation prevents the subscription from auto-renewing at the next annual billing date. No refund is issued for the remaining period of an active subscription after the refund window has closed — you retain access to Pro features until the subscription period ends.</p>
+
+      <h3>2.3 How to Cancel</h3>
+      <p>Cancel your subscription from your account settings page, or email us at <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a> and we will cancel it on your behalf within 1 business day.</p>
+
+      <h2>3. Processing</h2>
+      <p>Approved refunds are processed within <strong>5–10 business days</strong> and returned to the original payment method via Stripe. Depending on your bank, the credit may take an additional 2–5 business days to appear on your statement.</p>
+
+      <h2>4. Exceptions</h2>
+      <p>Refunds will not be issued in the following circumstances:</p>
+      <ul>
+        <li>Requests made outside the refund windows described above</li>
+        <li>Accounts suspended or terminated due to a violation of our <a href="/terms-and-conditions.html">Terms &amp; Conditions</a></li>
+        <li>Credits used in bulk generate sessions that completed successfully</li>
+        <li>Change of mind after the refund window has closed</li>
+      </ul>
+
+      <h2>5. Technical Issues</h2>
+      <p>If you experience a technical issue that causes credits to be consumed without successfully generating a comment (e.g., a server error or connection failure during generation), we will restore those credits to your account. Email us with your account details and a description of the issue and we will investigate within 2 business days.</p>
+
+      <h2>6. Consumer Protection</h2>
+      <p>This Refund Policy is in addition to, and does not limit, any rights you may have under the Consumer Protection Act 68 of 2008 (CPA) or any other applicable South African consumer legislation.</p>
+
+      <h2>7. Contact</h2>
+      <p>For any refund queries, email <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a>. We aim to respond to all refund requests within 1 business day.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+    <p style="margin-top:.4rem;"><a href="/popia-privacy-policy.html">Privacy Policy</a> · <a href="/terms-and-conditions.html">Terms &amp; Conditions</a> · <a href="/refund-policy.html">Refund Policy</a> · <a href="/cookie-policy.html">Cookie Policy</a> · <a href="/acceptable-use-policy.html">Acceptable Use</a> · <a href="/ect-disclosures.html">ECT Disclosures</a> ·
+      <a href="/user-guide.html">Help</a></p>
+  </footer>
+</body>
+</html>
