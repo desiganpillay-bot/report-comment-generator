@@ -3,3 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal — MyReportComments</title>
+  <meta name="description" content="Legal documents for MyReportComments — Privacy Policy, Terms & Conditions, Refund Policy, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:    #3d224d;
+      --cream:  #fbf5f7;
+      --warm:   #f7eef1;
+      --gold:   #c4518c;
+      --gold2:  #d4729e;
+      --text:   #3d224d;
+      --muted:  #7a6480;
+      --border: #e9e3e5;
+      --white:  #ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.5; }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.032'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2.5rem; background: rgba(251,245,247,.93);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; color: var(--ink); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .86rem; font-weight: 500; transition: color .18s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.nav-cta { background: var(--ink); color: var(--cream); padding: .48rem 1.25rem; border-radius: 100px; transition: background .18s; }
+    .nav-links a.nav-cta:hover { background: var(--gold); color: var(--ink); }
+    @media (max-width: 640px) { .nav-links { display: none; } }
+
+    /* HERO */
+    .hero {
+      padding: 8rem 2rem 4rem; text-align: center;
+      background: linear-gradient(160deg, var(--warm) 0%, var(--cream) 60%);
+      border-bottom: 1px solid var(--border);
+    }
+    .label { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--ink); letter-spacing: -1.5px; line-height: 1.1; margin-bottom: .9rem; }
+    .hero p { color: var(--muted); font-size: .98rem; max-width: 480px; margin: 0 auto; font-weight: 300; line-height: 1.75; }
+
+    /* GRID */
+    .legal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      max-width: 960px;
+      margin: 3.5rem auto;
+      padding: 0 2rem;
+    }
+    .legal-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: box-shadow .2s, transform .2s, border-color .2s;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .legal-card:hover {
+      box-shadow: 0 8px 28px rgba(61,34,77,.1);
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+    .card-icon { font-size: 1.5rem; margin-bottom: .25rem; }
+    .card-tag { font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+    .card-desc { font-size: .85rem; color: var(--muted); line-height: 1.6; flex: 1; }
+    .card-arrow { font-size: .8rem; color: var(--gold); font-weight: 600; margin-top: .5rem; }
+
+    /* COMPLIANCE BADGE */
+    .compliance-wrap { max-width: 960px; margin: 0 auto 3rem; padding: 0 2rem; }
+    .compliance-box {
+      background: var(--warm); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold); border-radius: 8px;
+      padding: 1rem 1.4rem; font-size: .88rem; color: var(--muted);
+      display: flex; gap: .75rem; align-items: flex-start;
+    }
+    .compliance-box strong { color: var(--ink); }
+
+    /* FOOTER */
+    footer { background: var(--ink); color: rgba(251,245,247,.6); text-align: center; padding: 2rem; font-size: .82rem; margin-top: 2rem; }
+    footer a { color: var(--gold2); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { margin-top: .6rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem .9rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://myreportcomments.com">My<span>Report</span>Comments</a>
+  <ul class="nav-links">
+    <li><a href="https://myreportcomments.com/#how">How it works</a></li>
+    <li><a href="https://myreportcomments.com/#features">Features</a></li>
+    <li><a href="https://myreportcomments.com/#pricing">Pricing</a></li>
+    <li><a href="https://myreportcomments.com/#faq">FAQ</a></li>
+    <li><a href="/user-guide.html">Help</a></li>
+    <li><a href="https://magic.myreportcomments.com/wheremagichappens.html" class="nav-cta">Try free</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <p class="label">PKR Consultancy (Pty) Ltd</p>
+  <h1>Legal &amp; Compliance</h1>
+  <p>All our legal documents in one place — written in plain language, built for South African law.</p>
+</div>
+
+<div class="legal-grid">
+
+  <a class="legal-card" href="/popia-privacy-policy.html">
+    <div class="card-icon">🔒</div>
+    <div class="card-tag">POPIA</div>
+    <div class="card-title">Privacy Policy</div>
+    <div class="card-desc">How we collect, use, and protect your personal information. Covers learner data, Supabase, Stripe, and your rights as a data subject.</div>
+    <div class="card-arrow">Read policy →</div>
+  </a>
+
+  <a class="legal-card" href="/terms-and-conditions.html">
+    <div class="card-icon">📋</div>
+    <div class="card-tag">Terms</div>
+    <div class="card-title">Terms &amp; Conditions</div>
+    <div class="card-desc">The rules governing use of MyReportComments — credits, payments, intellectual property, warranties, and governing law.</div>
+    <div class="card-arrow">Read terms →</div>
+  </a>
+
+  <a class="legal-card" href="/refund-policy.html">
+    <div class="card-icon">💳</div>
+    <div class="card-tag">CPA</div>
+    <div class="card-title">Refund Policy</div>
+    <div class="card-desc">Our refund windows for credit packs and Pro Annual subscriptions, how to request a refund, and your rights under the Consumer Protection Act.</div>
+    <div class="card-arrow">Read policy →</div>
+  </a>
+
+  <a class="legal-card" href="/cookie-policy.html">
+    <div class="card-icon">🍪</div>
+    <div class="card-tag">Cookies</div>
+    <div class="card-title">Cookie Policy</div>
+    <div class="card-desc">We use only essential cookies. No tracking, no advertising. This page explains exactly what's stored and how to control it.</div>
+    <div class="card-arrow">Read policy →</div>
+  </a>
+
+  <a class="legal-card" href="/acceptable-use-policy.html">
+    <div class="card-icon">✅</div>
+    <div class="card-tag">AUP</div>
+    <div class="card-title">Acceptable Use Policy</div>
+    <div class="card-desc">What you may and may not do with MyReportComments — covering learner privacy, account sharing, and professional responsibility.</div>
+    <div class="card-arrow">Read policy →</div>
+  </a>
+
+  <a class="legal-card" href="/ect-disclosures.html">
+    <div class="card-icon">🏛️</div>
+    <div class="card-tag">ECT Act</div>
+    <div class="card-title">ECT Act Disclosures</div>
+    <div class="card-desc">Mandatory disclosures under Section 43 of the Electronic Communications and Transactions Act — business info, pricing, transaction steps, and disputes.</div>
+    <div class="card-arrow">Read disclosures →</div>
+  </a>
+
+  <a class="legal-card" href="/information-officer-notice.html">
+    <div class="card-icon">👤</div>
+    <div class="card-tag">POPIA · Section 55</div>
+    <div class="card-title">Information Officer Notice</div>
+    <div class="card-desc">Our designated Information Officer and Deputy, IR registration number 2026-003893, and how to submit a POPIA data access request.</div>
+    <div class="card-arrow">Read notice →</div>
+  </a>
+
+</div>
+
+<div class="compliance-wrap">
+  <div class="compliance-box">
+    <span>⚖️</span>
+    <span><strong>Compliance summary:</strong> MyReportComments is operated by PKR Consultancy (Pty) Ltd (CIPC: 2013/151940/07, VAT: 4910311028). Registered with the Information Regulator of South Africa (Reg No. 2026-003893). All documents comply with POPIA, the ECT Act, and the Consumer Protection Act 68 of 2008.</span>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+  <div class="footer-links">
+    <a href="/popia-privacy-policy.html">Privacy Policy</a>
+    <a href="/terms-and-conditions.html">Terms &amp; Conditions</a>
+    <a href="/refund-policy.html">Refund Policy</a>
+    <a href="/cookie-policy.html">Cookie Policy</a>
+    <a href="/acceptable-use-policy.html">Acceptable Use</a>
+    <a href="/ect-disclosures.html">ECT Disclosures</a> ·
+      <a href="/user-guide.html">Help</a>
+    <a href="/information-officer-notice.html">Information Officer</a>
+  </div>
+</footer>
+
+</body>
+</html>
