@@ -760,31 +760,34 @@
 
   <script>
   function submitSupportForm() {
-    const name = document.getElementById('sf-name').value.trim();
-    const email = document.getElementById('sf-email').value.trim();
-    const type = document.getElementById('sf-type').value;
-    const desc = document.getElementById('sf-desc').value.trim();
+    const name = (document.getElementById('sf-name') || {}).value || '';
+    const email = (document.getElementById('sf-email') || {}).value || '';
+    const type = (document.getElementById('sf-type') || {}).value || '';
+    const desc = (document.getElementById('sf-desc') || {}).value || '';
 
-    if (!name || !email || !type || !desc) {
+    if (!name.trim() || !email.trim() || !type.trim() || !desc.trim()) {
       alert('Please fill in all fields before submitting.');
       return;
     }
 
-    const subject = encodeURIComponent('Support Request: ' + type);
+    const subject = encodeURIComponent('[Support] ' + type);
     const body = encodeURIComponent(
       'Name: ' + name + '\n' +
       'Email: ' + email + '\n' +
       'Issue type: ' + type + '\n\n' +
-      'Description:\n' + desc
+      'Description:\n' + desc + '\n\n' +
+      '---\nSent from myreportcomments.com/user-guide'
     );
 
     window.location.href = 'mailto:support@myreportcomments.com?subject=' + subject + '&body=' + body;
   }
 
-  // Attach submit handler to button
   document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.querySelector('.support-submit');
-    if (btn) btn.addEventListener('click', submitSupportForm);
+    const btn = document.querySelector('.support-submit') || document.querySelector('[onclick*="submit"]');
+    if (btn) {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', submitSupportForm);
+    }
   });
 </script>
 
