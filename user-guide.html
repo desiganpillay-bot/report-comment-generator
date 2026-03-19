@@ -746,7 +746,7 @@
         <div class="callout-icon">📧</div>
         <div class="callout-body">
           <strong>Prefer email directly?</strong>
-          You can also reach us at <a href="mailto:hello@myreportcomments.com" style="color:var(--gold)">hello@myreportcomments.com</a>. Using the form above ensures your request is tracked and prioritised correctly.
+          You can also reach us at <a href="mailto:support@myreportcomments.com" style="color:var(--gold)">support@myreportcomments.com</a>. Using the form above ensures your request is tracked and prioritised correctly.
         </div>
       </div>
     </div>
@@ -754,31 +754,42 @@
   </div><!-- /page -->
 
   <footer>
-    <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:hello@myreportcomments.com">hello@myreportcomments.com</a></p>
+    <p>© 2026 MyReportComments · Built in South Africa, for South African teachers · <a href="mailto:support@myreportcomments.com">support@myreportcomments.com</a></p>
     <p style="margin-top:.5rem; font-size:.78rem;"><a href="/legal.html">Legal &amp; Compliance</a> · <a href="/popia-privacy-policy.html">Privacy Policy</a> · <a href="/terms-and-conditions.html">Terms &amp; Conditions</a> · <a href="/refund-policy.html">Refund Policy</a></p>
   </footer>
 
   <script>
-    // Scroll-reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.up').forEach(el => obs.observe(el));
+  function submitSupportForm() {
+    const name = (document.getElementById('sf-name') || {}).value || '';
+    const email = (document.getElementById('sf-email') || {}).value || '';
+    const type = (document.getElementById('sf-type') || {}).value || '';
+    const desc = (document.getElementById('sf-desc') || {}).value || '';
 
-    // Form submit (client-side demo with validation)
-    function submitSupport() {
-      const name  = document.getElementById('f-name').value.trim();
-      const email = document.getElementById('f-email').value.trim();
-      const type  = document.getElementById('f-type').value;
-      const desc  = document.getElementById('f-desc').value.trim();
-      if (!name || !email || !type || !desc) {
-        alert('Please fill in all fields before submitting.');
-        return;
-      }
-      document.getElementById('supportForm').style.display = 'none';
-      document.getElementById('formConfirm').style.display = 'block';
+    if (!name.trim() || !email.trim() || !type.trim() || !desc.trim()) {
+      alert('Please fill in all fields before submitting.');
+      return;
     }
-  </script>
+
+    const subject = encodeURIComponent('[Support] ' + type);
+    const body = encodeURIComponent(
+      'Name: ' + name + '\n' +
+      'Email: ' + email + '\n' +
+      'Issue type: ' + type + '\n\n' +
+      'Description:\n' + desc + '\n\n' +
+      '---\nSent from myreportcomments.com/user-guide'
+    );
+
+    window.location.href = 'mailto:support@myreportcomments.com?subject=' + subject + '&body=' + body;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.querySelector('.support-submit') || document.querySelector('[onclick*="submit"]');
+    if (btn) {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', submitSupportForm);
+    }
+  });
+</script>
 
 </body>
 </html>
