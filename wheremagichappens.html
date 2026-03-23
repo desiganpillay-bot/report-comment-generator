@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Report Comment Generator v1</title>
+<title>Report Comment Generator — Beta 1</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#F0F3F9;color:#1a1a2e;min-height:100vh}
+body{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#fdf6f9;color:#1a1a2e;margin:0}
 
 /* ── Layout ── */
-.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sidebar{background:#1F3864;color:white;display:flex;flex-direction:column;padding:0}
-.main-area{display:flex;flex-direction:column;min-height:100vh}
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;min-width:260px;background:#4a2060;color:white;display:flex;flex-direction:column;padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+.main-area{flex:1;min-width:0;display:flex;flex-direction:column}
 
 /* ── Sidebar ── */
-.sb-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.sb-header{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.1)} 
 .sb-title{font-size:15px;font-weight:700;letter-spacing:0.2px}
 .sb-sub{font-size:11px;color:#aabbd4;margin-top:3px}
 .sb-section{padding:10px 16px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#6688aa}
@@ -22,19 +22,19 @@ body{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#F0F3F9;co
 .class-input-row input{flex:1;padding:6px 8px;border:1px solid rgba(255,255,255,0.2);border-radius:5px;background:rgba(255,255,255,0.08);color:white;font-size:12px}
 .class-input-row input::placeholder{color:#6688aa}
 .class-input-row input:focus{outline:none;border-color:rgba(255,255,255,0.5)}
-.add-btn{padding:6px 10px;background:#C9A84C;border:none;border-radius:5px;color:#1a1a1a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-.add-btn:hover{background:#dbb95a}
+.add-btn{padding:6px 10px;background:#c06b9a;border:none;border-radius:5px;color:#1a1a1a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.add-btn:hover{background:#b988c8}
 .pupil-list{flex:1;overflow-y:auto;padding:6px 8px}
 .pupil-item{display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:6px;cursor:pointer;transition:background 0.1s;position:relative}
 .pupil-item:hover{background:rgba(255,255,255,0.08)}
-.pupil-item.active{background:rgba(201,168,76,0.25);border-left:3px solid #C9A84C}
+.pupil-item.active{background:rgba(201,168,76,0.25);border-left:3px solid #c06b9a}
 .pupil-item.active .pupil-name{color:#f5d98a}
-.pupil-avatar{width:28px;height:28px;border-radius:50%;background:#2E4A7A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#aabbd4}
-.pupil-item.active .pupil-avatar{background:#C9A84C;color:#1a1a1a}
+.pupil-avatar{width:28px;height:28px;border-radius:50%;background:#6b3a8c;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#aabbd4}
+.pupil-item.active .pupil-avatar{background:#c06b9a;color:#1a1a1a}
 .pupil-name{font-size:12px;color:#ccd6e8;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pupil-status{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.pupil-status.done{background:#4CAF50}
-.pupil-status.draft{background:#C9A84C}
+.pupil-status.done{background:#7b5ea7}
+.pupil-status.draft{background:#c06b9a}
 .pupil-status.empty{background:rgba(255,255,255,0.15)}
 .pupil-del{opacity:0;font-size:13px;color:#ff6b6b;cursor:pointer;padding:0 2px;transition:opacity 0.1s}
 .pupil-item:hover .pupil-del{opacity:1}
@@ -42,71 +42,71 @@ body{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#F0F3F9;co
 .sb-btn{padding:7px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:background 0.12s}
 .sb-btn.import{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white}
 .sb-btn.import:hover{background:rgba(255,255,255,0.18)}
-.sb-btn.bulk{background:rgba(201,168,76,0.18);border:1px solid #C9A84C;color:#f5d98a}
+.sb-btn.bulk{background:rgba(201,168,76,0.18);border:1px solid #c06b9a;color:#f5d98a}
 .sb-btn.bulk:hover{background:rgba(201,168,76,0.32)}
 .sb-btn.docx{background:#2E7D32;border:none;color:white}
 .sb-btn.docx:hover{background:#256427}
 /* ── Toast notification ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1F3864;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#4a2060;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* ── Bulk review modal ── */
 .bulk-modal{background:white;border-radius:10px;padding:0;width:680px;max-width:97vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
-.bulk-modal-head{padding:16px 22px 14px;background:#1F3864;color:white;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.bulk-modal-head{padding:16px 22px 14px;background:#4a2060;color:white;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .bulk-modal-head h3{font-size:15px;font-weight:700;flex:1}
 .bulk-modal-body{flex:1;overflow-y:auto;padding:16px 22px}
 .bulk-modal-foot{padding:12px 22px;border-top:1px solid #e8ecf4;display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
 .bulk-progress{height:6px;background:#e8ecf4;border-radius:10px;margin-bottom:14px;overflow:hidden}
-.bulk-progress-bar{height:100%;background:#C9A84C;transition:width 0.2s;border-radius:10px}
+.bulk-progress-bar{height:100%;background:#c06b9a;transition:width 0.2s;border-radius:10px}
 .bulk-progress-label{font-size:11px;color:#8898b0;margin-bottom:8px}
 .bulk-item{margin-bottom:14px;border:1px solid #e8ecf4;border-radius:8px;overflow:hidden}
 .bulk-item-head{background:#EEF2F7;padding:8px 12px;display:flex;align-items:center;gap:8px}
-.bulk-item-name{font-size:12px;font-weight:700;color:#1F3864;flex:1}
+.bulk-item-name{font-size:12px;font-weight:700;color:#4a2060;flex:1}
 .bulk-item-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:#EAF3DE;color:#27500A}
 .bulk-item-body{padding:10px 12px}
 .bulk-item-textarea{width:100%;border:1px solid #d0d8ea;border-radius:5px;font-size:12px;font-family:Arial,Helvetica,sans-serif;line-height:1.7;padding:8px;resize:vertical;min-height:60px;color:#1a1a2e}
-.bulk-item-textarea:focus{outline:none;border-color:#1F3864}
+.bulk-item-textarea:focus{outline:none;border-color:#4a2060}
 /* ── Phrase bank persistent ── */
 .phrase-tabs{display:flex;gap:0;margin-bottom:10px;border-bottom:1px solid #e8ecf4}
 .phrase-tab{padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#8898b0;border-bottom:2px solid transparent;margin-bottom:-1px}
-.phrase-tab.active{color:#1F3864;border-bottom-color:#1F3864}
+.phrase-tab.active{color:#4a2060;border-bottom-color:#4a2060}
 .phrase-bank-section{display:none}
 .phrase-bank-section.active{display:block}
 .sb-empty{padding:20px 16px;text-align:center;color:#6688aa;font-size:12px;line-height:1.6}
 
 /* ── Top bar ── */
-.topbar{background:white;border-bottom:1px solid #dde3ef;padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.topbar-title{font-size:15px;font-weight:700;color:#1F3864;margin-right:auto}
+.topbar{background:white;border-bottom:1px solid #dde3ef;padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:15px;font-weight:700;color:#4a2060;margin-right:auto}
 .topbar-pupil{font-size:13px;color:#3a4a6b}
 .ctrl-group{display:flex;align-items:center;gap:6px}
 .ctrl-label{font-size:11px;color:#8898b0;white-space:nowrap}
 select.ctrl{padding:5px 24px 5px 8px;border:1px solid #d0d8ea;border-radius:5px;font-size:12px;color:#1a1a2e;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%231F3864' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 7px center;appearance:none;-webkit-appearance:none}
-select.ctrl:focus{outline:none;border-color:#1F3864}
+select.ctrl:focus{outline:none;border-color:#4a2060}
 .slider-wrap{display:flex;align-items:center;gap:6px}
-input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
-.slider-val{font-size:11px;font-weight:700;color:#1F3864;min-width:48px}
+input[type=range].wslider{width:80px;accent-color:#c06b9a;height:4px}
+.slider-val{font-size:11px;font-weight:700;color:#4a2060;min-width:48px}
 
 /* ── Body ── */
 .body-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1}
-.panel{padding:20px 24px;overflow-y:auto}
+.panel{padding:20px 24px}
 .panel.left{border-right:1px solid #dde3ef;background:white}
-.panel.right{background:#F8FAFD}
-.panel-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#1F3864;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8ecf4}
+.panel.right{background:#F8FAFD;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;align-self:start}
+.panel-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#4a2060;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8ecf4}
 
 /* ── Criteria form ── */
 .field{margin-bottom:12px}
-.field label{display:block;font-size:11px;font-weight:700;color:#3a4a6b;margin-bottom:4px}
-.field select,.field input[type=text]{width:100%;padding:7px 28px 7px 9px;border:1px solid #d0d8ea;border-radius:6px;font-size:12px;color:#1a1a2e;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%231F3864' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;-webkit-appearance:none}
-.field input[type=text]{background-image:none;padding-right:9px}
-.field select:focus,.field input:focus{outline:none;border-color:#1F3864}
+.field:not(.subj-section) label{display:block;font-size:11px;font-weight:700;color:#3a4a6b;margin-bottom:4px}
+.field:not(.subj-section) select,.field:not(.subj-section) input[type=text]{width:100%;padding:7px 28px 7px 9px;border:1px solid #d0d8ea;border-radius:6px;font-size:12px;color:#1a1a2e;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%231F3864' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;-webkit-appearance:none}
+.field:not(.subj-section) input[type=text]{background-image:none;padding-right:9px}
+.field:not(.subj-section) select:focus,.field:not(.subj-section) input:focus{outline:none;border-color:#4a2060}
 .fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .field.full{grid-column:1/-1}
 
 /* ── Output panel ── */
-.gen-btn{width:100%;padding:12px;background:#1F3864;color:white;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;transition:background 0.12s}
+.gen-btn{width:100%;padding:12px;background:#4a2060;color:white;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;transition:background 0.12s}
 .gen-btn:hover{background:#162b50}
 .gen-btn:active{transform:scale(0.99)}
 
-.output-box{background:#FFF9EE;border:1.5px solid #C9A84C;border-radius:8px;padding:14px;margin-bottom:12px;min-height:80px;position:relative}
+.output-box{background:#FFF9EE;border:1.5px solid #c06b9a;border-radius:8px;padding:14px;margin-bottom:12px;min-height:80px;position:relative}
 .output-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .output-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:#7a5a10}
 .output-badges{display:flex;gap:6px;align-items:center}
@@ -118,19 +118,44 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 .output-text{font-size:13px;line-height:1.8;color:#1a1a2e;white-space:pre-wrap;cursor:text}
 .output-text .sent{border-radius:3px;padding:1px 2px;cursor:pointer;transition:background 0.1s}
 .output-text .sent:hover{background:rgba(201,168,76,0.25)}
-.output-text .sent.regen-hint::after{content:" ↺";font-size:10px;color:#C9A84C;opacity:0}
+.output-text .sent.regen-hint::after{content:" ↺";font-size:10px;color:#c06b9a;opacity:0}
 .output-text .sent:hover.regen-hint::after{opacity:1}
 .placeholder-text{font-size:12px;color:#aaa;font-style:italic}
+.found-panel{display:none}
+.found-group{margin-bottom:10px}
+.found-group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#888;margin-bottom:6px}
+.found-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border:1px solid #e8ecf4;border-radius:6px;margin-bottom:4px;background:#fafbfd}
+.found-row label{font-size:12px;font-weight:600;color:#1a1a2e;min-width:140px}
+.found-milestones{display:flex;gap:4px}
+.found-milestone{padding:3px 10px;border:1px solid #dde3ef;border-radius:12px;font-size:11px;cursor:pointer;background:white;transition:all 0.1s;white-space:nowrap}
+.found-milestone:hover{border-color:#c06b9a;background:#FFF9EE}
+.found-milestone.selected.emerging{background:#FFF3CD;border-color:#c06b9a;color:#7a5a10;font-weight:700}
+.found-milestone.selected.developing{background:#E3F0FF;border-color:#185FA5;color:#0C447C;font-weight:700}
+.found-milestone.selected.achieved{background:#EAF3DE;border-color:#27500A;color:#27500A;font-weight:700}
+.found-note{font-size:10px;color:#aaa;font-style:italic;margin-top:4px;padding:0 2px}
+
+.subj-section{margin:0}
+.subj-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid #e8ecf4}
+.subj-row:last-of-type{border-bottom:none}
+.subj-row-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-text-secondary);min-width:72px;padding-top:4px;flex-shrink:0}
+.subj-tags{display:flex;flex-wrap:wrap;gap:3px;flex:1}
+.subj-cb{display:inline-flex;align-items:center;padding:3px 10px;border:0.5px solid #c0c8d8;border-radius:10px;background:#fdf6f9;cursor:pointer;font-size:11px;transition:all 0.1s;white-space:nowrap;color:#1a1a2e;user-select:none}
+.subj-cb:hover{border-color:#BA7517;background:#FFF9EE;color:#633806}
+.subj-cb input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.subj-cb.checked{background:#FFF3CD;border-color:#BA7517;color:#633806;font-weight:500}
+.subj-custom-row{display:flex;gap:6px;margin-top:6px;align-items:center}
+.subj-custom-row input{flex:1;padding:5px 8px;border:0.5px solid #c0c8d8;border-radius:6px;font-size:11px;background:white;color:#1a1a2e}
+.subj-cap-warn{font-size:10px;color:#BA7517;font-weight:500;margin-top:4px;display:none}
 
 .edit-area{width:100%;padding:10px;border:1px solid #d0d8ea;border-radius:6px;font-size:13px;line-height:1.75;color:#1a1a2e;resize:vertical;min-height:80px;font-family:Arial,Helvetica,sans-serif;background:white}
-.edit-area:focus{outline:none;border-color:#1F3864}
+.edit-area:focus{outline:none;border-color:#4a2060}
 
 .action-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .act-btn{padding:7px 14px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.12s,border-color 0.12s;border:1.5px solid}
-.act-btn.copy{background:#1F3864;color:white;border-color:#1F3864}
+.act-btn.copy{background:#4a2060;color:white;border-color:#4a2060}
 .act-btn.copy:hover{background:#162b50}
 .act-btn.copy.copied{background:#2E7D32;border-color:#2E7D32}
-.act-btn.save{background:white;color:#1F3864;border-color:#1F3864}
+.act-btn.save{background:white;color:#4a2060;border-color:#4a2060}
 .act-btn.save:hover{background:#EEF2F7}
 .act-btn.save.saved{border-color:#2E7D32;color:#2E7D32}
 .act-btn.discard{background:white;color:#888;border-color:#d0d8ea}
@@ -140,7 +165,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 .sentiment-wrap{margin-bottom:14px}
 .sentiment-label{font-size:11px;font-weight:700;color:#3a4a6b;margin-bottom:5px;display:flex;justify-content:space-between}
 .sentiment-bar{height:8px;background:#e8ecf4;border-radius:20px;overflow:hidden;display:flex}
-.bar-pos{height:100%;background:#4CAF50;transition:width 0.4s}
+.bar-pos{height:100%;background:#7b5ea7;transition:width 0.4s}
 .bar-dev{height:100%;background:#FF9800;transition:width 0.4s}
 .sentiment-legend{display:flex;gap:12px;margin-top:4px}
 .leg{display:flex;align-items:center;gap:4px;font-size:10px;color:#8898b0}
@@ -153,7 +178,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 .hist-clear:hover{color:#e53935}
 .hist-list{display:flex;flex-direction:column;gap:5px}
 .hist-item{padding:8px 10px;background:white;border:0.5px solid #e0e5ef;border-radius:6px;cursor:pointer;transition:border-color 0.1s}
-.hist-item:hover{border-color:#1F3864}
+.hist-item:hover{border-color:#4a2060}
 .hist-meta{font-size:10px;color:#8898b0;margin-bottom:3px}
 .hist-preview{font-size:11px;color:#3a4a6b;line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
@@ -161,10 +186,17 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 .phrase-section{margin-top:16px}
 .phrase-input-row{display:flex;gap:6px;margin-bottom:8px}
 .phrase-input-row input{flex:1;padding:7px 9px;border:1px solid #d0d8ea;border-radius:6px;font-size:12px}
-.phrase-input-row input:focus{outline:none;border-color:#1F3864}
-.phrase-input-row button{padding:7px 12px;background:#1F3864;color:white;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.phrase-input-row input:focus{outline:none;border-color:#4a2060}
+.phrase-input-row button{padding:7px 12px;background:#4a2060;color:white;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
 .phrase-list{display:flex;flex-direction:column;gap:4px}
-.phrase-item{display:flex;align-items:center;gap:6px;padding:6px 9px;background:#EEF2F7;border-radius:5px;font-size:11px;color:#1F3864}
+.phrase-item{display:flex;align-items:center;gap:6px;padding:5px 8px;background:#f8f9fc;border:0.5px solid #e0e4ef;border-radius:5px;font-size:11px}
+.phrase-item span{flex:1;color:#1a1a2e;line-height:1.4}
+.phrase-item .ph-insert{padding:2px 8px;background:#4a2060;color:white;border:none;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.phrase-item .ph-insert:hover{background:#162b50}
+.phrase-item .ph-del{padding:2px 6px;background:none;border:none;color:#aaa;cursor:pointer;font-size:12px;flex-shrink:0}
+.phrase-item .ph-del:hover{color:#e53935}
+.phrase-hint{font-size:10px;color:#8898b0;font-style:italic;padding:6px 2px 2px;line-height:1.5}
+.phrase-item{display:flex;align-items:center;gap:6px;padding:6px 9px;background:#EEF2F7;border-radius:5px;font-size:11px;color:#4a2060}
 .phrase-item span{flex:1}
 .phrase-item button{background:none;border:none;color:#aaa;cursor:pointer;font-size:13px;padding:0}
 .phrase-item button:hover{color:#e53935}
@@ -173,14 +205,14 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
 .modal{background:white;border-radius:10px;padding:24px;width:420px;max-width:95vw}
-.modal h3{font-size:15px;font-weight:700;color:#1F3864;margin-bottom:6px}
+.modal h3{font-size:15px;font-weight:700;color:#4a2060;margin-bottom:6px}
 .modal p{font-size:12px;color:#666;margin-bottom:14px;line-height:1.6}
 .modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .modal-btn{padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
 .modal-btn.cancel{background:white;border:1.5px solid #d0d8ea;color:#666}
-.modal-btn.confirm{background:#1F3864;border:none;color:white}
+.modal-btn.confirm{background:#4a2060;border:none;color:white}
 .drop-zone{border:2px dashed #d0d8ea;border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color 0.12s;margin-bottom:10px}
-.drop-zone:hover,.drop-zone.drag{border-color:#1F3864;background:#EEF2F7}
+.drop-zone:hover,.drop-zone.drag{border-color:#4a2060;background:#EEF2F7}
 .drop-zone p{font-size:12px;color:#8898b0;margin-top:6px}
 .drop-zone .icon{font-size:28px}
 
@@ -205,7 +237,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
 <div class="sidebar">
   <div class="sb-header">
     <div class="sb-title">Report Comments</div>
-    <div class="sb-sub">v2 &mdash; Class Manager</div>
+    <div class="sb-sub">Beta 1 &mdash; Class Manager <br><a href="https://myreportcomments.com" style="color:#d4729e;font-size:.7rem;font-weight:600;text-decoration:none;">&#8592; myreportcomments.com</a> </div>
   </div>
   <div class="sb-section">Class List</div>
   <div class="class-input-row">
@@ -231,7 +263,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
     <div class="topbar-title" id="topbar-name">Select a pupil to begin</div>
     <div class="ctrl-group">
       <span class="ctrl-label">Grade band</span>
-      <select class="ctrl" id="ctrl-grade">
+      <select class="ctrl" id="ctrl-grade" onchange="onGradeChange()">
         <option value="foundation">Foundation (Gr R–3)</option>
         <option value="intermediate" selected>Intermediate (Gr 4–6)</option>
         <option value="senior">Senior (Gr 7–9)</option>
@@ -255,6 +287,22 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
       </select>
     </div>
     <div class="ctrl-group">
+      <span class="ctrl-label">Terms</span>
+      <select class="ctrl" id="ctrl-nterms" onchange="onNTermsChange()">
+        <option value="4" selected>4 Terms</option>
+        <option value="3">3 Trimesters</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Period</span>
+      <select class="ctrl" id="ctrl-period">
+        <option value="1st term" selected>1st Term</option>
+        <option value="half year">Half Year</option>
+        <option value="3rd term">3rd Term</option>
+        <option value="year end">Year End</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
       <span class="ctrl-label">Words</span>
       <div class="slider-wrap">
         <input type="range" class="wslider" id="word-slider" min="40" max="180" value="100" step="5" oninput="document.getElementById('word-val').textContent='~'+this.value">
@@ -275,6 +323,74 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
       </div>
       <div id="criteria-form" style="display:none">
         <div class="panel-head">Criteria</div>
+
+        <!-- Foundation Phase Panel (shown only for Gr R–3) -->
+        <div class="found-panel" id="found-panel">
+          <div class="panel-head">Foundation Phase — Developmental Profile</div>
+          <div class="found-note">Select a milestone for each area. Leave blank to omit from the comment.</div>
+
+          <div class="found-group" style="margin-top:10px">
+            <div class="found-group-label">Literacy</div>
+            <div class="found-row">
+              <label>Reading</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-reading','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-reading','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-reading','achieved')">Achieved</button>
+              </div>
+            </div>
+            <div class="found-row">
+              <label>Writing</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-writing','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-writing','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-writing','achieved')">Achieved</button>
+              </div>
+            </div>
+            <div class="found-row">
+              <label>Oral Language</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-oral','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-oral','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-oral','achieved')">Achieved</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="found-group">
+            <div class="found-group-label">Numeracy</div>
+            <div class="found-row">
+              <label>Number Work</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-number','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-number','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-number','achieved')">Achieved</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="found-group">
+            <div class="found-group-label">Development</div>
+            <div class="found-row">
+              <label>Social Skills</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-social','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-social','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-social','achieved')">Achieved</button>
+              </div>
+            </div>
+            <div class="found-row">
+              <label>Fine Motor Skills</label>
+              <div class="found-milestones">
+                <button class="found-milestone emerging" onclick="toggleMilestone(this,'found-motor','emerging')">Emerging</button>
+                <button class="found-milestone developing" onclick="toggleMilestone(this,'found-motor','developing')">Developing</button>
+                <button class="found-milestone achieved" onclick="toggleMilestone(this,'found-motor','achieved')">Achieved</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="standard-criteria">
         <div class="fields-grid">
           <div class="field">
             <label>Overall performance</label>
@@ -330,23 +446,8 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
             </select>
           </div>
           <div class="field">
-            <label>Homework habits</label>
-            <select id="f-homework">
-              <option value="omit">— Omit —</option>
-              <option value="excellent" selected>Excellent</option>
-              <option value="mostly">Mostly on time</option>
-              <option value="needs_improvement">Needs improvement</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Extracurricular / Leadership</label>
-            <select id="f-extra">
-              <option value="omit" selected>— Omit —</option>
-              <option value="active_leader">Active leader</option>
-              <option value="participates">Participates well</option>
-              <option value="encourage">Encourage more</option>
-            </select>
-          </div>
+            <label>Academic support</label>
+            <select id="f-acad">
               <option value="omit">— Omit —</option>
               <option value="none" selected>None needed</option>
               <option value="some">Some support</option>
@@ -362,53 +463,75 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
               <option value="structured">Structured plan</option>
             </select>
           </div>
-          <div class="field full">
-            <label>Subject excelled in</label>
-            <select id="f-subj-excel">
-              <option value="">— None / Omit —</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="English">English / Home Language</option>
-              <option value="First Additional Language">First Additional Language</option>
-              <option value="Science">Natural Sciences</option>
-              <option value="Social Studies">Social Studies / History</option>
-              <option value="Technology">Technology</option>
-              <option value="EMS">EMS</option>
-              <option value="Life Skills">Life Skills</option>
-              <option value="Art">Art</option>
-              <option value="Physical Education">Physical Education</option>
-              <option value="__custom__">Other (type below)</option>
-            </select>
+        </div><!-- /fields-grid -->
+          <div class="field full subj-section">
+            <label>Subjects excelled in <span style="font-weight:400;color:var(--color-text-secondary)">(select up to 3)</span></label>
+            <div class="subj-row">
+              <span class="subj-row-label">Languages</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="English" onchange="onSubjCb('excel')"> English</label><label class="subj-cb"><input type="checkbox" name="excel" value="Afrikaans" onchange="onSubjCb('excel')"> Afrikaans</label><label class="subj-cb" id="excel-lang3-wrap"><input type="checkbox" name="excel" value="__lang3__" onchange="onSubjCb('excel')"> <input type="text" id="excel-lang3-text" placeholder="Other language..." style="border:none;background:transparent;font-size:11px;width:100px;outline:none;color:var(--color-text-primary)" onclick="event.stopPropagation()"></label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Maths</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="Mathematics" onchange="onSubjCb('excel')"> Mathematics</label><label class="subj-cb"><input type="checkbox" name="excel" value="Mathematical Literacy" onchange="onSubjCb('excel')"> Maths Literacy</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Sciences</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="Natural Sciences" onchange="onSubjCb('excel')"> Natural Sciences</label><label class="subj-cb"><input type="checkbox" name="excel" value="Life Sciences" onchange="onSubjCb('excel')"> Life Sciences</label><label class="subj-cb"><input type="checkbox" name="excel" value="Physical Sciences" onchange="onSubjCb('excel')"> Physical Sciences</label><label class="subj-cb"><input type="checkbox" name="excel" value="Geography" onchange="onSubjCb('excel')"> Geography</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Humanities</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="History" onchange="onSubjCb('excel')"> History</label><label class="subj-cb"><input type="checkbox" name="excel" value="Social Sciences" onchange="onSubjCb('excel')"> Social Sciences</label><label class="subj-cb"><input type="checkbox" name="excel" value="Economics" onchange="onSubjCb('excel')"> Economics</label><label class="subj-cb"><input type="checkbox" name="excel" value="Business Studies" onchange="onSubjCb('excel')"> Business Studies</label><label class="subj-cb"><input type="checkbox" name="excel" value="Accounting" onchange="onSubjCb('excel')"> Accounting</label><label class="subj-cb"><input type="checkbox" name="excel" value="EMS" onchange="onSubjCb('excel')"> EMS</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Creative</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="Art" onchange="onSubjCb('excel')"> Art</label><label class="subj-cb"><input type="checkbox" name="excel" value="Music" onchange="onSubjCb('excel')"> Music</label><label class="subj-cb"><input type="checkbox" name="excel" value="Drama" onchange="onSubjCb('excel')"> Drama</label><label class="subj-cb"><input type="checkbox" name="excel" value="Creative Arts" onchange="onSubjCb('excel')"> Creative Arts</label><label class="subj-cb"><input type="checkbox" name="excel" value="Design & Technology" onchange="onSubjCb('excel')"> Design &amp; Tech</label><label class="subj-cb"><input type="checkbox" name="excel" value="Technology" onchange="onSubjCb('excel')"> Technology</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Other</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="excel" value="Life Orientation" onchange="onSubjCb('excel')"> Life Orientation</label><label class="subj-cb"><input type="checkbox" name="excel" value="Computer Science" onchange="onSubjCb('excel')"> Computer Science</label><label class="subj-cb"><input type="checkbox" name="excel" value="Physical Education" onchange="onSubjCb('excel')"> PE</label></div>
+            </div>
+            <div class="subj-cap-warn" id="excel-cap-warn">&#9888; Select up to 3 for a natural comment</div>
+            <div class="subj-custom-row">
+              <input type="text" id="subj-excel-custom" placeholder="Other subject (type here)...">
+            </div>
           </div>
-          <div class="field full" id="subj-excel-custom-wrap" style="display:none">
-            <label>Subject excelled — custom</label>
-            <input type="text" id="subj-excel-custom" placeholder="e.g. Drama, Technology...">
-          </div>
-          <div class="field full">
-            <label>Subject needing more effort</label>
-            <select id="f-subj-effort">
-              <option value="">— None / Omit —</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="English">English / Home Language</option>
-              <option value="First Additional Language">First Additional Language</option>
-              <option value="Science">Natural Sciences</option>
-              <option value="Social Studies">Social Studies / History</option>
-              <option value="Technology">Technology</option>
-              <option value="EMS">EMS</option>
-              <option value="Life Skills">Life Skills</option>
-              <option value="Art">Art</option>
-              <option value="Physical Education">Physical Education</option>
-              <option value="__custom__">Other (type below)</option>
-            </select>
-          </div>
-          <div class="field full" id="subj-effort-custom-wrap" style="display:none">
-            <label>Subject effort — custom</label>
-            <input type="text" id="subj-effort-custom" placeholder="e.g. Drama, Technology...">
-          </div>
-        </div>
 
+          <div class="field full subj-section">
+            <label>Subjects needing more effort <span style="font-weight:400;color:var(--color-text-secondary)">(select up to 2)</span></label>
+            <div class="subj-row">
+              <span class="subj-row-label">Languages</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="English" onchange="onSubjCb('effort')"> English</label><label class="subj-cb"><input type="checkbox" name="effort" value="Afrikaans" onchange="onSubjCb('effort')"> Afrikaans</label><label class="subj-cb" id="effort-lang3-wrap"><input type="checkbox" name="effort" value="__lang3__" onchange="onSubjCb('effort')"> <input type="text" id="effort-lang3-text" placeholder="Other language..." style="border:none;background:transparent;font-size:11px;width:100px;outline:none;color:var(--color-text-primary)" onclick="event.stopPropagation()"></label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Maths</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="Mathematics" onchange="onSubjCb('effort')"> Mathematics</label><label class="subj-cb"><input type="checkbox" name="effort" value="Mathematical Literacy" onchange="onSubjCb('effort')"> Maths Literacy</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Sciences</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="Natural Sciences" onchange="onSubjCb('effort')"> Natural Sciences</label><label class="subj-cb"><input type="checkbox" name="effort" value="Life Sciences" onchange="onSubjCb('effort')"> Life Sciences</label><label class="subj-cb"><input type="checkbox" name="effort" value="Physical Sciences" onchange="onSubjCb('effort')"> Physical Sciences</label><label class="subj-cb"><input type="checkbox" name="effort" value="Geography" onchange="onSubjCb('effort')"> Geography</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Humanities</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="History" onchange="onSubjCb('effort')"> History</label><label class="subj-cb"><input type="checkbox" name="effort" value="Social Sciences" onchange="onSubjCb('effort')"> Social Sciences</label><label class="subj-cb"><input type="checkbox" name="effort" value="Economics" onchange="onSubjCb('effort')"> Economics</label><label class="subj-cb"><input type="checkbox" name="effort" value="Business Studies" onchange="onSubjCb('effort')"> Business Studies</label><label class="subj-cb"><input type="checkbox" name="effort" value="Accounting" onchange="onSubjCb('effort')"> Accounting</label><label class="subj-cb"><input type="checkbox" name="effort" value="EMS" onchange="onSubjCb('effort')"> EMS</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Creative</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="Art" onchange="onSubjCb('effort')"> Art</label><label class="subj-cb"><input type="checkbox" name="effort" value="Music" onchange="onSubjCb('effort')"> Music</label><label class="subj-cb"><input type="checkbox" name="effort" value="Drama" onchange="onSubjCb('effort')"> Drama</label><label class="subj-cb"><input type="checkbox" name="effort" value="Creative Arts" onchange="onSubjCb('effort')"> Creative Arts</label><label class="subj-cb"><input type="checkbox" name="effort" value="Design & Technology" onchange="onSubjCb('effort')"> Design &amp; Tech</label><label class="subj-cb"><input type="checkbox" name="effort" value="Technology" onchange="onSubjCb('effort')"> Technology</label></div>
+            </div>
+            <div class="subj-row">
+              <span class="subj-row-label">Other</span>
+              <div class="subj-tags"><label class="subj-cb"><input type="checkbox" name="effort" value="Life Orientation" onchange="onSubjCb('effort')"> Life Orientation</label><label class="subj-cb"><input type="checkbox" name="effort" value="Computer Science" onchange="onSubjCb('effort')"> Computer Science</label><label class="subj-cb"><input type="checkbox" name="effort" value="Physical Education" onchange="onSubjCb('effort')"> PE</label></div>
+            </div>
+            <div class="subj-cap-warn" id="effort-cap-warn">&#9888; Select up to 2 for a natural comment</div>
+            <div class="subj-custom-row">
+              <input type="text" id="subj-effort-custom" placeholder="Other subject (type here)...">
+            </div>
+          </div>
+                </div><!-- /standard-criteria -->
         <!-- Custom phrases -->
         <div class="phrase-section">
           <div class="panel-head" style="margin-top:8px">My phrase bank</div>
+          <div class="phrase-hint">&#128161; Generate a comment first, then click <strong>Insert</strong> on any phrase to add it to the end of your comment. Edit and reposition in the box below.</div>
           <div class="phrase-tabs">
             <div class="phrase-tab active" onclick="switchPhraseTab('saved',this)">Saved phrases</div>
             <div class="phrase-tab" onclick="switchPhraseTab('session',this)">Session phrases</div>
@@ -466,7 +589,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
             <div class="bar-dev" id="bar-dev" style="width:0%"></div>
           </div>
           <div class="sentiment-legend">
-            <div class="leg"><div class="leg-dot" style="background:#4CAF50"></div>Positive</div>
+            <div class="leg"><div class="leg-dot" style="background:#7b5ea7"></div>Positive</div>
             <div class="leg"><div class="leg-dot" style="background:#FF9800"></div>Developmental</div>
           </div>
         </div>
@@ -514,7 +637,7 @@ input[type=range].wslider{width:80px;accent-color:#C9A84C;height:4px}
       <button class="modal-btn cancel" onclick="closeBulkModal()">Close</button>
       <button class="modal-btn confirm" id="bulk-save-btn" onclick="saveBulkComments()" style="display:none">Save all to class list</button>
       <button class="modal-btn confirm" id="bulk-export-btn" onclick="exportBulkCSV()" style="display:none;background:#2E7D32">Export CSV</button>
-      <button class="modal-btn confirm" id="bulk-docx-btn" onclick="exportBulkDOCX()" style="display:none;background:#C9A84C;color:#1a1a1a">Export Word</button>
+      <button class="modal-btn confirm" id="bulk-docx-btn" onclick="exportBulkDOCX()" style="display:none;background:#c06b9a;color:#1a1a1a">Export Word</button>
     </div>
   </div>
 </div>
@@ -607,36 +730,25 @@ const GRADE_REGISTER = {
 const PB = {
 
   opener:{
-    s:['It has been a positive term for {N}.',
-       '{N} has worked hard and contributed well over these weeks.',
-       'This has been a good period for {N} all round.',
-       '{N} has been a valued member of the class this term.',
-       'I am pleased to share this progress report for {N}.',
-       'This report reflects {N}\'s work and conduct over the term.',
-       '{N} has shown real commitment and consistency recently.',
-       'It has been encouraging to see {N} grow and develop.',
-       '{N} has approached this term with a positive attitude.',
-       'There is much to celebrate in {N}\'s progress this term.',
-       '{N} has made a meaningful contribution to our class this term.',
-       'This has been a productive term for {N} in many respects.'],
-    w:['It has been a wonderful term for {N}, and it is a pleasure to write this report.',
-       'What a great term it has been — {N} has made us very proud.',
-       '{N} has had a truly encouraging run of form, and we celebrate {pos} progress.',
-       'I always look forward to reporting on {N}\'s progress, and this term is no exception.',
-       'It is a real pleasure to write this report for {N}.',
-       'What a joy it has been to teach {N} this term — {sub} brings so much to our classroom.',
-       'We are delighted to share this report with you — {N} has had a wonderful term.',
-       'This term has reminded us just how much {N} has to offer, and we are proud to share {pos} progress.'],
-    f:['This report summarises {N}\'s academic performance and conduct for the current term.',
-       'The following comments reflect {N}\'s progress across the assessed areas this term.',
-       'This end-of-term report provides an account of {N}\'s performance and conduct.',
-       'The comments below offer a summary of {N}\'s academic engagement and behavioural conduct this term.',
-       'This report documents {N}\'s attainment and development across assessed areas for the current term.'],
-    b:['{N} has had a good term.',
-       'A positive term for {N} overall.',
-       '{N} has progressed well this term.',
-       'A solid term for {N}.',
-       '{N} has shown good development this term.']
+    s:['{N} has had a good {PERIOD} and it has been a pleasure having {sub} in class.',
+       '{N} has made a positive contribution this {PERIOD} and shown real commitment.',
+       'It has been a pleasing {PERIOD} for {N}, and {sub} has worked well throughout.',
+       '{N} has shown good effort this {PERIOD} and is developing well.',
+       'This {PERIOD} has been a solid one for {N}, and we are pleased with {pos} progress.',
+       '{N} has been a valued member of the class this {PERIOD}.',
+       'It is encouraging to report on {N}\'s progress after a good {PERIOD}.',
+       '{N} has brought a positive attitude to this {PERIOD} and made good use of {pos} time in class.'],
+    w:['{N} has had a wonderful {PERIOD} and it is a genuine pleasure to write this report.',
+       'What a great {PERIOD} it has been — {N} has made us very proud.',
+       '{N} has had a truly encouraging {PERIOD}, and we celebrate {pos} progress.',
+       'It is a real joy to write this report for {N} after such a positive {PERIOD}.',
+       '{N} has made this {PERIOD} a memorable one and we are so glad to have {obj} in our class.'],
+    f:['{N}\'s performance and conduct for this {PERIOD} are summarised in the following comments.',
+       'This report reflects {N}\'s academic progress and conduct across the assessed areas for the {PERIOD}.',
+       'The following comments provide an account of {N}\'s work and development during this {PERIOD}.'],
+    b:['{N} has had a good {PERIOD}.',
+       'A positive {PERIOD} for {N} overall.',
+       '{N} has progressed well this {PERIOD}.']
   },
 
   overall:{
@@ -644,58 +756,34 @@ const PB = {
       s:['{SC} has performed very well across all areas.',
          '{SC} has produced strong work throughout the term and should feel proud.',
          'The overall standard of {pos} work has been excellent throughout.',
-         '{SC} has had an excellent term and is to be commended.',
-         '{SC} has consistently delivered work of a high standard this term.',
-         'It has been a pleasure to observe {pos} excellent progress across all areas.',
-         '{SC} has shown outstanding commitment and the results speak for themselves.'],
+         '{SC} has had an excellent term and is to be commended.'],
       w:['{SC} has had a truly outstanding term — we are so proud of {obj}.',
          'The overall performance has been exceptional; {sub} has really shone this term.',
-         'We are delighted with {pos} progress — {sub} has performed at a very high level.',
-         'What a term it has been for {N} — {sub} has excelled and we could not be prouder.',
-         'Every teacher who works with {N} has commented on {pos} exceptional effort — truly outstanding.'],
+         'We are delighted with {pos} progress — {sub} has performed at a very high level.'],
       f:['{N} has demonstrated a high standard of academic performance throughout the term.',
-         'Overall attainment this term has been excellent, reflecting sustained effort and ability.',
-         '{N}\'s overall performance has been commendable, consistently meeting and exceeding the required standard.',
-         'The level of attainment demonstrated by {N} this term reflects both strong ability and diligent application.'],
-      b:['Excellent overall performance this term.','{SC} has done very well across all subjects.',
-         'Exceptional term — well done.','{SC} has excelled this term.']
+         'Overall attainment this term has been excellent, reflecting sustained effort and ability.'],
+      b:['Excellent overall performance this term.','{SC} has done very well across all subjects.']
     },
     satisfactory:{
       s:['{SC} has had a steady term and made good progress.',
          '{SC} has worked consistently and achieved a solid level of progress.',
          'Overall, {sub} has performed well and shown good development.',
-         'Progress has been pleasing and {sub} continues to grow steadily.',
-         '{SC} has applied {pos} abilities well this term and is moving in the right direction.',
-         'It has been a solid term for {N} — {sub} has shown good effort and steady improvement.',
-         '{SC} has maintained a consistent standard throughout, which is commendable.'],
+         'Progress has been pleasing and {sub} continues to grow steadily.'],
       w:['{SC} has had a solid term, and we are pleased with the progress {sub} has made.',
-         'We are encouraged by {pos} performance and look forward to continued growth.',
-         'It is lovely to see {N} growing steadily — {sub} should be proud of {pos} consistent effort.',
-         'We are really pleased with how {N} has applied {ref} this term — well done.'],
+         'We are encouraged by {pos} performance and look forward to continued growth.'],
       f:['{N} has achieved a satisfactory level of performance this term.',
-         'Overall progress has been adequate, with steady improvement noted.',
-         '{N}\'s performance this term has been broadly satisfactory, with consistent effort maintained across most areas.',
-         'A satisfactory standard of work has been achieved, with incremental improvement evidenced throughout the term.'],
-      b:['Steady progress made this term.','A satisfactory term overall.',
-         'Good consistent effort this term.','Solid progress — well done.']
+         'Overall progress has been adequate, with steady improvement noted.'],
+      b:['Steady progress made this term.','A satisfactory term overall.']
     },
     needs_improvement:{
       s:['{SC} is facing some challenges this term, but there is real potential to build on.',
          'There are areas where {sub} can grow, and we are working together to support that.',
-         '{SC} has more to offer, and there is a great opportunity ahead to show that.',
-         'This term has presented some difficulties, but we remain confident in {pos} ability to move forward.',
-         'We are actively working with {N} to build on {pos} strengths and address areas of development.',
-         '{SC} has shown moments of real capability — the focus now is on bringing that consistency.'],
+         '{SC} has more to offer, and there is a great opportunity ahead to show that.'],
       w:['We know {sub} has the ability to do well, and we are here to support {obj} every step of the way.',
-         'We remain very positive about what {sub} can achieve with focused effort.',
-         'Our belief in {N} has not wavered — {sub} has what it takes, and we are here to help {obj} show it.',
-         'We see {N}\'s potential clearly, and we are committed to helping {obj} realise it fully next term.'],
+         'We remain very positive about what {sub} can achieve with focused effort.'],
       f:['{N}\'s overall performance indicates that additional support and focus are required.',
-         'Academic progress has been below the expected level; a plan is in place to address this.',
-         'The overall standard of work this term has not consistently met expectations; targeted intervention is being provided.',
-         '{N}\'s attainment requires improvement; structured support measures are in place for the coming term.'],
-      b:['Some areas need more attention going forward.','Support is in place to help {obj} improve.',
-         'A challenging term — support is in place.','Room to grow — we are here to help.']
+         'Academic progress has been below the expected level; a plan is in place to address this.'],
+      b:['Some areas need more attention going forward.','Support is in place to help {obj} improve.']
     }
   },
 
@@ -832,117 +920,162 @@ const PB = {
     Mathematics:{
       s:['In Mathematics, {sub} has shown real ability and produced some strong work.',
          '{SC} has excelled in Mathematics this term — the results clearly reflect {pos} hard work.',
-         'Particular credit goes to {obj} for {pos} excellent work in Mathematics.',
-         '{SC} has tackled Mathematical concepts with confidence and produced impressive results.'],
+         'Particular credit goes to {obj} for {pos} excellent work in Mathematics.'],
       w:['{SC} has been a real star in Mathematics this term — we are so proud of {obj}.',
-         '{pos_c} enthusiasm for Mathematics has been wonderful to see.',
-         'Mathematics has been a highlight for {N} this term — {sub} has truly flourished.'],
-      f:['{N} has demonstrated notably strong performance in Mathematics this term.',
-         '{N}\'s attainment in Mathematics has been commendable, reflecting both ability and consistent effort.'],
-      b:['Excellent work in Mathematics.','Impressive results in Mathematics this term.']
+         '{pos_c} enthusiasm for Mathematics has been wonderful to see.'],
+      f:['{N} has demonstrated notably strong performance in Mathematics this term.'],
+      b:['Excellent work in Mathematics.']
     },
     English:{
       s:['{SC} has done particularly well in English this term.',
          'In English, {sub} has produced confident, well-structured work.',
-         '{SC} communicates clearly and has shown real growth in English.',
-         '{SC} has impressed with {pos} reading, writing and communication in English this term.'],
-      w:['{SC} has shone in English — {pos} writing and reading show real flair.',
-         'It has been wonderful to see {N} flourish in English — {pos} voice as a writer is really developing.'],
-      f:['{N} has demonstrated commendable attainment in English this term.',
-         '{N} has performed well in English, evidencing strong literacy skills and thoughtful engagement with texts.'],
-      b:['Strong performance in English.','Excellent literacy and communication skills this term.']
+         '{SC} communicates clearly and has shown real growth in English.'],
+      w:['{SC} has shone in English — {pos} writing and reading show real flair.'],
+      f:['{N} has demonstrated commendable attainment in English this term.'],
+      b:['Strong performance in English.']
     },
-    'First Additional Language':{
-      s:['{SC} has made good progress in {pos} First Additional Language this term.',
-         'In First Additional Language, {sub} has shown growing confidence and ability.',
-         '{SC} has applied {ref} well in First Additional Language and the results are encouraging.'],
-      w:['It has been wonderful to see {obj} grow in confidence in First Additional Language.',
-         '{SC} has worked hard in First Additional Language and {pos} progress is really showing.'],
-      f:['{N} has demonstrated encouraging progress in First Additional Language.',
-         '{N} has shown improved proficiency in First Additional Language, reflecting sustained effort.'],
-      b:['Good progress in First Additional Language.','Strong improvement in FAL this term.']
+    'Afrikaans':{
+      s:['{SC} has made good progress in {pos} Afrikaans this term.',
+         'In Afrikaans, {sub} has shown growing confidence and ability.'],
+      w:['It has been wonderful to see {obj} grow in confidence in Afrikaans.'],
+      f:['{N} has demonstrated encouraging progress in Afrikaans.'],
+      b:['Good progress in Afrikaans.']
     },
     Science:{
       s:['{SC} has shown genuine curiosity and done well in Science this term.',
-         'In Science, {sub} engages well with practical work and produces good results.',
-         '{SC} has approached Science with an enquiring mind and delivered some impressive work.'],
-      w:['{SC} brings great enthusiasm to Science and it really shows in {pos} work.',
-         'Science has been a real strength for {N} this term — {pos} curiosity is infectious.'],
-      f:['{N} has performed well in Science, demonstrating sound analytical and practical skills.',
-         '{N} has shown strong scientific reasoning and practical ability in Science this term.'],
-      b:['Strong performance in Science.','Excellent scientific thinking demonstrated this term.']
+         'In Science, {sub} engages well with practical work and produces good results.'],
+      w:['{SC} brings great enthusiasm to Science and it really shows in {pos} work.'],
+      f:['{N} has performed well in Science, demonstrating sound analytical and practical skills.'],
+      b:['Strong performance in Science.']
     },
     'Social Studies':{
       s:['{SC} has engaged well with Social Studies and produced thoughtful work.',
-         'In Social Studies, {sub} has shown good understanding and expressed ideas clearly.',
-         '{SC} has demonstrated genuine interest in Social Studies topics and produced quality work.'],
-      w:['{SC} has shown real interest in Social Studies — {pos} contributions are always thoughtful.',
-         'Social Studies has been a highlight for {N} — {sub} engages deeply and thinks critically.'],
-      f:['{N} has demonstrated solid engagement and performance in Social Studies.',
-         '{N} has shown commendable analytical thinking and knowledge application in Social Studies.'],
-      b:['Good work in Social Studies.','Thoughtful engagement with Social Studies content.']
+         'In Social Studies, {sub} has shown good understanding and expressed ideas clearly.'],
+      w:['{SC} has shown real interest in Social Studies — {pos} contributions are always thoughtful.'],
+      f:['{N} has demonstrated solid engagement and performance in Social Studies.'],
+      b:['Good work in Social Studies.']
     },
     Art:{
       s:['{SC} has shown real creative talent in Art this term.',
-         'In Art, {sub} produces original, imaginative work that reflects genuine ability.',
-         '{SC} has expressed {pos} creativity beautifully in Art — the work stands out.'],
-      w:['{SC} has truly flourished in Art — {pos} creativity is a joy to see.',
-         'Art has given {N} a wonderful platform this term, and {sub} has made the most of every opportunity.'],
-      f:['{N} has demonstrated strong creative ability and technical skill in Art.',
-         '{N}\'s artistic work this term has been of a high standard, displaying both imagination and technical proficiency.'],
-      b:['Excellent work in Art.','Creative talent clearly evident in Art this term.']
+         'In Art, {sub} produces original, imaginative work that reflects genuine ability.'],
+      w:['{SC} has truly flourished in Art — {pos} creativity is a joy to see.'],
+      f:['{N} has demonstrated strong creative ability and technical skill in Art.'],
+      b:['Excellent work in Art.']
     },
     'Physical Education':{
       s:['{SC} has done well in Physical Education and shows a positive attitude.',
-         'In PE, {sub} participates with enthusiasm and contributes well to team activities.',
-         '{SC} has brought great energy and commitment to Physical Education this term.'],
-      w:['{SC} has been a real asset in PE — {pos} energy and team spirit are wonderful.',
-         '{SC} has shone in Physical Education — {sub} leads by example and motivates {pos} peers.'],
-      f:['{N} has performed commendably in Physical Education this term.',
-         '{N} has demonstrated strong physical ability and excellent sportsmanship in Physical Education.'],
-      b:['Strong performance in Physical Education.','Excellent effort and attitude in PE.']
+         'In PE, {sub} participates with enthusiasm and contributes well to team activities.'],
+      w:['{SC} has been a real asset in PE — {pos} energy and team spirit are wonderful.'],
+      f:['{N} has performed commendably in Physical Education this term.'],
+      b:['Strong performance in Physical Education.']
     },
-    Technology:{
-      s:['{SC} has shown real aptitude for Technology this term and produced impressive work.',
-         'In Technology, {sub} approaches design challenges creatively and produces strong solutions.',
-         '{SC} has engaged enthusiastically with Technology and the results are impressive.'],
-      w:['{SC} has truly excelled in Technology — {pos} problem-solving ability is wonderful to see.',
-         'Technology has been a real strength for {N} this term — {sub} loves a challenge and shows it.'],
-      f:['{N} has demonstrated strong technical and design skills in Technology this term.',
-         '{N}\'s performance in Technology reflects an ability to apply both creative and analytical thinking effectively.'],
-      b:['Excellent work in Technology.','Strong design and technical ability shown in Technology.']
+    'English':{
+      s:['{SC} has performed very well in English, producing confident and well-expressed work.',
+         'In English, {sub} communicates clearly and shows a growing command of the subject.',
+         '{SC} has shown real strength in English — {pos} reading and writing are developing well.'],
+      w:['{SC} has shone in English — {pos} expressive ability and love of language are a joy to see.'],
+      f:['{N} has demonstrated commendable attainment in English this term.'],
+      b:['Strong performance in English.']
     },
-    'Life Skills':{
-      s:['{SC} has engaged well with Life Skills this term and shown good personal development.',
-         'In Life Skills, {sub} has been thoughtful and reflective, contributing meaningfully to discussions.',
-         '{SC} has applied the lessons from Life Skills in a mature and considered way.'],
-      w:['{SC} has truly embraced Life Skills — {pos} empathy, self-awareness and growth mindset are inspiring.',
-         'Life Skills has been a wonderful space for {N} to shine — {sub} always engages with heart.'],
-      f:['{N} has demonstrated commendable engagement with Life Skills, showing personal growth and self-reflection.',
-         '{N} has performed well in Life Skills, evidencing developing emotional intelligence and interpersonal competence.'],
-      b:['Good engagement with Life Skills this term.','Personal growth clearly evident in Life Skills.']
+    'Mathematical Literacy':{
+      s:['{SC} has engaged well with Mathematical Literacy and applied concepts with good understanding.',
+         'In Mathematical Literacy, {sub} has shown solid practical application and steady progress.'],
+      w:['{SC} has done wonderfully in Mathematical Literacy — {pos} confidence with numbers is really growing.'],
+      f:['{N} has demonstrated sound application of mathematical concepts in Mathematical Literacy.'],
+      b:['Good progress in Mathematical Literacy.']
+    },
+    'Natural Sciences':{
+      s:['{SC} has shown genuine curiosity in Natural Sciences and produced good, well-considered work.',
+         'In Natural Sciences, {sub} engages actively and demonstrates solid understanding.'],
+      w:['{SC} brings real enthusiasm to Natural Sciences — {pos} curiosity is wonderful to see.'],
+      f:['{N} has demonstrated sound scientific understanding in Natural Sciences this term.'],
+      b:['Strong engagement in Natural Sciences.']
+    },
+    'Life Sciences':{
+      s:['{SC} has done well in Life Sciences and shows good understanding of the content.',
+         'In Life Sciences, {sub} engages thoughtfully and produces well-structured responses.'],
+      w:['{SC} has shown a lovely curiosity in Life Sciences — {pos} engagement with the subject is excellent.'],
+      f:['{N} has demonstrated solid understanding and application in Life Sciences.'],
+      b:['Good performance in Life Sciences.']
+    },
+    'Physical Sciences':{
+      s:['In Physical Sciences, {sub} has shown strong analytical ability and produced good results.',
+         '{SC} has engaged well with both the Physics and Chemistry components of Physical Sciences.'],
+      w:['{SC} has been impressive in Physical Sciences — {pos} logical thinking and effort are commendable.'],
+      f:['{N} has demonstrated strong analytical and practical competence in Physical Sciences.'],
+      b:['Excellent work in Physical Sciences.']
+    },
+    'Geography':{
+      s:['{SC} has engaged well with Geography and shows good understanding of both physical and human topics.',
+         'In Geography, {sub} produces thoughtful work and demonstrates solid content knowledge.'],
+      w:['{SC} has shown real interest in Geography — {pos} curiosity about the world around {obj} is lovely.'],
+      f:['{N} has demonstrated commendable engagement and performance in Geography.'],
+      b:['Good work in Geography.']
+    },
+    'History':{
+      s:['{SC} has engaged thoughtfully with History and shows good ability to analyse and argue.',
+         'In History, {sub} demonstrates solid knowledge and communicates ideas clearly.'],
+      w:['{SC} has shown a wonderful engagement with History — {pos} critical thinking is impressive.'],
+      f:['{N} has demonstrated sound historical understanding and analytical ability this term.'],
+      b:['Strong performance in History.']
+    },
+    'Economics':{
+      s:['{SC} has shown good understanding of economic concepts and applied them well.',
+         'In Economics, {sub} engages thoughtfully with content and produces well-reasoned work.'],
+      w:['{SC} has done really well in Economics — {pos} grasp of key concepts is impressive.'],
+      f:['{N} has demonstrated solid conceptual understanding and application in Economics.'],
+      b:['Good work in Economics.']
+    },
+    'Business Studies':{
+      s:['{SC} has engaged well with Business Studies and shows good understanding of business principles.',
+         'In Business Studies, {sub} applies concepts thoughtfully and produces solid work.'],
+      w:['{SC} has shown great enthusiasm for Business Studies — {pos} practical thinking is a real strength.'],
+      f:['{N} has demonstrated commendable understanding and application in Business Studies.'],
+      b:['Good performance in Business Studies.']
+    },
+    'Accounting':{
+      s:['{SC} has shown good accuracy and attention to detail in Accounting.',
+         'In Accounting, {sub} works methodically and demonstrates solid understanding of key concepts.'],
+      w:['{SC} has done wonderfully in Accounting — {pos} precision and hard work are really showing.'],
+      f:['{N} has demonstrated sound technical competence and accuracy in Accounting.'],
+      b:['Strong performance in Accounting.']
     },
     'EMS':{
-      s:['{SC} has shown good understanding of Economic and Management Sciences this term.',
-         'In EMS, {sub} has engaged well with financial and business concepts and produced solid work.',
-         '{SC} has demonstrated a natural aptitude for EMS and performed impressively.'],
-      w:['{SC} has really come into {pos} own in EMS this term — {pos} grasp of business concepts is impressive.',
-         'EMS has been a highlight for {N} — {sub} brings real enthusiasm to the subject.'],
-      f:['{N} has demonstrated sound understanding of core EMS concepts this term.',
-         '{N}\'s performance in EMS reflects strong conceptual understanding and the ability to apply economic and financial principles.'],
-      b:['Good work in EMS this term.','Strong grasp of EMS concepts demonstrated.']
+      s:['{SC} has engaged well with Economic and Management Sciences and shows good foundational understanding.',
+         'In EMS, {sub} demonstrates a developing grasp of business and financial concepts.'],
+      w:['{SC} has shown lovely enthusiasm for EMS — the practical focus of the subject really suits {obj}.'],
+      f:['{N} has demonstrated solid understanding of core concepts in Economic and Management Sciences.'],
+      b:['Good engagement in EMS.']
+    },
+    'Music':{
+      s:['{SC} has shown real musical ability and engaged with dedication in Music.',
+         'In Music, {sub} demonstrates growing technical skill and a genuine love of the subject.'],
+      w:['{SC} has been a real pleasure to have in Music — {pos} passion and talent shine through.'],
+      f:['{N} has demonstrated commendable technical ability and commitment in Music.'],
+      b:['Strong performance in Music.']
+    },
+    'Drama':{
+      s:['{SC} has shown natural ability and confidence in Drama.',
+         'In Drama, {sub} engages enthusiastically and contributes positively to ensemble work.'],
+      w:['{SC} has truly come alive in Drama — {pos} confidence and expressiveness are wonderful to see.'],
+      f:['{N} has demonstrated notable ability and commitment in Drama this term.'],
+      b:['Excellent engagement in Drama.']
+    },
+    'Creative Arts':{
+      s:['{SC} has engaged with real enthusiasm across the Creative Arts and shown good all-round ability.',
+         'In Creative Arts, {sub} explores ideas with creativity and produces enjoyable work.'],
+      w:['{SC} has flourished in Creative Arts — {pos} imaginative energy makes every lesson richer.'],
+      f:['{N} has demonstrated solid creative ability and engagement in the Creative Arts.'],
+      b:['Strong work in Creative Arts.']
     },
     __default__:{
       s:['In {SUBJ}, {sub} has produced some really strong work.',
          '{SC} has excelled in {SUBJ} this term — a great result.',
-         'Particular credit to {obj} for {pos} excellent work in {SUBJ}.',
-         '{SC} has shown impressive ability in {SUBJ} this term.'],
+         'Particular credit to {obj} for {pos} excellent work in {SUBJ}.'],
       w:['{SC} has truly excelled in {SUBJ} this term — a wonderful achievement.',
-         'We want to give special mention to {pos} outstanding work in {SUBJ}.',
-         '{SC} has made {N} a real strength in {SUBJ} this term — brilliant.'],
-      f:['{N} has demonstrated notably strong performance in {SUBJ}.',
-         '{N} has shown commendable attainment in {SUBJ} this term, reflecting sustained ability and effort.'],
-      b:['Excellent work in {SUBJ}.','Impressive performance in {SUBJ} this term.']
+         'We want to give special mention to {pos} outstanding work in {SUBJ}.'],
+      f:['{N} has demonstrated notably strong performance in {SUBJ}.'],
+      b:['Excellent work in {SUBJ}.']
     }
   },
 
@@ -950,185 +1083,65 @@ const PB = {
   subj_effort:{
     Mathematics:{
       s:['We encourage {obj} to give a little more attention to Mathematics going forward.',
-         'With more consistent effort in Mathematics, {sub} will make good progress.',
-         'A little more focus on Mathematics next term would help {obj} build on {pos} potential.'],
-      w:['We gently encourage {obj} to put more energy into Mathematics — we know {sub} can do it.',
-         'Mathematics is an area where we would love to see more of {N}\'s ability shine through next term.'],
-      f:['Greater application in Mathematics is recommended for the coming term.',
-         'Improved engagement with Mathematics would be beneficial; {N} has the ability to perform at a higher level.'],
-      b:['More effort needed in Mathematics.','A focus on Mathematics would be valuable next term.']
+         'With more consistent effort in Mathematics, {sub} will make good progress.'],
+      w:['We gently encourage {obj} to put more energy into Mathematics — we know {sub} can do it.'],
+      f:['Greater application in Mathematics is recommended for the coming term.'],
+      b:['More effort needed in Mathematics.']
     },
     English:{
       s:['More focus on English going forward would serve {obj} well.',
-         '{SC} would benefit from giving more attention to English going forward.',
-         'We encourage {obj} to engage more actively with English texts and writing tasks.'],
-      w:['With a bit more effort in English, {sub} will make great progress — we are confident.',
-         'We would love to see more of {N}\'s voice come through in {pos} English work next term.'],
-      f:['Improved effort and engagement in English is encouraged for the coming term.',
-         'Greater focus on English literacy skills is recommended to support {N}\'s overall academic development.'],
-      b:['More focus needed on English.','Stronger engagement with English encouraged.']
+         '{SC} would benefit from giving more attention to English going forward.'],
+      w:['With a bit more effort in English, {sub} will make great progress — we are confident.'],
+      f:['Improved effort and engagement in English is encouraged for the coming term.'],
+      b:['More focus needed on English.']
     },
-    'First Additional Language':{
-      s:['We encourage {obj} to practise {pos} First Additional Language more regularly.',
-         'More consistent effort in First Additional Language would bring good results.',
-         'Regular practice in First Additional Language would help {obj} build real confidence.'],
-      w:['A little more daily practice in First Additional Language will make a big difference for {obj}.',
-         'We would love to see {N} embrace {pos} First Additional Language with more confidence next term.'],
-      f:['Additional effort in First Additional Language is recommended.',
-         'Greater engagement with First Additional Language would support improved proficiency.'],
-      b:['More practice needed in First Additional Language.','FAL needs more attention going forward.']
+    'Afrikaans':{
+      s:['We encourage {obj} to practise {pos} Afrikaans more regularly.',
+         'More consistent effort in Afrikaans would bring good results.'],
+      w:['A little more daily practice in Afrikaans will make a big difference for {obj}.'],
+      f:['Additional effort in Afrikaans is recommended.'],
+      b:['More practice needed in Afrikaans.']
     },
     Science:{
       s:['We would like to see {obj} engage more actively with Science.',
-         'More effort in Science would help {obj} reach {pos} full potential in this subject.',
-         'Science is an area where {sub} has untapped potential — more engagement next term would be great.'],
-      w:['We know {sub} can do well in Science with a bit more focus — we are cheering {obj} on.',
-         'Science is a subject where {N} could really shine with more effort — we believe in {obj}.'],
-      f:['Greater engagement with Science is recommended for the coming term.',
-         'Improved application in Science would yield stronger results; {N} has demonstrated the capacity to do so.'],
-      b:['More effort needed in Science.','Greater focus on Science recommended.']
+         'More effort in Science would help {obj} reach {pos} full potential in this subject.'],
+      w:['We know {sub} can do well in Science with a bit more focus — we are cheering {obj} on.'],
+      f:['Greater engagement with Science is recommended for the coming term.'],
+      b:['More effort needed in Science.']
     },
     'Social Studies':{
-      s:['We would like {obj} to channel more focus into Social Studies.',
-         'More consistent engagement with Social Studies would benefit {obj} significantly.',
-         'Social Studies is an area where more effort from {N} would bring good rewards.'],
-      w:['More focus on Social Studies would really help {obj} shine.',
-         'We know {N} has good ideas — we\'d love to see more of that engagement in Social Studies.'],
-      f:['Additional engagement with Social Studies is encouraged.',
-         'Greater focus on Social Studies content and tasks is recommended for the coming term.'],
-      b:['More focus needed on Social Studies.','Greater engagement with Social Studies encouraged.']
+      s:['We would like {obj} to channel more focus into Social Studies.'],
+      w:['More focus on Social Studies would really help {obj} shine.'],
+      f:['Additional engagement with Social Studies is encouraged.'],
+      b:['More focus needed on Social Studies.']
     },
     Art:{
       s:['We encourage {obj} to engage more consistently with Art.',
-         'More effort and practice in Art would help {sub} develop {pos} creative skills further.',
-         'Art is a space where {N} could express {ref} more — we encourage more effort next term.'],
-      w:['We know {sub} has creative ability — more effort in Art would let that shine through.',
-         'Art is waiting to be discovered by {N} — a little more engagement next term could be wonderful.'],
-      f:['Greater engagement with Art is recommended.',
-         'More consistent effort in Art would allow {N} to develop {pos} creative potential more fully.'],
-      b:['More effort needed in Art.','Creative engagement in Art should increase next term.']
+         'More effort and practice in Art would help {sub} develop {pos} creative skills further.'],
+      w:['We know {sub} has creative ability — more effort in Art would let that shine through.'],
+      f:['Greater engagement with Art is recommended.'],
+      b:['More effort needed in Art.']
     },
     'Physical Education':{
       s:['More consistent participation in Physical Education would benefit {obj}.',
-         'We encourage {obj} to engage more actively in PE next term.',
-         'Greater effort in Physical Education would help {obj} develop both fitness and teamwork skills.'],
-      w:['We encourage {obj} to bring a little more energy to Physical Education — it will be rewarding.',
-         'We\'d love to see {N} throw {ref} into PE more fully next term — the rewards are worth it.'],
-      f:['Greater engagement with Physical Education is recommended.',
-         'More active participation in Physical Education is encouraged for the coming term.'],
-      b:['More effort needed in Physical Education.','Greater PE participation encouraged.']
-    },
-    Technology:{
-      s:['We encourage {obj} to engage more fully with Technology tasks next term.',
-         'More focused effort in Technology would help {sub} develop {pos} design and problem-solving skills.',
-         'Technology is an area with exciting potential for {N} — more effort next term would be valuable.'],
-      w:['We know {N} has great ideas — more consistent effort in Technology would bring them to life.',
-         'Technology is a subject where {N} could really thrive — we encourage more engagement next term.'],
-      f:['Greater application in Technology is recommended for the coming term.',
-         'Improved effort in Technology tasks would allow {N} to develop key design and technical competencies.'],
-      b:['More effort needed in Technology.','Greater focus on Technology recommended.']
-    },
-    'Life Skills':{
-      s:['We encourage {obj} to engage more openly with Life Skills activities.',
-         'More active participation in Life Skills discussions would benefit {N} greatly.',
-         'Life Skills is a space where {N} can grow — we encourage more engagement next term.'],
-      w:['We\'d love to see {N} open up more in Life Skills — there is so much {sub} has to offer.',
-         'Life Skills has so much to offer {N} — we encourage {obj} to engage with more confidence.'],
-      f:['Greater engagement with Life Skills activities is encouraged for the coming term.',
-         'More active participation in Life Skills would support {N}\'s personal development.'],
-      b:['More engagement with Life Skills encouraged.','Life Skills participation should increase next term.']
-    },
-    'EMS':{
-      s:['We encourage {obj} to give more attention to EMS next term.',
-         'More consistent effort in Economic and Management Sciences would help {sub} build confidence.',
-         'EMS is a subject where {N} has potential — more focus next term would be beneficial.'],
-      w:['We know {N} can grasp EMS concepts well — a bit more effort next term will show that.',
-         'We encourage {obj} to engage more actively with EMS — the skills it builds are valuable.'],
-      f:['Greater application in EMS is recommended for the coming term.',
-         'More consistent engagement with Economic and Management Sciences content would support improved attainment.'],
-      b:['More effort needed in EMS.','Greater focus on EMS recommended next term.']
+         'We encourage {obj} to engage more actively in PE next term.'],
+      w:['We encourage {obj} to bring a little more energy to Physical Education — it will be rewarding.'],
+      f:['Greater engagement with Physical Education is recommended.'],
+      b:['More effort needed in Physical Education.']
     },
     __default__:{
       s:['We encourage {obj} to give a little more effort to {SUBJ} next term.',
          '{SC} would benefit from focusing more on {SUBJ} going forward.',
-         'More attention to {SUBJ} would serve {obj} well.',
-         'With more consistent effort in {SUBJ}, {sub} would see good results.'],
-      w:['We gently encourage {obj} to put more energy into {SUBJ} — we know {sub} can do it.',
-         'We\'d love to see more of {N}\'s ability come through in {SUBJ} next term.'],
-      f:['Greater application in {SUBJ} is recommended for the coming term.',
-         'More consistent engagement with {SUBJ} would support improved attainment.'],
-      b:['More effort needed in {SUBJ}.','Greater focus on {SUBJ} recommended.']
-    }
-  },
-
-  homework:{
-    excellent:{
-      s:['{SC} submits homework consistently on time and to a good standard.',
-         'Homework is always submitted promptly and {sub} clearly takes {pos} home study seriously.',
-         '{SC} is reliable with homework and it supports {pos} classroom progress.'],
-      w:['{SC} is wonderfully consistent with homework — it is a real reflection of {pos} dedication.',
-         'We love how reliably {N} submits homework — {pos} home study clearly makes a difference.'],
-      f:['{N} demonstrates consistent and timely submission of homework tasks.',
-         '{N}\'s homework completion record is commendable and reflects strong self-management.'],
-      b:['Homework consistently submitted on time.','Excellent homework habits this term.']
-    },
-    mostly:{
-      s:['{SC} generally submits homework on time, though greater consistency would be beneficial.',
-         'Homework is mostly submitted as required — more reliability next term would be great.',
-         '{SC} is mostly on track with homework; a little more consistency would strengthen {pos} progress.'],
-      w:['We appreciate the effort {N} puts into homework most of the time — just a little more consistency!',
-         '{N} is doing well with homework overall — a bit more regularity next term would be fantastic.'],
-      f:['{N}\'s homework submission has been largely satisfactory; greater consistency is encouraged.',
-         'Homework completion has been mostly timely; improved regularity would support academic progress.'],
-      b:['Homework mostly on time — consistency to improve.','Generally good homework habits.']
-    },
-    needs_improvement:{
-      s:['We would like {obj} to be more consistent with {pos} homework submissions going forward.',
-         'Homework completion is an area we are working on with {N} — it will make a real difference.',
-         'More regular homework submission would significantly support {pos} progress in class.'],
-      w:['We gently encourage {N} to bring more focus to homework — it makes such a difference in class.',
-         'Homework is a small habit that will make a big difference for {N} — we are here to help.'],
-      f:['Homework submission has been inconsistent; greater application in this area is strongly encouraged.',
-         '{N} is encouraged to improve the regularity and quality of homework submissions next term.'],
-      b:['Homework submission needs to improve.','More consistent homework habits needed.']
-    }
-  },
-
-  extra:{
-    active_leader:{
-      s:['{SC} has shown real leadership this term and made a positive impact beyond the classroom.',
-         '{SC} has been an active and enthusiastic participant in school activities and shown great leadership.',
-         'Beyond academics, {sub} has been a standout contributor to school life this term.'],
-      w:['{SC} is a natural leader — {pos} energy, initiative and care for others inspire everyone around {obj}.',
-         'It has been wonderful to see {N} step up as a leader this term — {sub} truly leads by example.'],
-      f:['{N} has demonstrated notable leadership qualities and made a meaningful contribution to school life.',
-         '{N}\'s participation in extracurricular activities and leadership roles has been commendable.'],
-      b:['Strong leadership shown this term.','Active leader in school activities.']
-    },
-    participates:{
-      s:['{SC} participates well in extracurricular activities and contributes positively to school life.',
-         '{SC} is an active member of the school community beyond the classroom.',
-         '{SC} engages well in activities outside of class and shows good school spirit.'],
-      w:['{SC} brings the same wonderful energy to extracurricular activities as {sub} does to class.',
-         'We love seeing {N} involved beyond the classroom — {pos} participation adds so much to school life.'],
-      f:['{N} participates constructively in extracurricular activities and broader school life.',
-         '{N}\'s engagement with extracurricular activities reflects a well-rounded commitment to school.'],
-      b:['Good participation in extracurricular activities.','Active contributor to school life.']
-    },
-    encourage:{
-      s:['We would love to see {obj} get more involved in activities beyond the classroom next term.',
-         'Exploring extracurricular opportunities would benefit {N} and help {obj} develop new strengths.',
-         'We encourage {obj} to get more involved in school activities — there is so much to gain.'],
-      w:['We know {N} has so much to offer — we would love to see {obj} explore activities beyond class.',
-         'School life has so much more to offer {N} — we gently encourage {obj} to take part more fully.'],
-      f:['{N} is encouraged to engage more actively with extracurricular opportunities next term.',
-         'Greater participation in school activities beyond the classroom would benefit {N}\'s development.'],
-      b:['Encourage more extracurricular involvement.','More school involvement encouraged next term.']
+         'More attention to {SUBJ} would serve {obj} well.'],
+      w:['We gently encourage {obj} to put more energy into {SUBJ} — we know {sub} can do it.'],
+      f:['Greater application in {SUBJ} is recommended for the coming term.'],
+      b:['More effort needed in {SUBJ}.']
     }
   },
 
   sport:{
     outstanding:{
+      s:['{SC} has done brilliantly in sport this term and shown great skill and spirit.',
          '{SC} has been a real star on the sports field.'],
       w:['{SC} has been outstanding in sport — we are so proud of {obj}.'],
       f:['{N} has demonstrated exceptional sporting ability and sportsmanship this term.'],
@@ -1199,15 +1212,22 @@ function getVariant(bucket, tone){
 
 function wc(text){ return text.trim().split(/\s+/).filter(Boolean).length; }
 
-function trimToTarget(sentences, target){
+function trimToTarget(sentences, target, pinned){
+  // pinned = array of sentences that must always appear (subject phrases, closer)
+  // Strategy: fill from trimmable sentences first, always keep pinned
+  const pinnedSet = new Set(pinned||[]);
+  const trimmable = sentences.filter(s=>!pinnedSet.has(s));
+  const pinnedArr  = sentences.filter(s=>pinnedSet.has(s));
   let running=0, kept=[];
-  for(let i=0;i<sentences.length;i++){
-    const sw=wc(sentences[i]);
-    if(i===0){kept.push(sentences[i]);running+=sw;continue;}
-    if(running+sw<=target+20){kept.push(sentences[i]);running+=sw;}
-    else if(kept.length<2){kept.push(sentences[i]);running+=sw;}
+  for(let i=0;i<trimmable.length;i++){
+    const sw=wc(trimmable[i]);
+    if(i===0){kept.push(trimmable[i]);running+=sw;continue;}
+    if(running+sw<=target+10){kept.push(trimmable[i]);running+=sw;}
+    else if(kept.length<2){kept.push(trimmable[i]);running+=sw;}
     else break;
   }
+  // Always append pinned sentences (subject info + closer)
+  pinnedArr.forEach(s=>kept.push(s));
   return kept;
 }
 
@@ -1259,8 +1279,8 @@ function displayComment(comment, name){
   const outEl = document.getElementById('output-text');
   const sentenceArr = comment.match(/[^.!?]+[.!?]+/g)||[comment];
   outEl.innerHTML = sentenceArr.map((s,i)=>
-    `<span class="sent regen-hint" data-idx="${i}" onclick="regenSentence(${i})" title="Click to reshuffle this sentence">${s}</span>`
-  ).join('');
+    `<span class="sent regen-hint" data-idx="${i}" onclick="regenSentence(${i})" title="Click to reshuffle this sentence">${s.trim()}</span>`
+  ).join(' ');
 
   // Sentiment
   const sc = sentimentScore(comment);
@@ -1365,10 +1385,12 @@ function addPupil(){
   pupils.push({id,name,criteria:{},comment:null,draft:null});
   input.value='';
   saveState();
-  renderPupilList();
-  selectPupil(id);
-  scrollToActivePupil();
-  showToast(name+' added — criteria panel is ready.');
+  requestAnimationFrame(()=>{
+    renderPupilList();
+    selectPupil(id);
+    scrollToActivePupil();
+    showToast(name+' added — criteria panel is ready.');
+  });
 }
 
 function deletePupil(id, e){
@@ -1395,13 +1417,16 @@ function selectPupil(id){
 
   // Restore saved criteria
   if(p.criteria){
-    ['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj','f-subj-excel','f-subj-effort','f-homework','f-extra'].forEach(fid=>{
+    ['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj'].forEach(fid=>{
       const key=fid.replace('f-','');
       if(p.criteria[key]!==undefined){
         const el=document.getElementById(fid);
         if(el) el.value=p.criteria[key];
       }
     });
+    restoreSubjCheckboxes('excel', p.criteria['subj-excel']||[]);
+    restoreSubjCheckboxes('effort', p.criteria['subj-effort']||[]);
+    restoreFoundationState(p.criteria['foundation']||{});
   }
 
   // Restore comment
@@ -1410,8 +1435,8 @@ function selectPupil(id){
     document.getElementById('edit-area').value=displayText;
     const sentArr=displayText.match(/[^.!?]+[.!?]+/g)||[displayText];
     document.getElementById('output-text').innerHTML=sentArr.map((s,i)=>
-      `<span class="sent regen-hint" data-idx="${i}" onclick="regenSentence(${i})">${s}</span>`
-    ).join('');
+      `<span class="sent regen-hint" data-idx="${i}" onclick="regenSentence(${i})">${s.trim()}</span>`
+    ).join(' ');
     const sc=sentimentScore(displayText);
     document.getElementById('bar-pos').style.width=sc.pos+'%';
     document.getElementById('bar-dev').style.width=sc.dev+'%';
@@ -1450,16 +1475,15 @@ function saveCriteria(){
     'sport':document.getElementById('f-sport').value,
     'acad':document.getElementById('f-acad').value,
     'badj':document.getElementById('f-badj').value,
-    'subj-excel':document.getElementById('f-subj-excel').value,
-    'subj-effort':document.getElementById('f-subj-effort').value,
-    'homework':document.getElementById('f-homework').value,
-    'extra':document.getElementById('f-extra').value,
+    'subj-excel':getSubjExcelled(),
+    'subj-effort':getSubjEffort(),
+    'foundation':getFoundationData(),
   };
   saveState();
 }
 
 // Auto-save criteria on change
-['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj','f-subj-excel','f-subj-effort','f-homework','f-extra'].forEach(fid=>{
+['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj'].forEach(fid=>{
   // Will bind after DOM is ready
 });
 
@@ -1471,10 +1495,10 @@ function renderPupilList(){
   const empty=document.getElementById('sb-empty');
   if(pupils.length===0){
     list.innerHTML='';
-    empty.style.display='block';
+    if(empty) empty.style.display='block';
     return;
   }
-  empty.style.display='none';
+  if(empty) empty.style.display='none';
   list.innerHTML=pupils.map(p=>{
     const initials=p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
     const status=p.comment?'done':p.draft?'draft':'empty';
@@ -1544,7 +1568,8 @@ function renderPhrases(){
   list.innerHTML=customPhrases.map((ph,i)=>`
     <div class="phrase-item">
       <span>${ph}</span>
-      <button onclick="deletePhrase(${i})" title="Remove">&#10005;</button>
+      <button class="ph-insert" onclick="insertPhrase('${ph.replace(/'/g,"\\\'")}')" title="Add to comment">Insert</button>
+      <button class="ph-del" onclick="deletePhrase(${i})" title="Remove">&#10005;</button>
     </div>`).join('');
 }
 
@@ -1552,14 +1577,7 @@ function renderPhrases(){
 // SUBJECT DROPDOWNS — show/hide custom input
 // ══════════════════════════════════════════════════════════════
 document.addEventListener('change', e=>{
-  if(e.target.id==='f-subj-excel'){
-    document.getElementById('subj-excel-custom-wrap').style.display=
-      e.target.value==='__custom__'?'block':'none';
-  }
-  if(e.target.id==='f-subj-effort'){
-    document.getElementById('subj-effort-custom-wrap').style.display=
-      e.target.value==='__custom__'?'block':'none';
-  }
+  // Subject checkboxes handle their own onchange via onSubjCb()
   // Auto-save criteria on any change
   if(activePupilId) saveCriteria();
 });
@@ -1625,11 +1643,13 @@ function confirmImport(){
     }
   });
   saveState();
-  renderPupilList();
-  closeImport();
   const added = pendingImport.length;
-  showSidebarBanner(`${added} pupil${added!==1?'s':''} imported successfully`);
-  if(firstNewId) setTimeout(()=>{ selectPupil(firstNewId); scrollToActivePupil(); }, 150);
+  requestAnimationFrame(()=>{
+    renderPupilList();
+    closeImport();
+    showSidebarBanner(`${added} pupil${added!==1?'s':''} imported successfully`);
+    if(firstNewId) requestAnimationFrame(()=>{ selectPupil(firstNewId); scrollToActivePupil(); });
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1696,7 +1716,8 @@ function renderSavedPhrases(){
   list.innerHTML=savedPhrases.map((ph,i)=>`
     <div class="phrase-item">
       <span>${ph}</span>
-      <button onclick="deleteSavedPhrase(${i})" title="Remove">&#10005;</button>
+      <button class="ph-insert" onclick="insertPhrase('${ph.replace(/'/g,"\\\'")}')" title="Add to comment">Insert</button>
+      <button class="ph-del" onclick="deleteSavedPhrase(${i})" title="Remove">&#10005;</button>
     </div>`).join('');
 }
 
@@ -1753,8 +1774,8 @@ function runBulkGenerate(){
     activePupilId=p.id;
     // Apply saved criteria to form fields
     const c=p.criteria||{};
-    const defaults={overall:'excellent',potential:'consistently',peers:'very_well',behave:'excellent',pronoun:'he',sport:'omit',acad:'omit',badj:'omit','subj-excel':'','subj-effort':''};
-    ['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj','f-subj-excel','f-subj-effort','f-homework','f-extra'].forEach(fid=>{
+    const defaults={overall:'excellent',potential:'consistently',peers:'very_well',behave:'excellent',pronoun:'he',sport:'omit',acad:'omit',badj:'omit','subj-excel':[],'subj-effort':[]};
+    ['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj'].forEach(fid=>{
       const key=fid.replace('f-','');
       const el=document.getElementById(fid);
       if(el) el.value=c[key]!==undefined?c[key]:(defaults[key]||'omit');
@@ -1780,12 +1801,8 @@ function buildComment(name){
   const acad    = document.getElementById('f-acad').value;
   const badj    = document.getElementById('f-badj').value;
   const sport   = document.getElementById('f-sport').value;
-  const homework= document.getElementById('f-homework').value;
-  const extra   = document.getElementById('f-extra').value;
-  const excelSel=document.getElementById('f-subj-excel').value;
-  const excelled=excelSel==='__custom__'?document.getElementById('subj-excel-custom').value.trim():excelSel;
-  const effortSel=document.getElementById('f-subj-effort').value;
-  const effort  =effortSel==='__custom__'?document.getElementById('subj-effort-custom').value.trim():effortSel;
+  const excelled = getSubjExcelled();
+  const effort   = getSubjEffort();
   const nameUsed=[false];
   const pron=(text)=>applyPR(text,name,pr,nameUsed);
   const get=(bucket,key)=>{
@@ -1793,7 +1810,7 @@ function buildComment(name){
     return pron(getVariant(bucket[key],tone));
   };
   const parts=[];
-  const opRaw=getVariant(PB.opener,tone);
+  const opRaw=getVariant(PB.opener,tone).replace(/\{PERIOD\}/g,getPeriod());
   nameUsed[0]=false;
   parts.push(applyPR(opRaw,name,pr,[false]));
   nameUsed[0]=true;
@@ -1804,26 +1821,16 @@ function buildComment(name){
   if(acad!=='omit'&&acad!=='none') parts.push(get(PB.acad,acad));
   else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB.acad,'none'));
   if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
-  if(excelled){
-    const bank=PB.subj_excel[excelled]||PB.subj_excel.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,excelled);
-    parts.push(pron(raw));
-  }
-  if(effort){
-    const bank=PB.subj_effort[effort]||PB.subj_effort.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,effort);
-    parts.push(pron(raw));
-  }
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0&&Math.random()>0.5) parts.push(pron(pick(allPhrases)));
-  if(homework!=='omit') parts.push(get(PB.homework,homework));
-  if(extra!=='omit') parts.push(get(PB.extra,extra));
+  const excelPhrase2 = buildSubjExcelPhrase(excelled, tone, pron, name, pr, nameUsed);
+  const effortPhrase2 = buildSubjEffortPhrase(effort, tone, pron, name, pr, nameUsed);
   if(sport!=='omit') parts.push(get(PB.sport,sport));
-  parts.push(pron(getVariant(PB.closer,tone)));
+  const closerPhrase2 = pron(getVariant(PB.closer,tone));
+  if(excelPhrase2) parts.push(excelPhrase2);
+  if(effortPhrase2) parts.push(effortPhrase2);
+  parts.push(closerPhrase2);
+  const pinned2 = [excelPhrase2, effortPhrase2, closerPhrase2].filter(Boolean);
   const sentences=parts.filter(Boolean);
-  const trimmed=trimToTarget(sentences,target);
+  const trimmed=trimToTarget(sentences,target,pinned2);
   return trimmed.join(' ');
 }
 
@@ -2009,6 +2016,7 @@ ${bodyXml}
 // ══════════════════════════════════════════════════════════════
 function generate(){
   if(getLang() === 'af'){ generateAF(); return; }
+  if(document.getElementById('ctrl-grade').value==='foundation'){ generateFoundation(); return; }
   if(!activePupilId){ alert('Please select a pupil first.'); return; }
   const p = pupils.find(x=>x.id===activePupilId);
   if(!p) return;
@@ -2024,15 +2032,13 @@ function generate(){
   const acad    = document.getElementById('f-acad').value;
   const badj    = document.getElementById('f-badj').value;
   const sport   = document.getElementById('f-sport').value;
-  const excelSel = document.getElementById('f-subj-excel').value;
-  const excelled = excelSel==='__custom__' ? document.getElementById('subj-excel-custom').value.trim() : excelSel;
-  const effortSel= document.getElementById('f-subj-effort').value;
-  const effort   = effortSel==='__custom__' ? document.getElementById('subj-effort-custom').value.trim() : effortSel;
+  const excelled = getSubjExcelled();
+  const effort   = getSubjEffort();
   const nameUsed=[false];
   const pron=(text)=>applyPR(text,name,pr,nameUsed);
   const get=(bucket,key)=>{ if(!bucket||!bucket[key])return null; return pron(getVariant(bucket[key],tone)); };
   const parts=[];
-  const opRaw = getVariant(PB.opener, tone);
+  const opRaw = getVariant(PB.opener, tone).replace(/\{PERIOD\}/g, getPeriod());
   nameUsed[0]=false;
   parts.push(applyPR(opRaw,name,pr,[false]));
   nameUsed[0]=true;
@@ -2043,19 +2049,28 @@ function generate(){
   if(acad!=='omit'&&acad!=='none') parts.push(get(PB.acad,acad));
   else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB.acad,'none'));
   if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
-  if(excelled){ const bank=PB.subj_excel[excelled]||PB.subj_excel.__default__; let raw=getVariant(bank,tone); raw=raw.replace(/\{SUBJ\}/g,excelled); parts.push(pron(raw)); }
-  if(effort){   const bank=PB.subj_effort[effort]||PB.subj_effort.__default__; let raw=getVariant(bank,tone); raw=raw.replace(/\{SUBJ\}/g,effort);   parts.push(pron(raw)); }
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0&&Math.random()>0.5){ parts.push(pron(pick(allPhrases))); }
-  if(sport!=='omit') parts.push(get(PB.sport,sport));
-  parts.push(pron(getVariant(PB.closer,tone)));
+  const excelPhrase = buildSubjExcelPhrase(excelled, tone, pron, name, pr, nameUsed);
+  const effortPhrase = buildSubjEffortPhrase(effort, tone, pron, name, pr, nameUsed);
+  const sportPhrase = sport!=='omit' ? get(PB.sport,sport) : null;
+  const yearEndCloser = isYearEnd() ? pron(getVariant(YEAREND_CLOSERS,tone)) : null;
+  const closerPhrase = yearEndCloser || pron(getVariant(PB.closer,tone));
+  // Build parts — subject phrases and closer are pinned (never trimmed)
+  if(excelPhrase) parts.push(excelPhrase);
+  if(effortPhrase) parts.push(effortPhrase);
+  if(sportPhrase) parts.push(sportPhrase);
+  parts.push(closerPhrase);
+  const pinned = [excelPhrase, effortPhrase, closerPhrase].filter(Boolean);
   const sentences=parts.filter(Boolean);
-  const trimmed=trimToTarget(sentences,target);
-  return trimmed.join(' ');
-}
-
-function finishBulkGenerate(){
-  const comment=trimmed.join(' ');
+  const period=getPeriod();
+  const trimmed=trimToTarget(sentences,target,pinned);
+  const comment=trimmed.join(' ')
+    .replace(/\bthis term\b/g, (m,offset,str) => {
+      const already = str.slice(0,offset).match(/\bthis term\b|\b1st Term\b|\bHalf Year\b|\b3rd Term\b|\bYear End\b|\bTrimester\b/i);
+      return already ? m : 'this '+period.toLowerCase();
+    })
+    .replace(/\bthe term\b/gi, 'the '+period.toLowerCase())
+    .replace(/\s{2,}/g, ' ')
+    .trim();
   displayComment(comment,name);
   history.unshift({pupil:name,comment,ts:new Date().toLocaleTimeString()});
   if(history.length>20) history.pop();
@@ -2069,18 +2084,22 @@ function finishBulkGenerate(){
 // ══════════════════════════════════════════════════════════════
 const PB_AF = {
   opener:{
-    s:['Dit was \'n positiewe kwartaal vir {N}.',
-       '{N} het hierdie kwartaal goed bygedra tot die klas.',
-       'Hierdie kwartaal was oor die algemeen goed vir {N}.',
+    s:['{N} het \'n goeie kwartaal gehad en dit was \'n plesier om {sub} in die klas te hê.',
+       '{N} het hierdie kwartaal \'n positiewe bydrae gelewer en werklike toewyding getoon.',
+       'Dit was \'n bemoedigende kwartaal vir {N} en {sub} het deurentyd goed gewerk.',
+       '{N} het goeie inspanning getoon hierdie kwartaal en ontwikkel goed.',
+       'Hierdie kwartaal was \'n soliede een vir {N} en ons is bly met {pos} vordering.',
        '{N} was \'n gewaardeerde lid van die klas hierdie kwartaal.',
-       'Dit is \'n plesier om hierdie vorderingsverslag vir {N} te deel.',
-       '{N} het hierdie kwartaal toewyding getoon.'],
-    w:['Dit was \'n wonderlike kwartaal vir {N}, en dit is \'n voorreg om hierdie verslag te skryf.',
+       'Dit is bemoedigend om oor {N} se vordering na \'n goeie kwartaal te rapporteer.',
+       '{N} het \'n positiewe houding gebring hierdie kwartaal en {pos} tyd goed benut.'],
+    w:['{N} het \'n wonderlike kwartaal gehad en dit is \'n werklike vreugde om hierdie verslag te skryf.',
        'Watter uitstekende kwartaal — {N} het ons baie trots gemaak.',
-       '{N} het \'n uiters bemoedigende kwartaal gehad, en ons vier {pos} vordering.',
-       'Dit is \'n werklike plesier om hierdie verslag vir {N} te skryf.'],
-    f:['Hierdie verslag som {N} se akademiese prestasie en gedrag vir die huidige kwartaal op.',
-       'Die volgende opmerkings weerspieël {N} se vordering oor die geassesseerde areas vir hierdie kwartaal.'],
+       '{N} het \'n werklik bemoedigende kwartaal gehad, en ons vier {pos} vordering.',
+       'Dit is \'n werklike plesier om hierdie verslag vir {N} te skryf na so \'n positiewe kwartaal.',
+       '{N} het hierdie kwartaal onvergeetlik gemaak en ons is bly om {obj} in ons klas te hê.'],
+    f:['{N} se prestasie en gedrag vir hierdie kwartaal word in die volgende opmerkings opgesom.',
+       'Hierdie verslag weerspieël {N} se akademiese vordering oor die geassesseerde areas vir die kwartaal.',
+       'Die volgende opmerkings gee \'n oorsig van {N} se werk en ontwikkeling hierdie kwartaal.'],
     b:['{N} het \'n goeie kwartaal gehad.',
        '\'n Positiewe kwartaal vir {N} oor die algemeen.',
        '{N} het goed gevorder hierdie kwartaal.']
@@ -2260,7 +2279,7 @@ const PB_AF = {
       f:['{N} het hierdie kwartaal lofwaardige prestasie in Engels getoon.'],
       b:['Sterk prestasie in Engels.']
     },
-    'First Additional Language':{
+    'Afrikaans':{
       s:['{SC} het goeie vordering in {pos} Eerste Addisionele Taal hierdie kwartaal getoon.',
          'In Eerste Addisionele Taal het {sub} groeiende selfvertroue en vermoë getoon.'],
       w:['Dit was wonderlik om te sien hoe {obj} selfvertroue in Eerste Addisionele Taal groei.'],
@@ -2290,44 +2309,12 @@ const PB_AF = {
     },
     'Physical Education':{
       s:['{SC} het goed gevaar in Liggaamlike Opvoeding en \'n positiewe houding getoon.',
-         'In LO neem {sub} met entoesiasme deel en dra goed by tot spanaktiwiteite.',
-         '{SC} het groot energie en toewyding na Liggaamlike Opvoeding hierdie kwartaal gebring.'],
-      w:['{SC} was \'n werklike bate in LO — {pos} energie en spansgees is wonderlik.',
-         '{SC} het uitgeblink in Liggaamlike Opvoeding — {sub} lei deur voorbeeld en motiveer {pos} maats.'],
-      f:['{N} het lofwaardig presteer in Liggaamlike Opvoeding hierdie kwartaal.',
-         '{N} het sterk fisiese vermoë en uitstekende sportmanskap in Liggaamlike Opvoeding getoon.'],
-      b:['Sterk prestasie in Liggaamlike Opvoeding.','Uitstekende inspanning en houding in LO.']
+         'In LO neem {sub} met entoesiasme deel en dra goed by tot spanaktiwiteite.'],
+      w:['{SC} was \'n werklike bate in LO — {pos} energie en spansgees is wonderlik.'],
+      f:['{N} het lofwaardig presteer in Liggaamlike Opvoeding hierdie kwartaal.'],
+      b:['Sterk prestasie in Liggaamlike Opvoeding.']
     },
-    Technology:{
-      s:['{SC} het werklike aanleg vir Tegnologie hierdie kwartaal getoon en indrukwekkende werk gelewer.',
-         'In Tegnologie benader {sub} ontwerpuitdagings kreatief en lewer sterk oplossings.',
-         '{SC} het entoesiasties by Tegnologie betrokke geraak en die resultate is indrukwekkend.'],
-      w:['{SC} het werklik uitgeblink in Tegnologie — {pos} probleemoplossingsvermoë is wonderlik om te sien.',
-         'Tegnologie was \'n werklike sterkpunt vir {N} hierdie kwartaal — {sub} hou van \'n uitdaging en dit wys.'],
-      f:['{N} het hierdie kwartaal sterk tegniese en ontwerpvaardighede in Tegnologie getoon.',
-         '{N} se prestasie in Tegnologie weerspieël die vermoë om beide kreatief en analities te dink.'],
-      b:['Uitstekende werk in Tegnologie.','Sterk ontwerp- en tegniese vermoë in Tegnologie getoon.']
-    },
-    'Life Skills':{
-      s:['{SC} het hierdie kwartaal goed by Lewensvaardighede betrokke geraak en goeie persoonlike groei getoon.',
-         'In Lewensvaardighede was {sub} deurdagte en reflektief, en het betekenisvol aan besprekings bygedra.',
-         '{SC} het die lesse uit Lewensvaardighede op \'n volwasse en oordeelkundige wyse toegepas.'],
-      w:['{SC} het Lewensvaardighede werklik omhels — {pos} empatie, selfbewustheid en groeimentaliteit is inspirerend.',
-         'Lewensvaardighede was \'n wonderlike ruimte vir {N} om uit te blink — {sub} betrokke altyd met hart.'],
-      f:['{N} het loofwaardige betrokkenheid by Lewensvaardighede getoon, met persoonlike groei en selfrefleksie.',
-         '{N} het goed presteer in Lewensvaardighede en ontwikkelende emosionele intelligensie getoon.'],
-      b:['Goeie betrokkenheid by Lewensvaardighede hierdie kwartaal.','Persoonlike groei duidelik sigbaar in Lewensvaardighede.']
-    },
-    'EMS':{
-      s:['{SC} het hierdie kwartaal goeie begrip van Ekonomiese en Bestuurswetenskappe getoon.',
-         'In EBS het {sub} goed by finansiële en sakekonsepte betrokke geraak en soliede werk gelewer.',
-         '{SC} het \'n natuurlike aanleg vir EBS getoon en indrukwekkend presteer.'],
-      w:['{SC} het hierdie kwartaal werklik in EBS na vore gekom — {pos} begrip van sakekonsepte is indrukwekkend.',
-         'EBS was \'n hoogtepunt vir {N} — {sub} bring werklike entoesiasme na die vak.'],
-      f:['{N} het hierdie kwartaal gesonde begrip van kern-EBS-konsepte getoon.',
-         '{N} se prestasie in EBS weerspieël sterk begrip en die vermoë om ekonomiese beginsels toe te pas.'],
-      b:['Goeie werk in EBS hierdie kwartaal.','Sterk begrip van EBS-konsepte getoon.']
-    },
+    __default__:{
       s:['In {SUBJ} het {sub} baie sterk werk gelewer.',
          '{SC} het hierdie kwartaal in {SUBJ} uitgeblink — \'n goeie resultaat.',
          'Besondere erkenning aan {obj} vir {pos} uitstekende werk in {SUBJ}.'],
@@ -2352,7 +2339,7 @@ const PB_AF = {
       f:['Verbeterde inspanning en betrokkenheid in Engels word vir die komende kwartaal aangemoedig.'],
       b:['Meer fokus op Engels benodig.']
     },
-    'First Additional Language':{
+    'Afrikaans':{
       s:['Ons moedig {obj} aan om {pos} Eerste Addisionele Taal meer gereeld te oefen.',
          'Meer konsekwente inspanning in Eerste Addisionele Taal sal goeie resultate lewer.'],
       w:['\'n Bietjie meer daaglikse oefening in Eerste Addisionele Taal sal \'n groot verskil vir {obj} maak.'],
@@ -2381,44 +2368,12 @@ const PB_AF = {
     },
     'Physical Education':{
       s:['Meer konsekwente deelname aan Liggaamlike Opvoeding sal {obj} baat.',
-         'Ons moedig {obj} aan om volgende kwartaal meer aktief by LO betrokke te raak.',
-         'Groter inspanning in Liggaamlike Opvoeding sal {obj} help om beide fiksheid en spanwerkvaardighede te ontwikkel.'],
-      w:['Ons moedig {obj} aan om volgende kwartaal meer energie in LO te sit — dit sal lonend wees.',
-         'Ons wil graag sien dat {N} {ref} volgende kwartaal meer ten volle in LO ingooi — dit is die moeite werd.'],
-      f:['Groter betrokkenheid by Liggaamlike Opvoeding word aanbeveel.',
-         'Meer aktiewe deelname aan Liggaamlike Opvoeding word vir die komende kwartaal aangemoedig.'],
-      b:['Meer inspanning in Liggaamlike Opvoeding benodig.','Groter LO-deelname word aangemoedig.']
+         'Ons moedig {obj} aan om volgende kwartaal meer aktief by LO betrokke te raak.'],
+      w:['Ons moedig {obj} aan om volgende kwartaal meer energie in LO te sit — dit sal lonend wees.'],
+      f:['Groter betrokkenheid by Liggaamlike Opvoeding word aanbeveel.'],
+      b:['Meer inspanning in Liggaamlike Opvoeding benodig.']
     },
-    Technology:{
-      s:['Ons moedig {obj} aan om volgende kwartaal meer ten volle by Tegnologietake betrokke te raak.',
-         'Meer gefokuste inspanning in Tegnologie sal {sub} help om {pos} ontwerp- en probleemoplossingsvaardighede te ontwikkel.',
-         'Tegnologie is \'n area met opwindende potensiaal vir {N} — meer inspanning volgende kwartaal sal waardevol wees.'],
-      w:['Ons weet {N} het goeie idees — meer konsekwente inspanning in Tegnologie sal dit tot lewe bring.',
-         'Tegnologie is \'n vak waarin {N} werklik kan floreer — ons moedig meer betrokkenheid volgende kwartaal aan.'],
-      f:['Groter toepassing in Tegnologie word vir die komende kwartaal aanbeveel.',
-         'Verbeterde inspanning in Tegnologietake sal {N} toelaat om sleutel ontwerp- en tegniese vaardighede te ontwikkel.'],
-      b:['Meer inspanning in Tegnologie benodig.','Groter fokus op Tegnologie word aanbeveel.']
-    },
-    'Life Skills':{
-      s:['Ons moedig {obj} aan om meer oop by Lewensvaardighede-aktiwiteite betrokke te raak.',
-         'Meer aktiewe deelname aan Lewensvaardighede-besprekings sal {N} baie baat.',
-         'Lewensvaardighede is \'n ruimte waar {N} kan groei — ons moedig meer betrokkenheid volgende kwartaal aan.'],
-      w:['Ons wil graag sien dat {N} meer oopmaak in Lewensvaardighede — daar is soveel wat {sub} te bied het.',
-         'Lewensvaardighede het soveel om aan {N} te bied — ons moedig {obj} aan om met meer selfvertroue betrokke te raak.'],
-      f:['Groter betrokkenheid by Lewensvaardighede-aktiwiteite word vir die komende kwartaal aangemoedig.',
-         'Meer aktiewe deelname aan Lewensvaardighede sal {N} se persoonlike ontwikkeling ondersteun.'],
-      b:['Meer betrokkenheid by Lewensvaardighede word aangemoedig.','Lewensvaardighede-deelname moet volgende kwartaal toeneem.']
-    },
-    'EMS':{
-      s:['Ons moedig {obj} aan om volgende kwartaal meer aandag aan EBS te gee.',
-         'Meer konsekwente inspanning in Ekonomiese en Bestuurswetenskappe sal {sub} help om selfvertroue te bou.',
-         'EBS is \'n vak waar {N} potensiaal het — meer fokus volgende kwartaal sal voordelig wees.'],
-      w:['Ons weet {N} kan EBS-konsepte goed begryp — \'n bietjie meer inspanning volgende kwartaal sal dit wys.',
-         'Ons moedig {obj} aan om meer aktief by EBS betrokke te raak — die vaardighede wat dit bou, is waardevol.'],
-      f:['Groter toepassing in EBS word vir die komende kwartaal aanbeveel.',
-         'Meer konsekwente betrokkenheid by Ekonomiese en Bestuurswetenskappe-inhoud sal verbeterde prestasie ondersteun.'],
-      b:['Meer inspanning in EBS benodig.','Groter fokus op EBS word volgende kwartaal aanbeveel.']
-    },
+    __default__:{
       s:['Ons moedig {obj} aan om volgende kwartaal \'n bietjie meer inspanning in {SUBJ} te gee.',
          '{SC} sal baat vind by meer fokus op {SUBJ} vorentoe.',
          'Meer aandag aan {SUBJ} sal {obj} goed dien.'],
@@ -2427,67 +2382,6 @@ const PB_AF = {
       b:['Meer inspanning in {SUBJ} benodig.']
     }
   },
-
-  homework:{
-    excellent:{
-      s:['{SC} lewer huiswerk konsekwent betyds in en na \'n goeie standaard.',
-         '{SC} is betroubaar met huiswerk en dit ondersteun {pos} vordering in die klas.',
-         'Huiswerk word altyd stiptelik ingelewer — {sub} neem {pos} tuisstudie ernstig op.'],
-      w:['{SC} is wonderlik konsekwent met huiswerk — dit is \'n ware weerspieëling van {pos} toewyding.',
-         'Ons waardeer hoe betroubaar {N} huiswerk inlewer — dit maak \'n werklike verskil.'],
-      f:['{N} toon konsekwente en tydige inlewering van huiswerktake.',
-         '{N} se huiswerkvoltooiing is loofwaardig en weerspieël sterk selfbestuur.'],
-      b:['Huiswerk konsekwent betyds ingelewer.','Uitstekende huisgewoontes hierdie kwartaal.']
-    },
-    mostly:{
-      s:['{SC} lewer huiswerk oor die algemeen betyds in, maar meer konsekwentheid sou voordelig wees.',
-         '{SC} is grootliks op koers met huiswerk — \'n bietjie meer gereeldheid sal help.'],
-      w:['Ons waardeer die moeite wat {N} die meeste van die tyd met huiswerk doen — net \'n bietjie meer konsekwentheid!'],
-      f:['{N} se huiswerkinlewering was grootliks bevredigend; groter konsekwentheid word aangemoedig.'],
-      b:['Huiswerk meestal betekts — konsekwentheid om te verbeter.','Oor die algemeen goeie huisgewoontes.']
-    },
-    needs_improvement:{
-      s:['Ons wil graag hê {obj} moet meer konsekwent wees met {pos} huiswerkinlewering vorentoe.',
-         'Meer gereelde huiswerkinlewering sal {pos} vordering in die klas aansienlik ondersteun.',
-         'Huiswerkvoltooiing is \'n area wat ons saam met {N} aanspreek.'],
-      w:['Ons moedig {N} saggies aan om meer aandag aan huiswerk te skenk — dit maak so \'n groot verskil in die klas.'],
-      f:['Huiswerkinlewering was inkonsekwent; groter toepassing in hierdie area word sterk aangemoedig.'],
-      b:['Huiswerkinlewering moet verbeter.','Meer konsekwente huisgewoontes benodig.']
-    }
-  },
-
-  extra:{
-    active_leader:{
-      s:['{SC} het hierdie kwartaal werklike leierskap getoon en \'n positiewe impak buite die klaskamer gemaak.',
-         '{SC} was \'n aktiewe en entoesiastiese deelnemer aan skoolaktiwiteite en het groot leierskap getoon.',
-         'Buite akademiese werk het {sub} \'n uitstaande bydrae tot die skoolllewe gelewer.'],
-      w:['{SC} is \'n natuurlike leier — {pos} energie, inisiatief en sorg vir andere inspireer almal rondom {obj}.',
-         'Dit was wonderlik om {N} hierdie kwartaal as leier na vore te sien tree — {sub} lei werklik deur voorbeeld.'],
-      f:['{N} het opmerklike leierskapseienskappe getoon en \'n betekenisvolle bydrae tot die skoolllewe gelewer.'],
-      b:['Sterk leierskap hierdie kwartaal getoon.','Aktiewe leier in skoolaktiwiteite.']
-    },
-    participates:{
-      s:['{SC} neem goed deel aan buiteklasaktiwiteite en dra positief by tot die skoollewe.',
-         '{SC} is \'n aktiewe lid van die skoolgemeenskap buite die klaskamer.',
-         '{SC} betrokke goed by aktiwiteite buite klastyd en toon goeie skoolsgees.'],
-      w:['{SC} bring dieselfde wonderlike energie na buiteklasaktiwiteite as wat {sub} na die klas bring.',
-         'Ons geniet dit om {N} buite die klaskamer betrokke te sien — {pos} deelname voeg baie by die skoollewe.'],
-      f:['{N} neem konstruktief deel aan buiteklasaktiwiteite en breër skoollewe.',
-         '{N} se betrokkenheid by buiteklasaktiwiteite weerspieël \'n goed-geronde verbintenis tot die skool.'],
-      b:['Goeie deelname aan buiteklasaktiwiteite.','Aktiewe bydraer tot die skoollewe.']
-    },
-    encourage:{
-      s:['Ons sal graag wil hê dat {obj} volgende kwartaal meer betrokke raak by aktiwiteite buite die klaskamer.',
-         'Die verkenning van buiteklasopsies sal {N} baat en {obj} help om nuwe sterkpunte te ontwikkel.',
-         'Ons moedig {obj} aan om meer by skoolaktiwiteite betrokke te raak — daar is soveel om te wen.'],
-      w:['Ons weet {N} het soveel om aan te bied — ons wil graag sien dat {obj} aktiwiteite buite klastyd verken.',
-         'Die skoollewe het soveel meer vir {N} te bied — ons moedig {obj} saggies aan om meer ten volle deel te neem.'],
-      f:['{N} word aangemoedig om volgende kwartaal meer aktief by buiteklasopsies betrokke te raak.',
-         'Groter deelname aan skoolaktiwiteite buite die klaskamer sal {N} se ontwikkeling bevoordeel.'],
-      b:['Meer buiteklasdeelname word aangemoedig.','Meer skoolbetrokkenheid word volgende kwartaal aanbeveel.']
-    }
-  },
-
   sport:{
     outstanding:{
       s:['{SC} het hierdie kwartaal briljant gevaar in sport en groot vaardigheid en gees getoon.',
@@ -2553,13 +2447,9 @@ function generateAF(){
   const acad     = document.getElementById('f-acad').value;
   const badj     = document.getElementById('f-badj').value;
   const sport    = document.getElementById('f-sport').value;
-  const homework = document.getElementById('f-homework').value;
-  const extra    = document.getElementById('f-extra').value;
 
-  const excelSel = document.getElementById('f-subj-excel').value;
-  const excelled = excelSel==='__custom__' ? document.getElementById('subj-excel-custom').value.trim() : excelSel;
-  const effortSel= document.getElementById('f-subj-effort').value;
-  const effort   = effortSel==='__custom__' ? document.getElementById('subj-effort-custom').value.trim() : effortSel;
+  const excelled = getSubjExcelled();
+  const effort   = getSubjEffort();
 
   const nameUsed=[false];
   const pron=(text)=>applyPR(text,name,pr,nameUsed);
@@ -2583,31 +2473,27 @@ function generateAF(){
   else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB_AF.acad,'none'));
   if(badj!=='omit'&&badj!=='none') parts.push(get(PB_AF.badj,badj));
 
-  if(excelled){
-    const bank = PB_AF.subj_excel[excelled]||PB_AF.subj_excel.__default__;
+  if(excelled && excelled.length>0){
+    const subj = Array.isArray(excelled) ? excelled[0] : excelled;
+    const bank = PB_AF.subj_excel[subj]||PB_AF.subj_excel.__default__;
     let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,excelled);
+    raw=raw.replace(/\{SUBJ\}/g,subj);
     parts.push(pron(raw));
   }
-  if(effort){
-    const bank = PB_AF.subj_effort[effort]||PB_AF.subj_effort.__default__;
+  if(effort && effort.length>0){
+    const subj = Array.isArray(effort) ? effort[0] : effort;
+    const bank = PB_AF.subj_effort[subj]||PB_AF.subj_effort.__default__;
     let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,effort);
+    raw=raw.replace(/\{SUBJ\}/g,subj);
     parts.push(pron(raw));
   }
 
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0 && Math.random()>0.5){
-    parts.push(pron(pick(allPhrases)));
-  }
-
-  if(homework!=='omit') parts.push(get(PB_AF.homework,homework));
-  if(extra!=='omit')    parts.push(get(PB_AF.extra,extra));
   if(sport!=='omit') parts.push(get(PB_AF.sport,sport));
   parts.push(pron(getVariant(PB_AF.closer,tone)));
 
   const sentences = parts.filter(Boolean);
-  const trimmed   = trimToTarget(sentences, target);
+  const closerAF  = sentences[sentences.length-1];
+  const trimmed   = trimToTarget(sentences, target, [closerAF]);
   const comment   = trimmed.join(' ');
 
   displayComment(comment, name);
@@ -2617,6 +2503,176 @@ function generateAF(){
   renderHistory();
   saveState();
 }
+
+// ══════════════════════════════════════════════════════════════
+// FOUNDATION PHASE PHRASE BANK
+// Warm, developmental language for Gr R–3
+// ══════════════════════════════════════════════════════════════
+const PB_FOUND = {
+  reading:{
+    emerging:{
+      s:['{N} is beginning to show interest in books and is at the early stages of developing {pos} reading skills.',
+         '{N} is starting to engage with reading activities and is building familiarity with letters and sounds.',
+         'Early reading awareness is beginning to emerge for {N}, and {sub} is exploring books with growing curiosity.'],
+      w:['{N} is just beginning {pos} reading journey, and it is lovely to see {pos} growing curiosity about books and stories.',
+         'We are watching {pos} early reading skills begin to blossom — what an exciting time for {N}!'],
+      f:['{N} is at the emergent stage of reading development, beginning to demonstrate print awareness and early phonological understanding.'],
+      b:['Beginning to develop early reading skills.']
+    },
+    developing:{
+      s:['{N} is developing {pos} reading skills steadily and is beginning to decode familiar words with growing confidence.',
+         '{N} is making good progress with reading and is building {pos} sight word vocabulary nicely.',
+         'Reading is developing well for {N} — {sub} is increasingly able to follow familiar texts with support.'],
+      w:['{N} is making such lovely progress with reading — {pos} growing confidence with books and words is wonderful to see.',
+         'We are so pleased with how {pos} reading is coming along — {N} is working hard and it is really showing!'],
+      f:['{N} is progressing well in reading, demonstrating developing phonemic awareness and an expanding sight vocabulary.'],
+      b:['Reading skills are developing well.']
+    },
+    achieved:{
+      s:['{N} has achieved the reading milestones for this stage and reads familiar texts with confidence and fluency.',
+         '{N} reads independently at the expected level and demonstrates strong comprehension of age-appropriate texts.',
+         'Reading is a clear strength for {N} — {sub} decodes fluently and engages meaningfully with texts.'],
+      w:['{N} is such a confident reader — {pos} love of books and strong reading ability are a real joy to see!',
+         'We are so proud of {pos} reading — {N} has achieved the milestones beautifully and reads with real confidence.'],
+      f:['{N} has achieved the expected reading milestones, demonstrating fluency and sound comprehension at this developmental stage.'],
+      b:['Reading milestones achieved — reads confidently.']
+    }
+  },
+  writing:{
+    emerging:{
+      s:['{N} is beginning to develop early writing skills and is exploring mark-making with growing interest.',
+         '{N} is at the early stages of writing development, beginning to form letters and explore the written word.',
+         'Early writing is beginning to emerge for {N}, and {sub} is developing {pos} pencil grip and mark-making.'],
+      w:['{N} is just starting to explore writing, and it is delightful to watch {pos} early mark-making develop!',
+         'We love seeing {N} explore early writing — every mark on the page is the beginning of something wonderful.'],
+      f:['{N} is at the emergent stage of writing development, beginning to demonstrate early pencil control and letter formation awareness.'],
+      b:['Early writing skills are beginning to emerge.']
+    },
+    developing:{
+      s:['{N} is developing {pos} writing skills and is beginning to form letters and simple words with increasing control.',
+         'Writing is progressing well for {N} — {sub} is building {pos} letter formation and pencil control steadily.',
+         '{N} is making good progress with writing and is beginning to express {pos} ideas on paper with growing confidence.'],
+      w:['{N} is making such wonderful progress with writing — {pos} growing ability to express ideas on paper is really exciting!',
+         'We love seeing {pos} writing develop — {N} is working hard and producing some lovely work.'],
+      f:['{N} is progressing well in writing, demonstrating developing letter formation, pencil control, and early compositional skills.'],
+      b:['Writing skills are developing well.']
+    },
+    achieved:{
+      s:['{N} writes independently at the expected level and demonstrates good letter formation, spacing, and early composition.',
+         '{N} has achieved the writing milestones for this stage and expresses {pos} ideas clearly in writing.',
+         'Writing is a real strength for {N} — {sub} writes with confidence and produces well-formed, purposeful work.'],
+      w:['{N} is such a confident writer — {pos} ability to express {pos} ideas on paper is truly impressive for this stage!',
+         'We are so proud of {pos} writing — {N} has achieved the milestones and writes with real confidence and creativity.'],
+      f:['{N} has achieved the expected writing milestones, demonstrating competent letter formation, spacing, and early independent composition.'],
+      b:['Writing milestones achieved — writes confidently and independently.']
+    }
+  },
+  oral:{
+    emerging:{
+      s:['{N} is beginning to express {pos} ideas verbally and is developing confidence in oral communication.',
+         '{N} is at the early stages of oral language development and is beginning to participate in class conversations.',
+         'Oral language is beginning to emerge for {N}, and {sub} is growing in {pos} willingness to share ideas.'],
+      w:['{N} is beginning to find {pos} voice in the classroom, and it is lovely to see {pos} confidence with language starting to grow!'],
+      f:['{N} is at the emergent stage of oral language development, beginning to participate in structured verbal activities.'],
+      b:['Oral language skills are beginning to emerge.']
+    },
+    developing:{
+      s:['{N} is developing {pos} oral language skills and communicates {pos} ideas with growing confidence.',
+         'Oral communication is coming along well for {N} — {sub} participates actively in discussions and shares ideas clearly.',
+         '{N} is making good progress with oral language and is increasingly able to express {pos} thoughts clearly.'],
+      w:['{N} is finding {pos} voice so beautifully — {pos} growing confidence in speaking and sharing ideas is wonderful to see!'],
+      f:['{N} is progressing well in oral language, demonstrating developing vocabulary, sentence construction, and communication confidence.'],
+      b:['Oral language is developing well.']
+    },
+    achieved:{
+      s:['{N} communicates confidently and clearly, demonstrating strong oral language skills appropriate for this stage.',
+         'Oral language is a clear strength for {N} — {sub} expresses {pos} ideas fluently and engages actively in discussion.',
+         '{N} has achieved the oral language milestones and communicates with confidence, clarity, and a rich vocabulary.'],
+      w:['{N} is such a wonderful communicator — {pos} confidence and expressive language are a real delight in the classroom!'],
+      f:['{N} has achieved the expected oral language milestones, demonstrating fluent, confident communication and appropriate vocabulary.'],
+      b:['Oral language milestones achieved — communicates confidently.']
+    }
+  },
+  number:{
+    emerging:{
+      s:['{N} is beginning to explore number concepts and is at the early stages of developing {pos} numeracy skills.',
+         '{N} is developing early number awareness and is beginning to count and recognise numerals with support.',
+         'Early number work is beginning to emerge for {N}, and {sub} is exploring basic counting and number recognition.'],
+      w:['{N} is just beginning to explore the world of numbers, and it is exciting to watch {pos} early numeracy curiosity grow!'],
+      f:['{N} is at the emergent stage of numeracy development, beginning to demonstrate number awareness and early counting skills.'],
+      b:['Early number awareness is beginning to develop.']
+    },
+    developing:{
+      s:['{N} is developing {pos} number work steadily and is building confidence with counting, number recognition, and basic operations.',
+         'Number work is progressing well for {N} — {sub} is developing {pos} understanding of basic concepts with growing confidence.',
+         '{N} is making good progress in number work and is increasingly able to apply early mathematical concepts.'],
+      w:['{N} is doing so well with number work — {pos} growing confidence with numbers and counting is wonderful to see!'],
+      f:['{N} is progressing well in numeracy, demonstrating developing number sense, counting fluency, and early operational understanding.'],
+      b:['Number work is developing well.']
+    },
+    achieved:{
+      s:['{N} has achieved the numeracy milestones for this stage and works confidently with number concepts appropriate to the grade.',
+         'Number work is a real strength for {N} — {sub} demonstrates solid understanding and works with numbers confidently.',
+         '{N} counts fluently, recognises numerals, and applies basic operations with confidence at the expected level.'],
+      w:['{N} is such a confident mathematician — {pos} strong number sense and love of maths are truly impressive!'],
+      f:['{N} has achieved the expected numeracy milestones, demonstrating confident number sense and competent application of early mathematical concepts.'],
+      b:['Numeracy milestones achieved — works confidently with numbers.']
+    }
+  },
+  social:{
+    emerging:{
+      s:['{N} is beginning to develop social skills and is learning to interact with peers and follow classroom routines.',
+         '{N} is at the early stages of developing {pos} social skills and is learning to share, take turns, and engage with others.',
+         'Social development is an area of growing focus for {N}, who is beginning to navigate peer interactions with support.'],
+      w:['{N} is learning to make friends and navigate the classroom community — it is such a special journey to watch!'],
+      f:['{N} is at the emergent stage of social development, beginning to engage with classroom routines and peer interactions.'],
+      b:['Social skills are beginning to develop.']
+    },
+    developing:{
+      s:['{N} is developing {pos} social skills well and interacts positively with peers in most situations.',
+         'Social development is progressing nicely for {N} — {sub} is building {pos} ability to share, cooperate, and engage with others.',
+         '{N} is making good progress socially and is increasingly able to navigate peer interactions and classroom routines independently.'],
+      w:['{N} is growing into such a kind and thoughtful member of the class — {pos} social development is a real joy to watch!'],
+      f:['{N} is progressing well in social development, demonstrating an increasing ability to engage cooperatively with peers.'],
+      b:['Social skills are developing well.']
+    },
+    achieved:{
+      s:['{N} demonstrates strong social skills and interacts positively with peers, sharing, cooperating, and following routines with confidence.',
+         'Social development is a real strength for {N} — {sub} is a kind, cooperative member of the class.',
+         '{N} navigates peer relationships and classroom routines with confidence and maturity appropriate for this stage.'],
+      w:['{N} is such a wonderful member of our class community — {pos} kindness, cooperation, and social confidence are truly beautiful to see!'],
+      f:['{N} has achieved the expected social development milestones, demonstrating cooperative, positive engagement with peers and classroom routines.'],
+      b:['Social milestones achieved — a positive, cooperative class member.']
+    }
+  },
+  motor:{
+    emerging:{
+      s:['{N} is beginning to develop {pos} fine motor skills and is working on tasks such as cutting, drawing, and colouring.',
+         '{N} is at the early stages of fine motor development and is building {pos} hand-eye coordination and pencil control.',
+         'Fine motor development is an area of current focus for {N}, who is beginning to strengthen {pos} hand muscles and coordination.'],
+      w:['{N} is working so hard on {pos} fine motor skills — every effort is building the foundations for future learning!'],
+      f:['{N} is at the emergent stage of fine motor development, beginning to demonstrate developing hand-eye coordination and pencil control.'],
+      b:['Fine motor skills are beginning to develop.']
+    },
+    developing:{
+      s:['{N} is developing {pos} fine motor skills steadily and is becoming more controlled in activities requiring precision.',
+         'Fine motor development is progressing well for {N} — {sub} shows growing control in cutting, drawing, and writing tasks.',
+         '{N} is making good progress with fine motor skills and is increasingly capable in activities requiring hand-eye coordination.'],
+      w:['{N} is developing {pos} fine motor skills so nicely — the care and effort {sub} puts into {pos} work is really showing!'],
+      f:['{N} is progressing well in fine motor development, demonstrating increasing precision and control in manipulative tasks.'],
+      b:['Fine motor skills are developing well.']
+    },
+    achieved:{
+      s:['{N} demonstrates strong fine motor skills and works with confidence and precision in cutting, drawing, and writing activities.',
+         'Fine motor development is a real strength for {N} — {sub} handles tools and writing implements with control and confidence.',
+         '{N} has achieved the fine motor milestones for this stage and works with excellent hand-eye coordination and dexterity.'],
+      w:['{N} works with such beautiful precision and care — {pos} fine motor skills are a real strength and it shows in everything {sub} does!'],
+      f:['{N} has achieved the expected fine motor development milestones, demonstrating confident, controlled execution of precision tasks.'],
+      b:['Fine motor milestones achieved — works with confidence and precision.']
+    }
+  }
+};
+
 // ══════════════════════════════════════════════════════════════
 // LANGUAGE ROUTER
 // ══════════════════════════════════════════════════════════════
@@ -2669,6 +2725,287 @@ function showSidebarBanner(msg){
   banner._t = setTimeout(()=>{ banner.style.opacity='0'; setTimeout(()=>{ banner.style.display='none'; }, 400); }, 3000);
 }
 
+
+
+// ══════════════════════════════════════════════════════════════
+// SUBJECT CHECKBOX HELPERS
+// ══════════════════════════════════════════════════════════════
+function getSubjExcelled(){
+  const cbs = [...document.querySelectorAll('input[name="excel"]:checked')].map(c=>{
+    if(c.value==='__lang3__'){
+      const t=document.getElementById('excel-lang3-text');
+      return t&&t.value.trim()?t.value.trim():null;
+    }
+    return c.value;
+  }).filter(Boolean);
+  const custom = document.getElementById('subj-excel-custom').value.trim();
+  if(custom) cbs.push(custom);
+  return cbs;
+}
+
+function getSubjEffort(){
+  const cbs = [...document.querySelectorAll('input[name="effort"]:checked')].map(c=>{
+    if(c.value==='__lang3__'){
+      const t=document.getElementById('effort-lang3-text');
+      return t&&t.value.trim()?t.value.trim():null;
+    }
+    return c.value;
+  }).filter(Boolean);
+  const custom = document.getElementById('subj-effort-custom').value.trim();
+  if(custom) cbs.push(custom);
+  return cbs;
+}
+
+function onSubjCb(type){
+  const name = type === 'excel' ? 'excel' : 'effort';
+  const cap  = type === 'excel' ? 3 : 2;
+  const warn = document.getElementById(type+'-cap-warn');
+  const checked = document.querySelectorAll('input[name="'+name+'"]:checked');
+  // Visual state on labels
+  document.querySelectorAll('input[name="'+name+'"]').forEach(cb=>{
+    cb.closest('label').classList.toggle('checked', cb.checked);
+  });
+  // Show/hide warning
+  if(warn) warn.style.display = checked.length > cap ? 'block' : 'none';
+}
+
+function joinSubjects(arr){
+  if(!arr||arr.length===0) return '';
+  if(arr.length===1) return arr[0];
+  if(arr.length===2) return arr[0]+' and '+arr[1];
+  return arr.slice(0,-1).join(', ')+' and '+arr[arr.length-1];
+}
+
+function buildSubjExcelPhrase(subjects, tone, pron, name, pr, nameUsed){
+  if(!subjects||subjects.length===0) return null;
+  const get=(subj)=>{
+    const bank = PB.subj_excel[subj]||PB.subj_excel.__default__;
+    let raw = getVariant(bank,tone);
+    raw = raw.replace(/\{SUBJ\}/g, subj);
+    return applyPR(raw,name,pr,nameUsed);
+  };
+  if(subjects.length===1) return get(subjects[0]);
+  // Multiple subjects — use default template with joined list
+  const joined = joinSubjects(subjects);
+  const templates = {
+    s:['In '+joined+', {sub} has shown real ability and produced strong work across all areas.',
+       '{SC} has excelled in '+joined+' this term — an impressive and well-rounded performance.',
+       'Particular credit goes to {obj} for {pos} excellent work in '+joined+'.'],
+    w:['{SC} has truly shone in '+joined+' this term — we are so proud of {obj}.',
+       'What a pleasure it has been to see {obj} excel across '+joined+'!'],
+    f:['{N} has demonstrated notably strong performance in '+joined+' this term.'],
+    b:['Excellent work in '+joined+'.']
+  };
+  const raw = getVariant(templates, tone);
+  return applyPR(raw, name, pr, nameUsed);
+}
+
+function buildSubjEffortPhrase(subjects, tone, pron, name, pr, nameUsed){
+  if(!subjects||subjects.length===0) return null;
+  const get=(subj)=>{
+    const bank = PB.subj_effort[subj]||PB.subj_effort.__default__;
+    let raw = getVariant(bank,tone);
+    raw = raw.replace(/\{SUBJ\}/g, subj);
+    return applyPR(raw,name,pr,nameUsed);
+  };
+  if(subjects.length===1) return get(subjects[0]);
+  const joined = joinSubjects(subjects);
+  const templates = {
+    s:['We encourage {obj} to give more focused attention to '+joined+' going forward.',
+       'More consistent effort in '+joined+' would help {obj} reach {pos} full potential.'],
+    w:['We gently encourage {obj} to put more energy into '+joined+' — we know {sub} can do it.'],
+    f:['It is recommended that {N} devote additional attention to '+joined+' going forward.'],
+    b:['More focus on '+joined+' going forward.']
+  };
+  const raw = getVariant(templates, tone);
+  return applyPR(raw, name, pr, nameUsed);
+}
+
+// ══════════════════════════════════════════════════════════════
+// PERIOD / TERM HELPERS
+// ══════════════════════════════════════════════════════════════
+function onNTermsChange(){
+  const n = document.getElementById('ctrl-nterms').value;
+  const sel = document.getElementById('ctrl-period');
+  sel.innerHTML = n === '3'
+    ? '<option value="1st trimester">1st Trimester</option><option value="2nd trimester">2nd Trimester</option><option value="final trimester">Final Trimester</option>'
+    : '<option value="1st term">1st Term</option><option value="half year">Half Year</option><option value="3rd term">3rd Term</option><option value="year end">Year End</option>';
+}
+
+function getPeriod(){
+  const el = document.getElementById('ctrl-period');
+  return el ? el.value : 'this term';
+}
+
+function isYearEnd(){
+  const p = getPeriod();
+  return p === 'year end' || p === 'final trimester';
+}
+
+function refreshList(){
+  renderPupilList();
+  showSidebarBanner('List refreshed.');
+}
+
+const YEAREND_CLOSERS = {"s": ["As {N} completes the school year, we wish {obj} a wonderful break and look forward to seeing {obj} grow next year.", "What a year it has been — well done, {N}, and enjoy a well-earned rest.", "We hope {N} looks back on this year with pride. Enjoy the holidays and come back ready for new challenges.", "This has been a full year of learning and growth. Well done, {N} — see you next year."], "w": ["What a wonderful year it has been with {N} — we are so proud and wish {obj} a magical holiday season!", "As the year draws to a close, we want {N} to know just how much {sub} is valued. Enjoy every moment of the break!", "It has been such a joy having {N} in our class this year. Rest well and come back shining!"], "f": ["As the academic year concludes, we commend {N} on the progress made and wish {obj} a restorative holiday.", "This year-end report reflects {N}'s journey throughout the academic year. We look forward to continued growth."], "b": ["Well done on a great year — enjoy the break.", "A strong year from {N}. Well deserved rest ahead."]};
+
+
+function restoreSubjCheckboxes(type, values){
+  if(!Array.isArray(values)) return;
+  document.querySelectorAll('input[name="'+type+'"]').forEach(cb=>{
+    cb.checked = values.includes(cb.value);
+    cb.closest('label').classList.toggle('checked', cb.checked);
+  });
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// FOUNDATION PHASE LOGIC
+// ══════════════════════════════════════════════════════════════
+const FOUND_AREAS = ['found-reading','found-writing','found-oral','found-number','found-social','found-motor'];
+const FOUND_KEYS  = {
+  'found-reading':'reading','found-writing':'writing','found-oral':'oral',
+  'found-number':'number','found-social':'social','found-motor':'motor'
+};
+const FOUND_LABELS = {
+  'found-reading':'Reading','found-writing':'Writing','found-oral':'Oral Language',
+  'found-number':'Number Work','found-social':'Social Skills','found-motor':'Fine Motor Skills'
+};
+
+// Milestone state: { 'found-reading': 'emerging'|'developing'|'achieved'|null }
+const foundationState = {};
+
+function toggleMilestone(btn, area, level){
+  const current = foundationState[area];
+  // Deselect if clicking same
+  if(current === level){
+    foundationState[area] = null;
+    btn.closest('.found-milestones').querySelectorAll('.found-milestone').forEach(b=>b.classList.remove('selected'));
+  } else {
+    foundationState[area] = level;
+    btn.closest('.found-milestones').querySelectorAll('.found-milestone').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+  if(activePupilId) saveCriteria();
+}
+
+function getFoundationData(){
+  const result = {};
+  FOUND_AREAS.forEach(a=>{ if(foundationState[a]) result[a]=foundationState[a]; });
+  return result;
+}
+
+function restoreFoundationState(data){
+  // Clear all
+  FOUND_AREAS.forEach(a=>{ foundationState[a]=null; });
+  document.querySelectorAll('.found-milestone').forEach(b=>b.classList.remove('selected'));
+  if(!data) return;
+  Object.entries(data).forEach(([area, level])=>{
+    foundationState[area] = level;
+    const row = document.querySelector('[onclick*="\''+area+'\'"]');
+    if(row){
+      const btn = row.closest('.found-milestones')?.querySelector('.found-milestone.'+level);
+      if(btn) btn.classList.add('selected');
+    }
+  });
+}
+
+function onGradeChange(){
+  const grade = document.getElementById('ctrl-grade').value;
+  const isFound = grade === 'foundation';
+  document.getElementById('found-panel').style.display  = isFound ? 'block' : 'none';
+  document.getElementById('standard-criteria').style.display = isFound ? 'none' : 'block';
+}
+
+function generateFoundation(){
+  if(!activePupilId){ alert('Please select a pupil first.'); return; }
+  const p = pupils.find(x=>x.id===activePupilId);
+  if(!p) return;
+
+  const name    = p.name;
+  const prKey   = document.getElementById('f-pronoun').value;
+  const pr      = PR[prKey];
+  const tone    = document.getElementById('ctrl-tone').value;
+  const target  = parseInt(document.getElementById('word-slider').value);
+  const nameUsed= [false];
+  const pron    = (text)=>applyPR(text,name,pr,nameUsed);
+
+  const data = getFoundationData();
+  const parts = [];
+
+  // Opener — warm, age-appropriate
+  const openers = {
+    s:['{N} has had a good {PERIOD} and it has been a pleasure having {sub} in class.',
+       'It is a pleasure to write this report for {N} after a positive {PERIOD}.',
+       '{N} has brought a lovely energy to the classroom this {PERIOD}.'],
+    w:['{N} has had a wonderful {PERIOD} and it is such a joy to write this report.',
+       'What a lovely {PERIOD} it has been with {N} — {sub} brings so much warmth to our class.',
+       'It is an absolute pleasure to report on {N}\'s progress after such a positive {PERIOD}.'],
+    f:['This report reflects {N}\'s developmental progress across the assessed areas for this {PERIOD}.'],
+    b:['{N} has had a good {PERIOD}.']
+  };
+  const opRaw = getVariant(openers, tone).replace(/\{PERIOD\}/g, getPeriod());
+  nameUsed[0] = false;
+  parts.push(applyPR(opRaw, name, pr, [false]));
+  nameUsed[0] = true;
+
+  // Area phrases — in natural order
+  const areaOrder = ['found-reading','found-oral','found-number','found-writing','found-social','found-motor'];
+  const subjectPhrases = [];
+  areaOrder.forEach(area=>{
+    const level = data[area];
+    if(!level) return;
+    const key = FOUND_KEYS[area];
+    const bank = PB_FOUND[key]&&PB_FOUND[key][level];
+    if(!bank) return;
+    subjectPhrases.push(pron(getVariant(bank, tone)));
+  });
+
+  subjectPhrases.forEach(s=>parts.push(s));
+
+  // Closer — always positive, always last
+  const closers = {
+    s:['We look forward to watching {N} continue to grow and develop.',
+       'We are proud of {pos} progress and look forward to the {PERIOD} ahead.',
+       '{N} is a valued member of our class and we look forward to the journey ahead.'],
+    w:['{N} brings such joy to our classroom and we cannot wait to see {obj} continue to flourish!',
+       'We are so proud of {N} and look forward to watching {obj} grow and shine!',
+       'It has been an absolute joy having {N} in our class — we look forward to more wonderful moments ahead.'],
+    f:['We look forward to {N}\'s continued development in the period ahead.'],
+    b:['We look forward to continued progress ahead.']
+  };
+  const closerRaw = getVariant(closers, tone).replace(/\{PERIOD\}/g, getPeriod());
+  const closerPhrase = pron(closerRaw);
+  parts.push(closerPhrase);
+
+  const sentences = parts.filter(Boolean);
+  const trimmed = trimToTarget(sentences, target, [...subjectPhrases, closerPhrase]);
+  const comment = trimmed.join(' ').replace(/\s{2,}/g,' ').trim();
+
+  displayComment(comment, name);
+  history.unshift({pupil:name, comment, ts:new Date().toLocaleTimeString()});
+  if(history.length>20) history.pop();
+  renderHistory();
+  saveCriteria();
+  saveState();
+}
+
+
+function insertPhrase(phrase){
+  if(!activePupilId){ alert('Please select a pupil and generate a comment first.'); return; }
+  const edit = document.getElementById('edit-area');
+  const current = edit.value.trim();
+  if(!current){ alert('Generate a comment first, then insert a phrase.'); return; }
+  const sep = (current.endsWith('.')||current.endsWith('!')||current.endsWith('?')) ? ' ' : '. ';
+  edit.value = current + sep + phrase;
+  document.getElementById('wc-badge').textContent = wc(edit.value) + ' words';
+  edit.style.borderColor = '#c06b9a';
+  edit.focus();
+  edit.setSelectionRange(edit.value.length, edit.value.length);
+  setTimeout(()=>{ edit.style.borderColor=''; }, 1000);
+  showToast('Phrase inserted — edit and reposition as needed.');
+}
+
 // ══════════════════════════════════════════════════════════════
 // FILENAME HELPER + TOAST
 // ══════════════════════════════════════════════════════════════
@@ -2698,5 +3035,17 @@ renderSavedPhrases();
 renderHistory();
 showNoPupil();
 </script>
+
+  <!-- Email capture strip -->
+  <div id="email-capture-bar" style="position:fixed;bottom:0;left:0;right:0;background:#4a2060;color:white;padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:12px;z-index:9999;flex-wrap:wrap;">
+    <span style="font-weight:600;">✉ Get notified when Pro launches</span>
+    <form action="https://myreportcomments.us4.list-manage.com/subscribe/post?u=70e74df9b58f0e0de873629bf&id=8f279ff28d&f_id=006556e2f0" method="post" target="_blank" style="display:flex;gap:6px;align-items:center;" onsubmit="document.getElementById('email-capture-bar').style.display='none'">
+      <input type="email" name="EMAIL" placeholder="your@email.com" required
+        style="padding:5px 10px;border-radius:5px;border:none;font-size:12px;width:200px;outline:none;">
+      <div style="display:none;" aria-hidden="true"><input type="text" name="b_70e74df9b58f0e0de873629bf_8f279ff28d" tabindex="-1" value=""></div>
+      <button type="submit" style="padding:5px 12px;background:#c06b9a;color:#1a1a2e;border:none;border-radius:5px;font-weight:700;font-size:12px;cursor:pointer;">Notify me</button>
+    </form>
+    <button onclick="document.getElementById('email-capture-bar').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;">×</button>
+  </div>
 </body>
 </html>
