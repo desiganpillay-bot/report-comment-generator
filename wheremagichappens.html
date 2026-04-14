@@ -1543,12 +1543,14 @@ function displayComment(comment, name){
   ).join(' ');
 
   // Sentiment
-  const sc = sentimentScore(comment);
-  document.getElementById('bar-pos').style.width=sc.pos+'%';
-  document.getElementById('bar-dev').style.width=sc.dev+'%';
-  document.getElementById('sentiment-text').textContent=
-    sc.pos>=70?'Strong positive':sc.pos>=50?'Balanced positive':sc.dev>=50?'Developmental focus':'Mixed';
-  document.getElementById('sentiment-wrap').style.display='block';
+  try{
+    const sc = sentimentScore(comment);
+    document.getElementById('bar-pos').style.width=sc.pos+'%';
+    document.getElementById('bar-dev').style.width=sc.dev+'%';
+    document.getElementById('sentiment-text').textContent=
+      sc.pos>=70?'Strong positive':sc.pos>=50?'Balanced positive':sc.dev>=50?'Developmental focus':'Mixed';
+    document.getElementById('sentiment-wrap').style.display='block';
+  }catch(e){}
 
   // Edit area
   document.getElementById('edit-area').value=comment;
