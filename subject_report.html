@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subject Report Generator — MyReportComments</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#4a2060;--plum-dark:#3a1850;--rose:#c06b9a;--blush:#fdf6f9;--sidebar:#2d1445;--border:#e8d5f0;--text:#1a1a2e;--muted:#6b5a7e;--good:#2e7d32;--fair:#e65100;--improve:#c62828;--good-bg:#e8f5e9;--fair-bg:#fff3e0;--improve-bg:#ffebee;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--blush);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:var(--plum);color:white;padding:10px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
+.topbar-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:white;white-space:nowrap;margin-right:8px;}
+.topbar-sub{font-size:11px;opacity:0.65;margin-top:1px;}
+.ctrl-group{display:flex;flex-direction:column;gap:2px;}
+.ctrl-label{font-size:10px;font-weight:600;opacity:0.7;text-transform:uppercase;letter-spacing:0.5px;}
+.ctrl{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:6px;padding:4px 8px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.ctrl option{color:var(--text);background:white;}
+
+/* MAIN LAYOUT */
+.main{display:flex;gap:0;flex:1;min-height:0;}
+
+/* LEFT PANEL */
+.left-panel{width:420px;min-width:380px;background:white;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.left-panel-inner{padding:20px;display:flex;flex-direction:column;gap:16px;}
+
+.section-head{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
+
+/* PUPIL INFO */
+.pupil-row{display:flex;gap:10px;align-items:center;}
+.pupil-name-input{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);}
+.pupil-name-input:focus{outline:none;border-color:var(--rose);}
+.pronoun-select{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;cursor:pointer;}
+.pronoun-select:focus{outline:none;border-color:var(--rose);}
+
+/* SUBJECT CARDS */
+.subject-cards{display:flex;flex-direction:column;gap:14px;}
+
+.subject-card{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.card-header{background:var(--plum);color:white;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.card-subject-name{flex:1;font-weight:700;font-size:14px;}
+.card-mark-wrap{display:flex;align-items:center;gap:6px;}
+.card-mark-label{font-size:11px;opacity:0.75;}
+.mark-input{width:52px;padding:3px 6px;border:1px solid rgba(255,255,255,0.4);border-radius:5px;background:rgba(255,255,255,0.15);color:white;font-size:13px;font-family:'DM Sans',sans-serif;text-align:center;}
+.mark-input::placeholder{color:rgba(255,255,255,0.5);}
+.mark-pct{font-size:12px;opacity:0.8;}
+.card-remove{background:none;border:none;color:rgba(255,255,255,0.7);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;}
+.card-remove:hover{color:white;}
+.card-body{padding:12px 14px;}
+
+/* TOPIC LIST */
+.topic-list{display:flex;flex-direction:column;gap:6px;}
+.topic-row{display:flex;align-items:center;gap:8px;}
+.topic-name{flex:1;font-size:13px;color:var(--text);}
+.rating-btns{display:flex;gap:4px;}
+.rating-btn{padding:3px 9px;border-radius:20px;border:1.5px solid transparent;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.1s;}
+.rating-btn.good{border-color:#a5d6a7;color:var(--good);background:white;}
+.rating-btn.good.active{background:var(--good-bg);border-color:var(--good);color:var(--good);}
+.rating-btn.fair{border-color:#ffcc80;color:var(--fair);background:white;}
+.rating-btn.fair.active{background:var(--fair-bg);border-color:var(--fair);color:var(--fair);}
+.rating-btn.improve{border-color:#ef9a9a;color:var(--improve);background:white;}
+.rating-btn.improve.active{background:var(--improve-bg);border-color:var(--improve);color:var(--improve);}
+
+/* TOPIC EDIT MODE */
+.topic-edit-area{width:100%;min-height:120px;padding:8px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;}
+.topic-edit-area:focus{outline:none;border-color:var(--rose);}
+.topic-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.topic-action-btn{padding:4px 10px;border-radius:6px;border:1.5px solid var(--border);background:white;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.1s;}
+.topic-action-btn:hover{border-color:var(--plum);color:var(--plum);}
+.topic-action-btn.primary{background:var(--plum);border-color:var(--plum);color:white;}
+.topic-action-btn.primary:hover{background:var(--plum-dark);}
+.topic-action-btn.danger{border-color:#ef9a9a;color:var(--improve);}
+.topic-action-btn.danger:hover{background:var(--improve-bg);}
+
+/* NOTES (free-text subjects) */
+.notes-area{width:100%;min-height:80px;padding:8px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;}
+.notes-area:focus{outline:none;border-color:var(--rose);}
+.notes-label{font-size:11px;color:var(--muted);margin-bottom:5px;}
+
+/* ADD SUBJECT */
+.add-subject-wrap{position:relative;}
+.add-subject-btn{width:100%;padding:10px;border:2px dashed var(--border);border-radius:9px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.12s;}
+.add-subject-btn:hover:not(:disabled){border-color:var(--rose);color:var(--rose);}
+.add-subject-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.subject-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1.5px solid var(--border);border-radius:9px;z-index:200;box-shadow:0 4px 16px rgba(74,32,96,0.12);max-height:280px;overflow-y:auto;}
+.dropdown-group-label{padding:8px 12px 4px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;}
+.dropdown-item{padding:8px 12px;font-size:13px;cursor:pointer;color:var(--text);transition:background 0.1s;}
+.dropdown-item:hover{background:var(--blush);}
+.dropdown-item.disabled{opacity:0.4;pointer-events:none;}
+
+/* GENERATE BTN */
+.generate-btn{width:100%;padding:13px;background:var(--plum);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.12s;margin-top:4px;}
+.generate-btn:hover{background:var(--plum-dark);}
+.generate-btn:disabled{background:#9a7ab0;cursor:not-allowed;}
+
+/* RIGHT PANEL */
+.right-panel{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px;}
+.right-panel-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:var(--muted);text-align:center;min-height:300px;}
+.right-panel-empty .big{font-size:48px;opacity:0.3;}
+
+/* OUTPUT CARDS */
+.output-card{background:white;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.output-card-header{background:linear-gradient(135deg,var(--plum),#6a3080);color:white;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.output-card-subject{flex:1;font-weight:700;font-size:14px;}
+.output-card-mark{font-size:12px;opacity:0.8;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:12px;}
+.output-card-body{padding:16px;}
+.output-text{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:12px;background:var(--blush);padding:12px;border-radius:7px;border:1px solid var(--border);}
+.output-text.generating{color:var(--muted);font-style:italic;}
+.output-edit{width:100%;min-height:80px;padding:8px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;margin-bottom:10px;}
+.output-edit:focus{outline:none;border-color:var(--rose);}
+.output-actions{display:flex;gap:8px;}
+.copy-btn{padding:7px 16px;background:var(--plum);color:white;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.copy-btn:hover{background:var(--plum-dark);}
+.copy-btn.copied{background:var(--good);}
+.output-error{color:var(--improve);font-size:13px;padding:8px;background:var(--improve-bg);border-radius:6px;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-brand">MyReportComments</div>
+    <div class="topbar-sub">Subject Report Generator</div>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Grade</span>
+    <select class="ctrl" id="ctrl-grade" onchange="onGradeChange()">
+      <option value="6">Gr 6</option>
+      <option value="7">Gr 7</option>
+      <option value="8" selected>Gr 8</option>
+      <option value="9">Gr 9</option>
+      <option value="10">Gr 10</option>
+      <option value="11">Gr 11</option>
+      <option value="12">Gr 12</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Curriculum</span>
+    <select class="ctrl" id="ctrl-curriculum">
+      <option value="CAPS" selected>CAPS</option>
+      <option value="IEB">IEB</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Tone</span>
+    <select class="ctrl" id="ctrl-tone">
+      <option value="s" selected>Standard</option>
+      <option value="w">Warm</option>
+      <option value="f">Formal</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Language</span>
+    <select class="ctrl" id="ctrl-lang">
+      <option value="en" selected>English</option>
+      <option value="af">Afrikaans</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Term</span>
+    <select class="ctrl" id="ctrl-term">
+      <option value="t1" selected>Term 1</option>
+      <option value="t2">Term 2</option>
+      <option value="t3">Term 3</option>
+      <option value="t4">Term 4</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Words/subject</span>
+    <select class="ctrl" id="ctrl-words">
+      <option value="60">~60</option>
+      <option value="80" selected>~80</option>
+      <option value="100">~100</option>
+      <option value="120">~120</option>
+    </select>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="left-panel-inner">
+
+      <div>
+        <div class="section-head">Pupil</div>
+        <div class="pupil-row">
+          <input class="pupil-name-input" id="pupil-name" type="text" placeholder="Pupil name...">
+          <select class="pronoun-select" id="pronoun">
+            <option value="he">He / Him</option>
+            <option value="she">She / Her</option>
+            <option value="they">They / Them</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-head">Subjects (up to 3)</div>
+        <div class="subject-cards" id="subject-cards"></div>
+
+        <div class="add-subject-wrap" style="margin-top:12px" id="add-wrap">
+          <button class="add-subject-btn" id="add-btn" onclick="toggleDropdown()">+ Add subject</button>
+          <div class="subject-dropdown" id="subject-dropdown" style="display:none"></div>
+        </div>
+      </div>
+
+      <button class="generate-btn" id="generate-btn" onclick="generate()">&#9654; Generate subject commentary</button>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel" id="right-panel">
+    <div class="right-panel-empty" id="empty-state">
+      <div class="big">&#9998;</div>
+      <div><strong>No subjects added yet</strong></div>
+      <div style="font-size:13px">Add up to 3 subjects, fill in the criteria, then click Generate.</div>
+    </div>
+    <div id="output-cards" style="display:none"></div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CAPS TOPIC DATA
+// ══════════════════════════════════════════════════════════════
+const CAPS_TOPICS = {
+  'Mathematics': {
+    6: ['Whole numbers','Common fractions','Decimal fractions','Patterns & algebra','Properties of 2D shapes','Geometry of 3D objects','Measurement','Data handling'],
+    7: ['Integers','Exponents','Common fractions','Decimal fractions','Patterns','Algebraic expressions','Equations','Geometry of 2D shapes','Data handling','Probability'],
+    8: ['Integers & exponents','Algebraic expressions','Algebraic equations','Graphs','Pythagoras theorem','Geometry of 2D shapes','Transformation geometry','Measurement','Data handling','Probability'],
+    9: ['Numbers & integers','Algebraic expressions','Equations & inequalities','Graphs','Trigonometry (introduction)','Geometry of 2D shapes','Measurement','Data handling','Probability'],
+    10: ['Algebraic expressions','Equations & inequalities','Exponents & surds','Number patterns','Analytical geometry','Functions','Finance (growth & decay)','Trigonometry','Euclidean geometry','Statistics & probability'],
+    11: ['Exponents & surds','Equations & inequalities','Number patterns','Analytical geometry','Functions & graphs','Finance','Trigonometry','Measurement','Euclidean geometry','Statistics & probability'],
+    12: ['Number patterns','Functions & graphs','Finance & growth','Trigonometry','Polynomials','Calculus (intro)','Analytical geometry','Euclidean geometry','Statistics','Probability'],
+  },
+  'Mathematical Literacy': {
+    10: ['Number & calculations','Finance (personal budgets)','Measurement & conversions','Maps & plans','Data handling','Probability','Finance (business)'],
+    11: ['Finance (loans & interest)','Measurement','Maps & plans','Data handling','Probability','Conversions & time'],
+    12: ['Finance (tax & investment)','Measurement & conversions','Maps & plans','Data handling','Probability','Financial documents'],
+  },
+  'English Home Language': {
+    6: ['Reading comprehension','Oral communication','Creative writing','Transactional writing','Grammar & language','Vocabulary & spelling','Summary skills','Listening & speaking'],
+    7: ['Reading comprehension','Poetry analysis','Short stories','Oral presentation','Essay writing','Transactional texts','Grammar & language structures','Summary writing'],
+    8: ['Literature (novel or drama)','Poetry analysis','Reading comprehension','Essay writing','Transactional writing','Oral communication','Grammar & language','Summary writing'],
+    9: ['Literature study','Poetry','Essay writing','Transactional texts','Reading comprehension','Oral communication','Grammar & language','Summary'],
+    10: ['Literature (drama or novel)','Poetry analysis','Language in context','Essay writing','Transactional writing','Oral communication','Grammar','Summary','Reading comprehension'],
+    11: ['Literature study','Poetry','Contextual questions','Essay writing','Transactional texts','Oral communication','Grammar & language','Summary writing'],
+    12: ['Drama (set work)','Novel (set work)','Poetry','Essay writing','Transactional texts','Language in context','Grammar','Summary','Oral communication'],
+  },
+  'Afrikaans Home Language': {
+    6: ['Leesbegrip','Mondelinge kommunikasie','Kreatiewe skryfwerk','Transaksionele tekste','Taalstrukture & konvensies','Woordeskat & spelling','Opsomming','Luister & praat'],
+    7: ['Leesbegrip','Poësie','Kortverhale','Mondelinge aanbieding','Opstelskryfwerk','Transaksionele tekste','Taalstrukture','Opsomming'],
+    8: ['Letterkunde (roman of drama)','Poësieanalise','Leesbegrip','Opstelskryfwerk','Transaksionele skryfwerk','Mondeling','Taalstrukture','Opsomming'],
+    9: ['Letterkundestudie','Poësie','Opstelskryfwerk','Transaksionele tekste','Leesbegrip','Mondeling','Taalstrukture','Opsomming'],
+    10: ['Letterkunde (drama of roman)','Poësieanalise','Taal in konteks','Opstelskryfwerk','Transaksionele skryfwerk','Mondeling','Taalstrukture','Opsomming'],
+    11: ['Letterkundestudie','Poësie','Kontekstuele vrae','Opstelskryfwerk','Transaksionele tekste','Mondeling','Taalstrukture','Opsomming'],
+    12: ['Drama (voorgeskrewe werk)','Roman (voorgeskrewe werk)','Poësie','Opstelskryfwerk','Transaksionele tekste','Taal in konteks','Taalstrukture','Opsomming'],
+  },
+  'Afrikaans First Additional Language': {
+    6: ['Leesbegrip','Mondelinge kommunikasie','Skryfwerk','Taalstrukture','Woordeskat','Luister & praat'],
+    7: ['Leesbegrip','Poësie','Skryfwerk','Mondeling','Taalstrukture','Opsomming'],
+    8: ['Leesbegrip','Skryfwerk (opstel)','Transaksionele tekste','Taalstrukture','Mondeling','Opsomming'],
+    9: ['Leesbegrip','Skryfwerk','Taalstrukture','Mondeling','Opsomming'],
+    10: ['Leesbegrip','Skryfwerk','Taalstrukture & konvensies','Mondeling','Transaksionele tekste','Opsomming'],
+    11: ['Leesbegrip','Skryfwerk','Taalstrukture','Mondeling','Transaksionele tekste','Opsomming'],
+    12: ['Leesbegrip','Skryfwerk','Taalstrukture','Mondeling','Transaksionele tekste','Opsomming'],
+  },
+  'Natural Sciences': {
+    6: ['Life and living (nutrition & food)','Life and living (biodiversity)','Matter and materials','Energy and change','Planet Earth and beyond'],
+    7: ['Cells (structure & function)','Life processes in plants','Life processes in animals','Matter and materials','Thermal energy','Visible light & properties','Magnetism','Plate tectonics'],
+    8: ['Cells & support systems','Breathing & gas exchange','Blood circulation','Digestion & nutrition','Micro-organisms & disease','Atoms & molecules','Chemical reactions','Electricity & circuits','Heat transfer','Rocks & mining'],
+    9: ['Biodiversity & classification','Biosphere','Photosynthesis & respiration','Chemical reactions','Motion & forces','Energy (forms & transfer)','Electromagnetic radiation','Earth & beyond'],
+  },
+  'Physical Sciences': {
+    10: ['Vectors & scalars','Motion in one dimension','Energy (work, power)','Transverse waves','Sound (longitudinal waves)','Electromagnetic radiation','Magnetism','Electric circuits','Chemical bonding','Intermolecular forces','Ideal gases','Quantitative chemistry'],
+    11: ['Momentum & impulse','Vertical projectile motion','Mechanical energy','Geometrical optics','Electrostatics','Electric circuits','Electromagnetism','Chemical change','Organic chemistry','Electrochemical reactions'],
+    12: ['Momentum & impulse','Vertical projectile motion','Work, energy & power','Doppler effect','Electrostatics','Electric circuits','Optical phenomena','Organic molecules','Chemical equilibrium','Acids & bases','Electrochemistry'],
+  },
+  'Life Sciences': {
+    10: ['Biodiversity & classification','Cells & cell processes','Plant nutrition (photosynthesis)','Animal nutrition & digestion','Gas exchange in plants','Gas exchange in animals','Excretion in animals'],
+    11: ['DNA, RNA & protein synthesis','Cell division (meiosis & mitosis)','Plant response to environment','Animal behaviour','Nervous system','Excretion & osmoregulation','Immune system'],
+    12: ['DNA & protein synthesis','Genetics & inheritance','Evolution & natural selection','Human reproduction','Population ecology','Human impact on the biosphere'],
+  },
+  'Geography': {
+    10: ['Map work & aerial photography','Atmosphere (climate & weather)','Geomorphology (fluvial processes)','People & places (population)','Resources & sustainability'],
+    11: ['Map work (topographic & aerial)','Climate & weather systems','Coastal & glacial geomorphology','Settlement geography','Economic geography'],
+    12: ['Map work','Climate & weather','Weathering & mass movement','Development geography','Economic geography','Geographical Information Systems'],
+  },
+  'History': {
+    10: ['The world around 1600','Transatlantic slave trade','The Industrial Revolution','Imperialism & colonialism','World War I & its aftermath'],
+    11: ['The Cold War','Civil society protests (1950s–1970s)','The Americas (1900s)','Africa in the 20th century','Independent Africa (nationalism)'],
+    12: ['SA 1948–1964 (apartheid)','SA 1964–1990 (resistance)','The road to democracy in SA','Global changes since 1990','Historical research skills'],
+  },
+  'Social Sciences': {
+    6: ['Early societies & trade','Democratic government','Africa & the wider world','Map skills','Climate & weather','Population & settlement'],
+    7: ['Age of exploration','Trans-oceanic trade & colonialism','Southern Africa 1600–1800','Atmosphere','Lithosphere','Hydrosphere'],
+    8: ['Industrial Revolution','Imperial expansion','Capitalism & the labour movement','Population geography','Economic geography','Map work'],
+    9: ['The road to World War I','Africa in the 20th century','Democratic South Africa','Resources & sustainability','Development geography','Environmental geography'],
+  },
+  'EMS': {
+    6: ['The economy & markets','Financial literacy (budgeting)','Entrepreneurship','Production & consumption','Consumer rights'],
+    7: ['Economic systems','Financial records (basic)','Entrepreneurship opportunities','Business concepts','Consumer rights & responsibilities'],
+    8: ['Forms of ownership','Factors of production','Financial statements (basic)','Marketing concepts','Business planning'],
+    9: ['Business environments','Financial management','Entrepreneurship & innovation','Economic sectors','Consumer education & rights'],
+  },
+  'Business Studies': {
+    10: ['Business environments','Forms of ownership','Business planning','Marketing basics','Financial management','Human resources intro','Operations management'],
+    11: ['Business functions','Financial management (cash flow)','Marketing strategy','Human resources management','Operations management','Business strategies'],
+    12: ['Business environments & change','Financial statements & analysis','Marketing (advanced)','Human resources & legislation','Operations management','Leadership & management'],
+  },
+  'Economics': {
+    10: ['Circular flow model','Business cycles','Public sector & government','Markets & prices','Economic growth & development indicators'],
+    11: ['Monetary sector (banks & money)','Labour market','Trade & protectionism','Economic growth','Development economics'],
+    12: ['Economic growth & GDP','Balance of payments','Foreign exchange markets','Development indicators','Economic policy & government'],
+  },
+  'Accounting': {
+    10: ['Accounting equation','Financial records (journals & ledgers)','Bank reconciliation','Debtors & creditors reconciliation','Cash flow statement','Financial statements (basic)'],
+    11: ['Companies (shares & equity)','Financial statements','Inventory systems (perpetual)','Cash flow budgets','Internal controls & audit','Cost accounting intro'],
+    12: ['Companies (final accounts)','Cash flow statements','Ratio analysis','Budgets & projections','Cost accounting','Ethics & governance in accounting'],
+  },
+  'Technology': {
+    6: ['Structures & structural integrity','Processing (food & materials)','Systems & control (pneumatics)','Design process','Technical drawing basics'],
+    7: ['Structures','Processing (manufacturing)','Systems & control (hydraulics)','Electrical systems','Technical graphics'],
+    8: ['Structures (trusses & bridges)','Processing materials','Mechanical systems','Electrical systems & circuits','Design process','Technical graphics'],
+    9: ['Structures','Processing','Systems & control (electronics)','Design process','Technical graphics','Evaluation & testing'],
+  },
+  'Life Orientation': {
+    6: ['Personal well-being','Healthy lifestyle choices','Social responsibility','Physical activity & fitness','Career awareness','Constitution & citizenship'],
+    7: ['Personal development','Health & safety','Substance awareness','Physical activity','Study skills & goal setting','Career awareness'],
+    8: ['Personal development & identity','Health risk behaviour','Physical activity','Career guidance','Democracy & human rights'],
+    9: ['Well-being & self-concept','Social issues & peer pressure','Healthy lifestyle','Career planning','Human rights & the Constitution'],
+    10: ['Personal development','Social & environmental responsibility','Physical activity planning','Career & study options','Democracy & rights'],
+    11: ['Self in society','Health & risk behaviour','Physical fitness','Career & study skills','Civic responsibility & volunteering'],
+    12: ['Exam preparation & study skills','Health & physical fitness','Career planning & higher education','Democracy & governance','Community engagement'],
+  },
+};
+
+// Subjects without topic data → mark + free text
+const FREE_TEXT_SUBJECTS = [
+  'Art','Creative Arts','Visual Arts','Music','Drama','Dramatic Arts',
+  'Design','Computer Applications Technology','Information Technology',
+  'Agricultural Sciences','Engineering Graphics & Design','Tourism',
+  'Other',
+];
+
+const SUBJECT_GROUPS = [
+  { label: 'Languages', subjects: ['English Home Language','Afrikaans Home Language','Afrikaans First Additional Language'] },
+  { label: 'Mathematics', subjects: ['Mathematics','Mathematical Literacy'] },
+  { label: 'Sciences', subjects: ['Natural Sciences','Physical Sciences','Life Sciences'] },
+  { label: 'Humanities', subjects: ['Social Sciences','Geography','History'] },
+  { label: 'Commerce', subjects: ['EMS','Business Studies','Economics','Accounting'] },
+  { label: 'Technology & Other', subjects: ['Technology','Life Orientation'] },
+  { label: 'Creative & Other', subjects: ['Art','Creative Arts','Visual Arts','Music','Drama','Dramatic Arts','Design','Computer Applications Technology','Information Technology','Agricultural Sciences','Engineering Graphics & Design','Tourism','Other'] },
+];
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let selectedSubjects = [];
+// selectedSubjects = [{subject, mark, topics: [{name, rating}], notes, editing}]
+
+// ══════════════════════════════════════════════════════════════
+// TOPIC HELPERS
+// ══════════════════════════════════════════════════════════════
+function capsTopics(subject, grade) {
+  return (CAPS_TOPICS[subject] || {})[parseInt(grade)] || null;
+}
+
+function storageKey(subject, grade) {
+  return `sr_topics_${subject}_${grade}`;
+}
+
+function getTopics(subject, grade) {
+  const stored = localStorage.getItem(storageKey(subject, grade));
+  if (stored) { try { return JSON.parse(stored); } catch {} }
+  return capsTopics(subject, grade);
+}
+
+function saveTopics(subject, grade, topics) {
+  localStorage.setItem(storageKey(subject, grade), JSON.stringify(topics));
+}
+
+function resetTopics(subject, grade) {
+  localStorage.removeItem(storageKey(subject, grade));
+}
+
+function hasCapsData(subject, grade) {
+  return getTopics(subject, grade) !== null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// SUBJECT MANAGEMENT
+// ══════════════════════════════════════════════════════════════
+function getGrade() { return document.getElementById('ctrl-grade').value; }
+
+function addSubject(name) {
+  if (selectedSubjects.length >= 3) return;
+  if (selectedSubjects.find(s => s.subject === name)) return;
+  const grade = getGrade();
+  const topicNames = getTopics(name, grade);
+  const topics = topicNames ? topicNames.map(n => ({ name: n, rating: 'fair' })) : [];
+  selectedSubjects.push({ subject: name, mark: '', topics, notes: '', editing: false });
+  renderCards();
+  hideDropdown();
+  updateAddBtn();
+}
+
+function removeSubject(idx) {
+  selectedSubjects.splice(idx, 1);
+  renderCards();
+  updateAddBtn();
+}
+
+function onGradeChange() {
+  const grade = getGrade();
+  selectedSubjects.forEach(s => {
+    const topicNames = getTopics(s.subject, grade);
+    s.topics = topicNames ? topicNames.map(n => ({ name: n, rating: 'fair' })) : [];
+    s.editing = false;
+  });
+  renderCards();
+}
+
+function setRating(subjectIdx, topicIdx, rating) {
+  selectedSubjects[subjectIdx].topics[topicIdx].rating = rating;
+  renderTopicRow(subjectIdx, topicIdx);
+}
+
+function renderTopicRow(si, ti) {
+  const t = selectedSubjects[si].topics[ti];
+  ['good','fair','improve'].forEach(r => {
+    const btn = document.getElementById(`rb_${si}_${ti}_${r}`);
+    if (!btn) return;
+    btn.classList.toggle('active', t.rating === r);
+  });
+}
+
+function startEdit(si) {
+  selectedSubjects[si].editing = true;
+  renderCards();
+}
+
+function saveEdit(si) {
+  const grade = getGrade();
+  const s = selectedSubjects[si];
+  const ta = document.getElementById(`edit-ta-${si}`);
+  if (!ta) return;
+  const lines = ta.value.split('\n').map(l => l.trim()).filter(Boolean);
+  const oldRatings = {};
+  s.topics.forEach(t => { oldRatings[t.name] = t.rating; });
+  s.topics = lines.map(name => ({ name, rating: oldRatings[name] || 'fair' }));
+  saveTopics(s.subject, grade, lines);
+  s.editing = false;
+  renderCards();
+}
+
+function resetEdit(si) {
+  const grade = getGrade();
+  const s = selectedSubjects[si];
+  resetTopics(s.subject, grade);
+  const defaults = capsTopics(s.subject, grade) || [];
+  const oldRatings = {};
+  s.topics.forEach(t => { oldRatings[t.name] = t.rating; });
+  s.topics = defaults.map(name => ({ name, rating: oldRatings[name] || 'fair' }));
+  s.editing = false;
+  renderCards();
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════
+function renderCards() {
+  const container = document.getElementById('subject-cards');
+  container.innerHTML = selectedSubjects.map((s, si) => renderCard(s, si)).join('');
+}
+
+function renderCard(s, si) {
+  const isFreeText = !hasCapsData(s.subject, getGrade());
+  const bodyHtml = isFreeText ? renderFreeText(s, si) : (s.editing ? renderEditMode(s, si) : renderTopics(s, si));
+  return `
+<div class="subject-card">
+  <div class="card-header">
+    <span class="card-subject-name">${s.subject}</span>
+    <div class="card-mark-wrap">
+      <span class="card-mark-label">Mark:</span>
+      <input class="mark-input" type="number" min="0" max="100" placeholder="—"
+        value="${s.mark}" oninput="selectedSubjects[${si}].mark=this.value" id="mark-${si}">
+      <span class="mark-pct">%</span>
+    </div>
+    <button class="card-remove" onclick="removeSubject(${si})">×</button>
+  </div>
+  <div class="card-body">${bodyHtml}</div>
+</div>`;
+}
+
+function renderTopics(s, si) {
+  const rows = s.topics.map((t, ti) => `
+<div class="topic-row">
+  <span class="topic-name">${t.name}</span>
+  <div class="rating-btns">
+    <button class="rating-btn good${t.rating==='good'?' active':''}" id="rb_${si}_${ti}_good" onclick="setRating(${si},${ti},'good')">Good</button>
+    <button class="rating-btn fair${t.rating==='fair'?' active':''}" id="rb_${si}_${ti}_fair" onclick="setRating(${si},${ti},'fair')">Fair</button>
+    <button class="rating-btn improve${t.rating==='improve'?' active':''}" id="rb_${si}_${ti}_improve" onclick="setRating(${si},${ti},'improve')">Improve</button>
+  </div>
+</div>`).join('');
+
+  return `<div class="topic-list">${rows}</div>
+<div class="topic-actions" style="margin-top:10px">
+  <button class="topic-action-btn" onclick="startEdit(${si})">✏️ Edit topics</button>
+</div>`;
+}
+
+function renderEditMode(s, si) {
+  const topicText = s.topics.map(t => t.name).join('\n');
+  return `<div style="font-size:11px;color:var(--muted);margin-bottom:6px">One topic per line. Changes saved per grade.</div>
+<textarea class="topic-edit-area" id="edit-ta-${si}">${topicText}</textarea>
+<div class="topic-actions">
+  <button class="topic-action-btn primary" onclick="saveEdit(${si})">Save</button>
+  <button class="topic-action-btn danger" onclick="resetEdit(${si})">Reset to CAPS defaults</button>
+  <button class="topic-action-btn" onclick="selectedSubjects[${si}].editing=false;renderCards()">Cancel</button>
+</div>`;
+}
+
+function renderFreeText(s, si) {
+  return `<div class="notes-label">No CAPS topic data for this subject — add context notes below.</div>
+<textarea class="notes-area" placeholder="E.g. Strong in still life drawing. Needs to develop colour theory and composition skills..."
+  oninput="selectedSubjects[${si}].notes=this.value">${s.notes}</textarea>`;
+}
+
+function updateAddBtn() {
+  const btn = document.getElementById('add-btn');
+  if (btn) btn.disabled = selectedSubjects.length >= 3;
+}
+
+// ══════════════════════════════════════════════════════════════
+// DROPDOWN
+// ══════════════════════════════════════════════════════════════
+function buildDropdown() {
+  const selected = selectedSubjects.map(s => s.subject);
+  return SUBJECT_GROUPS.map(g => `
+<div class="dropdown-group-label">${g.label}</div>
+${g.subjects.map(s => `<div class="dropdown-item${selected.includes(s)?' disabled':''}" onclick="addSubject('${s}')">${s}</div>`).join('')}
+`).join('');
+}
+
+function toggleDropdown() {
+  const dd = document.getElementById('subject-dropdown');
+  if (dd.style.display === 'none') {
+    dd.innerHTML = buildDropdown();
+    dd.style.display = 'block';
+  } else {
+    dd.style.display = 'none';
+  }
+}
+
+function hideDropdown() {
+  const dd = document.getElementById('subject-dropdown');
+  if (dd) dd.style.display = 'none';
+}
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('add-wrap')?.contains(e.target)) hideDropdown();
+});
+
+// ══════════════════════════════════════════════════════════════
+// GENERATE
+// ══════════════════════════════════════════════════════════════
+async function generate() {
+  const name = document.getElementById('pupil-name').value.trim();
+  if (!name) { alert('Please enter a pupil name.'); return; }
+  if (selectedSubjects.length === 0) { alert('Please add at least one subject.'); return; }
+
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generating...';
+
+  const grade       = document.getElementById('ctrl-grade').value;
+  const curriculum  = document.getElementById('ctrl-curriculum').value;
+  const tone        = document.getElementById('ctrl-tone').value;
+  const language    = document.getElementById('ctrl-lang').value;
+  const term        = document.getElementById('ctrl-term').value;
+  const wordTarget  = parseInt(document.getElementById('ctrl-words').value);
+  const pronouns    = document.getElementById('pronoun').value;
+
+  // Show placeholder cards immediately
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('output-cards').style.display = 'flex';
+  document.getElementById('output-cards').style.flexDirection = 'column';
+  document.getElementById('output-cards').style.gap = '16px';
+  document.getElementById('output-cards').innerHTML = selectedSubjects.map((s, i) => outputCardHTML(s, i, null, true)).join('');
+
+  // Fire all calls in parallel
+  const promises = selectedSubjects.map((s, i) =>
+    fetch('/api/generate-subject-comment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, pronouns, grade, curriculum, tone, language, term, wordTarget,
+        subject: s.subject,
+        mark: s.mark || null,
+        topics: s.topics.length > 0 ? s.topics : null,
+        notes: s.notes || null,
+      }),
+    })
+    .then(r => r.json())
+    .then(data => ({ idx: i, comment: data.comment || '', error: null }))
+    .catch(e => ({ idx: i, comment: '', error: 'Generation failed — try again.' }))
+  );
+
+  const results = await Promise.all(promises);
+
+  results.forEach(r => {
+    const card = document.getElementById(`output-card-${r.idx}`);
+    if (!card) return;
+    card.innerHTML = outputCardHTML(selectedSubjects[r.idx], r.idx, r.error ? null : r.comment, false, r.error);
+  });
+
+  btn.disabled = false;
+  btn.textContent = '► Generate subject commentary';
+}
+
+function outputCardHTML(s, idx, comment, loading, error) {
+  const markBadge = s.mark ? `<span class="output-card-mark">${s.mark}%</span>` : '';
+  let body = '';
+  if (loading) {
+    body = `<div class="output-text generating">Generating commentary for ${s.subject}...</div>`;
+  } else if (error) {
+    body = `<div class="output-error">${error}</div>`;
+  } else {
+    body = `
+<div class="output-text" id="out-text-${idx}">${comment}</div>
+<textarea class="output-edit" id="out-edit-${idx}" oninput="document.getElementById('out-text-${idx}').textContent=this.value">${comment}</textarea>
+<div class="output-actions">
+  <button class="copy-btn" id="copy-btn-${idx}" onclick="copyOutput(${idx})">Copy</button>
+</div>`;
+  }
+  return `<div class="output-card" id="output-card-${idx}">
+<div class="output-card-header">
+  <span class="output-card-subject">${s.subject}</span>${markBadge}
+</div>
+<div class="output-card-body">${body}</div>
+</div>`;
+}
+
+function copyOutput(idx) {
+  const ta = document.getElementById(`out-edit-${idx}`);
+  if (!ta) return;
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = document.getElementById(`copy-btn-${idx}`);
+    if (btn) { btn.textContent = 'Copied!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+  });
+}
+</script>
+</body>
+</html>
