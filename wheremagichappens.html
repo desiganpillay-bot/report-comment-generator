@@ -106,6 +106,7 @@ input[type=range].wslider{width:80px;accent-color:#c06b9a;height:4px}
 .gen-btn{width:100%;padding:12px;background:#4a2060;color:white;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;transition:background 0.12s}
 .gen-btn:hover{background:#3a1850}
 .gen-btn:active{transform:scale(0.99)}
+.gen-btn:disabled{background:#9a7ab0;cursor:not-allowed;transform:none}
 
 .output-box{background:#fdf6f9;border:1.5px solid #c06b9a;border-radius:8px;padding:14px;margin-bottom:12px;min-height:80px;position:relative}
 .output-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -242,13 +243,29 @@ input[type=range].wslider{width:80px;accent-color:#c06b9a;height:4px}
   <!-- Top bar -->
   <div class="topbar">
     <div class="topbar-title" id="topbar-name">Select a pupil to begin</div>
+    <div class="ctrl-group" id="grade-group">
+      <span class="ctrl-label">Grade</span>
+      <select class="ctrl" id="ctrl-current-grade">
+        <option value="R">Gr R</option>
+        <option value="1">Gr 1</option>
+        <option value="2">Gr 2</option>
+        <option value="3">Gr 3</option>
+        <option value="4">Gr 4</option>
+        <option value="5">Gr 5</option>
+        <option value="6">Gr 6</option>
+        <option value="7" selected>Gr 7</option>
+        <option value="8">Gr 8</option>
+        <option value="9">Gr 9</option>
+        <option value="10">Gr 10</option>
+        <option value="11">Gr 11</option>
+        <option value="12">Gr 12</option>
+      </select>
+    </div>
     <div class="ctrl-group">
-      <span class="ctrl-label">Grade band</span>
-      <select class="ctrl" id="ctrl-grade">
-        <option value="foundation">Foundation (Gr R–3)</option>
-        <option value="intermediate" selected>Intermediate (Gr 4–6)</option>
-        <option value="senior">Senior (Gr 7–9)</option>
-        <option value="high">High School (Gr 10–12)</option>
+      <span class="ctrl-label">Curriculum</span>
+      <select class="ctrl" id="ctrl-curriculum">
+        <option value="CAPS" selected>CAPS</option>
+        <option value="IEB">IEB</option>
       </select>
     </div>
     <div class="ctrl-group">
@@ -273,24 +290,6 @@ input[type=range].wslider{width:80px;accent-color:#c06b9a;height:4px}
         <option value="t2">Term 2</option>
         <option value="t3">Term 3</option>
         <option value="t4">Term 4</option>
-      </select>
-    </div>
-    <div class="ctrl-group" id="grade-group" style="display:none">
-      <span class="ctrl-label">Current Grade</span>
-      <select class="ctrl" id="ctrl-current-grade">
-        <option value="R">Gr R</option>
-        <option value="1">Gr 1</option>
-        <option value="2">Gr 2</option>
-        <option value="3">Gr 3</option>
-        <option value="4">Gr 4</option>
-        <option value="5">Gr 5</option>
-        <option value="6">Gr 6</option>
-        <option value="7">Gr 7</option>
-        <option value="8">Gr 8</option>
-        <option value="9">Gr 9</option>
-        <option value="10">Gr 10</option>
-        <option value="11">Gr 11</option>
-        <option value="12">Gr 12</option>
       </select>
     </div>
     <div class="ctrl-group">
@@ -1427,16 +1426,6 @@ function getTerm(){
   return el ? el.value : 't1';
 }
 
-// Show/hide grade selector based on term
-document.addEventListener('DOMContentLoaded', ()=>{
-  const termEl = document.getElementById('ctrl-term');
-  const gradeGroup = document.getElementById('grade-group');
-  if(termEl && gradeGroup){
-    termEl.addEventListener('change', ()=>{
-      gradeGroup.style.display = termEl.value==='t4' ? 'flex' : 'none';
-    });
-  }
-});
 
 // ══════════════════════════════════════════════════════════════
 // FLOW ENGINE — sentence-start deduplication + pronoun cap
@@ -2032,90 +2021,69 @@ function openBulkGenerate(){
   setTimeout(runBulkGenerate, 80);
 }
 
-function runBulkGenerate(){
-  const total=pupils.length;
-  let idx=0;
-  function next(){
-    if(idx>=total){
-      finishBulkGenerate();
-      return;
+async function runBulkGenerate(){
+  const total = pupils.length;
+  const defaults = { overall:'excellent', potential:'consistently', peers:'very_well',
+                     behave:'excellent', pronoun:'he', sport:'omit', acad:'omit', badj:'omit' };
+  for(let idx = 0; idx < total; idx++){
+    const p = pupils[idx];
+    const pct = Math.round((idx / total) * 100);
+    document.getElementById('bulk-progress-bar').style.width = pct + '%';
+    document.getElementById('bulk-progress-label').textContent = `Generating: ${p.name} (${idx+1} of ${total})`;
+    const c = p.criteria || {};
+    const overrides = {
+      pronoun:   c.pronoun   !== undefined ? c.pronoun   : defaults.pronoun,
+      overall:   c.overall   !== undefined ? c.overall   : defaults.overall,
+      potential: c.potential !== undefined ? c.potential : defaults.potential,
+      peers:     c.peers     !== undefined ? c.peers     : defaults.peers,
+      behave:    c.behave    !== undefined ? c.behave    : defaults.behave,
+      acad:      c.acad      !== undefined ? c.acad      : defaults.acad,
+      badj:      c.badj      !== undefined ? c.badj      : defaults.badj,
+      sport:     c.sport     !== undefined ? c.sport     : defaults.sport,
+      excelled:  c['subj-excel']  || [],
+      effort:    c['subj-effort'] || [],
+    };
+    try {
+      const comment = await buildCommentAI(p, overrides);
+      bulkResults.push({ id:p.id, name:p.name, comment });
+    } catch(e) {
+      bulkResults.push({ id:p.id, name:p.name, comment:`[Error generating comment for ${p.name} — please try again]` });
     }
-    const p=pupils[idx];
-    const pct=Math.round((idx/total)*100);
-    document.getElementById('bulk-progress-bar').style.width=pct+'%';
-    document.getElementById('bulk-progress-label').textContent=`Generating: ${p.name} (${idx+1} of ${total})`;
-    // Temporarily activate pupil context for generation
-    const prevActive=activePupilId;
-    activePupilId=p.id;
-    // Apply saved criteria to form fields
-    const c=p.criteria||{};
-    const defaults={overall:'excellent',potential:'consistently',peers:'very_well',behave:'excellent',pronoun:'he',sport:'omit',acad:'omit',badj:'omit','subj-excel':[],'subj-effort':[]};
-    ['f-overall','f-potential','f-peers','f-behave','f-pronoun','f-sport','f-acad','f-badj',].forEach(fid=>{
-      const key=fid.replace('f-','');
-      const el=document.getElementById(fid);
-      if(el) el.value=c[key]!==undefined?c[key]:(defaults[key]||'omit');
-    });
-    const comment=buildComment(p.name);
-    bulkResults.push({id:p.id, name:p.name, comment});
-    activePupilId=prevActive;
-    idx++;
-    setTimeout(next, 120);
   }
-  next();
+  finishBulkGenerate();
 }
 
-function buildComment(name){
-  const prKey   = document.getElementById('f-pronoun').value;
-  const pr      = PR[prKey];
-  const tone    = document.getElementById('ctrl-tone').value;
-  const target  = parseInt(document.getElementById('word-slider').value);
-  const overall = document.getElementById('f-overall').value;
-  const potential=document.getElementById('f-potential').value;
-  const peers   = document.getElementById('f-peers').value;
-  const behave  = document.getElementById('f-behave').value;
-  const acad    = document.getElementById('f-acad').value;
-  const badj    = document.getElementById('f-badj').value;
-  const sport   = document.getElementById('f-sport').value;
-  const excelled=getSubjExcelled();
-  const effort=getSubjEffort();
-  const nameUsed=[false];
-  const pid=activePupilId;
-  const pron=(text)=>applyPR(text,name,pr,nameUsed);
-  const get=(bucket,key)=>{
-    if(!bucket||!bucket[key])return null;
-    return pron(getVariant(bucket[key],tone,pid));
-  };
-  const parts=[];
-  const opRaw=getTermVariant(PB.opener,tone,pid);
-  nameUsed[0]=false;
-  parts.push(applyPR(opRaw,name,pr,[false]));
-  nameUsed[0]=true;
-  if(overall!=='omit')    parts.push(get(PB.overall,overall));
-  if(potential!=='omit')  parts.push(get(PB.potential,potential));
-  if(peers!=='omit')      parts.push(get(PB.peers,peers));
-  if(behave!=='omit')     parts.push(get(PB.behave,behave));
-  if(acad!=='omit'&&acad!=='none') parts.push(get(PB.acad,acad));
-  else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB.acad,'none'));
-  if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
-  excelled.forEach(s=>{
-    const bank=PB.subj_excel[s]||PB.subj_excel.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,s);
-    parts.push(pron(raw));
+async function buildCommentAI(p, overrides={}){
+  const name       = p.name;
+  const pronouns   = overrides.pronoun   !== undefined ? overrides.pronoun   : document.getElementById('f-pronoun').value;
+  const tone       = document.getElementById('ctrl-tone').value;
+  const language   = document.getElementById('ctrl-lang').value;
+  const term       = document.getElementById('ctrl-term').value;
+  const grade      = document.getElementById('ctrl-current-grade').value;
+  const curriculum = document.getElementById('ctrl-curriculum').value;
+  const wordTarget = parseInt(document.getElementById('word-slider').value);
+  const overall    = overrides.overall   !== undefined ? overrides.overall   : document.getElementById('f-overall').value;
+  const potential  = overrides.potential !== undefined ? overrides.potential : document.getElementById('f-potential').value;
+  const peers      = overrides.peers     !== undefined ? overrides.peers     : document.getElementById('f-peers').value;
+  const behave     = overrides.behave    !== undefined ? overrides.behave    : document.getElementById('f-behave').value;
+  const acad       = overrides.acad      !== undefined ? overrides.acad      : document.getElementById('f-acad').value;
+  const badj       = overrides.badj      !== undefined ? overrides.badj      : document.getElementById('f-badj').value;
+  const sport      = overrides.sport     !== undefined ? overrides.sport     : document.getElementById('f-sport').value;
+  const excelled   = overrides.excelled  !== undefined ? overrides.excelled  : getSubjExcelled();
+  const effort     = overrides.effort    !== undefined ? overrides.effort    : getSubjEffort();
+
+  const resp = await fetch('/api/generate-comment', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, pronouns, tone, language, term, grade, curriculum,
+                           wordTarget, overall, potential, peers, behave, acad, badj,
+                           sport, excelled, effort }),
   });
-  effort.forEach(s=>{
-    const bank=PB.subj_effort[s]||PB.subj_effort.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,s);
-    parts.push(pron(raw));
-  });
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0&&Math.random()>0.5) parts.push(pron(guardPunctuation(pick(allPhrases))));
-  if(sport!=='omit') parts.push(get(PB.sport,sport));
-  parts.push(pron(getTermVariant(PB.closer,tone,pid)));
-  const sentences=deduplicateStarts(parts.filter(Boolean));
-  const trimmed=trimToTarget(sentences,target);
-  return trimmed.map(s=>s.trim()).join(' ').replace(/ {2,}/g,' ');
+
+  if(!resp.ok) throw new Error('API error ' + resp.status);
+  const data = await resp.json();
+  if(!data.comment) throw new Error('Empty response');
+  return data.comment;
 }
 
 function finishBulkGenerate(){
@@ -2328,57 +2296,32 @@ function getSubjEffort(){
   return cbs;
 }
 
-function generate(){
-  if(getLang() === 'af'){ generateAF(); return; }
+async function generate(){
   if(!activePupilId){ alert('Please select a pupil first.'); return; }
   const p = pupils.find(x=>x.id===activePupilId);
   if(!p) return;
-  const name    = p.name;
-  const prKey   = document.getElementById('f-pronoun').value;
-  const pr      = PR[prKey];
-  const tone    = document.getElementById('ctrl-tone').value;
-  const target  = parseInt(document.getElementById('word-slider').value);
-  const overall = document.getElementById('f-overall').value;
-  const potential=document.getElementById('f-potential').value;
-  const peers   = document.getElementById('f-peers').value;
-  const behave  = document.getElementById('f-behave').value;
-  const acad    = document.getElementById('f-acad').value;
-  const badj    = document.getElementById('f-badj').value;
-  const sport   = document.getElementById('f-sport').value;
-  const excelled=getSubjExcelled();
-  const effort=getSubjEffort();
-  const nameUsed=[false];
-  const pid=activePupilId;
-  const pron=(text)=>applyPR(text,name,pr,nameUsed);
-  const get=(bucket,key)=>{ if(!bucket||!bucket[key])return null; return pron(getVariant(bucket[key],tone,pid)); };
-  const parts=[];
-  const opRaw = getTermVariant(PB.opener, tone, pid);
-  nameUsed[0]=false;
-  parts.push(applyPR(opRaw,name,pr,[false]));
-  nameUsed[0]=true;
-  if(overall!=='omit')    parts.push(get(PB.overall,overall));
-  if(potential!=='omit')  parts.push(get(PB.potential,potential));
-  if(peers!=='omit')      parts.push(get(PB.peers,peers));
-  if(behave!=='omit')     parts.push(get(PB.behave,behave));
-  if(acad!=='omit'&&acad!=='none') parts.push(get(PB.acad,acad));
-  else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB.acad,'none'));
-  if(badj!=='omit'&&badj!=='none') parts.push(get(PB.badj,badj));
-  excelled.forEach(s=>{ const bank=PB.subj_excel[s]||PB.subj_excel.__default__; let raw=getVariant(bank,tone); raw=raw.replace(/\{SUBJ\}/g,s); parts.push(pron(raw)); });
-  effort.forEach(s=>{ const bank=PB.subj_effort[s]||PB.subj_effort.__default__; let raw=getVariant(bank,tone); raw=raw.replace(/\{SUBJ\}/g,s); parts.push(pron(raw)); });
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0&&Math.random()>0.5){ parts.push(pron(guardPunctuation(pick(allPhrases)))); }
-  if(sport!=='omit') parts.push(get(PB.sport,sport));
-  parts.push(pron(getTermVariant(PB.closer,tone,pid)));
-  const sentences=deduplicateStarts(parts.filter(Boolean));
-  const trimmed=trimToTarget(sentences,target);
-  const comment=trimmed.map(s=>s.trim()).join(' ').replace(/ {2,}/g,' ');
-  displayComment(comment,name);
-  // Guarantee edit-area reflects current comment (defensive sync)
-  document.getElementById('edit-area').value=comment;
-  history.unshift({pupil:name,comment,ts:new Date().toLocaleTimeString()});
-  if(history.length>20) history.pop();
-  renderHistory();
-  saveState();
+
+  const btn = document.querySelector('.gen-btn');
+  const lang = getLang();
+  if(btn){ btn.disabled = true; btn.textContent = lang==='af' ? '⏳ Genereer...' : '⏳ Generating...'; }
+
+  try {
+    const comment = await buildCommentAI(p);
+    displayComment(comment, p.name);
+    document.getElementById('edit-area').value = comment;
+    history.unshift({ pupil:p.name, comment, ts:new Date().toLocaleTimeString() });
+    if(history.length > 20) history.pop();
+    renderHistory();
+    saveState();
+  } catch(e) {
+    console.error('Generation error:', e);
+    showToast('Generation failed — please try again.');
+  } finally {
+    if(btn){
+      btn.disabled = false;
+      btn.textContent = getLang()==='af' ? '► Genereer opmerking' : '► Generate comment';
+    }
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -3127,84 +3070,7 @@ const PR_AF = {
   they: {sub:'hulle',obj:'hulle',pos:'hul',pos_c:'Hul',ref:'hulself', subC:'Hulle'}
 };
 
-function generateAF(){
-  if(!activePupilId){ alert('Kies eers \'n leerder.'); return; }
-  const p = pupils.find(x=>x.id===activePupilId);
-  if(!p) return;
-
-  const name     = p.name;
-  const prKey    = document.getElementById('f-pronoun').value;
-  const pr       = PR_AF[prKey];
-  const tone     = document.getElementById('ctrl-tone').value;
-  const target   = parseInt(document.getElementById('word-slider').value);
-
-  const overall  = document.getElementById('f-overall').value;
-  const potential= document.getElementById('f-potential').value;
-  const peers    = document.getElementById('f-peers').value;
-  const behave   = document.getElementById('f-behave').value;
-  const acad     = document.getElementById('f-acad').value;
-  const badj     = document.getElementById('f-badj').value;
-  const sport    = document.getElementById('f-sport').value;
-
-  const excelled=getSubjExcelled();
-  const effort=getSubjEffort();
-
-  const nameUsed=[false];
-  const pid=activePupilId;
-  const pron=(text)=>applyPR(text,name,pr,nameUsed);
-  const get=(bucket,key)=>{
-    if(!bucket||!bucket[key])return null;
-    return pron(getVariant(bucket[key],tone,pid));
-  };
-
-  const parts=[];
-
-  const opRaw = getTermVariant(PB_AF.opener, tone, pid);
-  nameUsed[0]=false;
-  parts.push(applyPR(opRaw,name,pr,[false]));
-  nameUsed[0]=true;
-
-  if(overall!=='omit')    parts.push(get(PB_AF.overall,overall));
-  if(potential!=='omit')  parts.push(get(PB_AF.potential,potential));
-  if(peers!=='omit')      parts.push(get(PB_AF.peers,peers));
-  if(behave!=='omit')     parts.push(get(PB_AF.behave,behave));
-  if(acad!=='omit'&&acad!=='none') parts.push(get(PB_AF.acad,acad));
-  else if(acad==='none'&&Math.random()>0.5) parts.push(get(PB_AF.acad,'none'));
-  if(badj!=='omit'&&badj!=='none') parts.push(get(PB_AF.badj,badj));
-
-  excelled.forEach(s=>{
-    const bank = PB_AF.subj_excel[s]||PB_AF.subj_excel.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,s);
-    parts.push(pron(raw));
-  });
-  effort.forEach(s=>{
-    const bank = PB_AF.subj_effort[s]||PB_AF.subj_effort.__default__;
-    let raw=getVariant(bank,tone);
-    raw=raw.replace(/\{SUBJ\}/g,s);
-    parts.push(pron(raw));
-  });
-
-  const allPhrases=getAllCustomPhrases();
-  if(allPhrases.length>0 && Math.random()>0.5){
-    parts.push(pron(guardPunctuation(pick(allPhrases))));
-  }
-
-  if(sport!=='omit') parts.push(get(PB_AF.sport,sport));
-  parts.push(pron(getTermVariant(PB_AF.closer,tone,pid)));
-
-  const sentences = deduplicateStarts(parts.filter(Boolean));
-  const trimmed   = trimToTarget(sentences, target);
-  const comment   = trimmed.map(s=>s.trim()).join(' ').replace(/ {2,}/g,' ');
-
-  displayComment(comment, name);
-  // Guarantee edit-area reflects current comment (defensive sync)
-  document.getElementById('edit-area').value=comment;
-  history.unshift({pupil:name, comment, ts:new Date().toLocaleTimeString()});
-  if(history.length>20) history.pop();
-  renderHistory();
-  saveState();
-}
+function generateAF(){ generate(); }
 // ══════════════════════════════════════════════════════════════
 // LANGUAGE ROUTER
 // ══════════════════════════════════════════════════════════════
