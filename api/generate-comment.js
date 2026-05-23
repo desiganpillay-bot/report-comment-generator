@@ -44,6 +44,17 @@ const PRONOUN_MAP = {
   they: 'they/them/their',
 };
 
+const OPENER_STYLES = [
+  'Open with a specific observation about this learner\'s relationship to the work this term.',
+  'Open mid-thought — as if picking up a conversation about this learner you\'ve been having.',
+  'Open with what this term revealed about this learner, not what they achieved.',
+  'Open with their approach or attitude first, before any result.',
+  'Open with a subject, skill, or moment that defined their term.',
+  'Open with what stands out most — the thing you\'d say first in a parent meeting.',
+  'Open with an honest tension — something that is both true and complicated about this learner.',
+  'Open with what you noticed about how they think or work, not what grade they got.',
+];
+
 function buildPrompt({ grade, curriculum, term, language, tone, name, pronouns,
                        overall, potential, peers, behave, acad, badj, sport,
                        excelled, effort, wordTarget }) {
@@ -75,8 +86,10 @@ function buildPrompt({ grade, curriculum, term, language, tone, name, pronouns,
   if (sport && sport !== 'omit')       lines.push(`Co-curricular participation: ${SPORT_LABELS[sport] || sport}`);
   if (isT4 && nextGrade)               lines.push(`${name} progresses to Grade ${nextGrade} next year — include a brief acknowledgement.`);
 
+  const openerStyle = OPENER_STYLES[Math.floor(Math.random() * OPENER_STYLES.length)];
   lines.push('');
   lines.push(`Tone: ${TONE_INSTRUCTIONS[tone] || TONE_INSTRUCTIONS.s}`);
+  lines.push(`Opening instruction: ${openerStyle}`);
   lines.push('Write the comment now. Sound like yourself — a real teacher who knows this learner.');
 
   return lines.join('\n');
