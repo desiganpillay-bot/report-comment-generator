@@ -451,7 +451,7 @@ function addSubject(name) {
   const grade = getGrade();
   const topicNames = getTopics(name, grade);
   const topics = topicNames ? topicNames.map(n => ({ name: n, rating: 'fair' })) : [];
-  selectedSubjects.push({ subject: name, mark: '', topics, notes: '', editing: false });
+  selectedSubjects.push({ subject: name, mark: '', topics, notes: '', editing: false, useSubjectLang: name in SUBJECT_LANGUAGES });
   renderCards();
   hideDropdown();
   updateAddBtn();
@@ -526,8 +526,22 @@ function renderCards() {
   container.innerHTML = selectedSubjects.map((s, si) => renderCard(s, si)).join('');
 }
 
+function renderLangToggle(s, si) {
+  return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+  <span style="font-size:11px;color:var(--muted);white-space:nowrap">Commentary in:</span>
+  <button class="topic-action-btn${!s.useSubjectLang ? ' primary' : ''}" onclick="setSubjectLang(${si},false)">Default language</button>
+  <button class="topic-action-btn${s.useSubjectLang ? ' primary' : ''}" onclick="setSubjectLang(${si},true)">Match subject</button>
+</div>`;
+}
+
+function setSubjectLang(si, val) {
+  selectedSubjects[si].useSubjectLang = val;
+  renderCards();
+}
+
 function renderCard(s, si) {
   const isFreeText = !hasCapsData(s.subject, getGrade());
+  const langToggle = s.subject in SUBJECT_LANGUAGES ? renderLangToggle(s, si) : '';
   const bodyHtml = isFreeText ? renderFreeText(s, si) : (s.editing ? renderEditMode(s, si) : renderTopics(s, si));
   return `
 <div class="subject-card">
@@ -541,7 +555,7 @@ function renderCard(s, si) {
     </div>
     <button class="card-remove" onclick="removeSubject(${si})">×</button>
   </div>
-  <div class="card-body">${bodyHtml}</div>
+  <div class="card-body">${langToggle}${bodyHtml}</div>
 </div>`;
 }
 
@@ -643,7 +657,7 @@ async function generate() {
 
   // Fire all calls in parallel
   const promises = selectedSubjects.map((s, i) => {
-    const subjectLang = SUBJECT_LANGUAGES[s.subject] || language;
+    const subjectLang = (SUBJECT_LANGUAGES[s.subject] && s.useSubjectLang) ? SUBJECT_LANGUAGES[s.subject] : language;
     return fetch('/api/generate-subject-comment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
