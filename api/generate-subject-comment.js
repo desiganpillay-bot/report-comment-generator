@@ -17,7 +17,8 @@ const PRONOUN_MAP = { he: 'he/him/his', she: 'she/her/hers', they: 'they/them/th
 
 function buildPrompt({ name, pronouns, grade, curriculum, term, language, tone,
                        subject, mark, topics, notes, wordTarget }) {
-  const lang      = language === 'af' ? 'Afrikaans' : 'English';
+  const LANG_NAMES = { en: 'English', af: 'Afrikaans', zu: 'isiZulu', fr: 'French', zh: 'Mandarin', st: 'Sesotho' };
+  const lang      = LANG_NAMES[language] || 'English';
   const termLabel = TERM_LABELS[term] || 'Term 1';
 
   const lines = [
