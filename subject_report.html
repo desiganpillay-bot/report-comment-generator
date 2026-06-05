@@ -177,7 +177,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--blush);color:var(--text);
       <option value="120">~120</option>
     </select>
   </div>
-  <a href="wheremagichappens.html" style="margin-left:auto;color:white;font-size:11px;opacity:0.7;text-decoration:none;white-space:nowrap;padding:4px 8px;border:1px solid rgba(255,255,255,0.25);border-radius:5px;">&#8592; Report Comments</a>
+  <a href="https://myreportcomments.com/" style="margin-left:auto;color:white;font-size:11px;opacity:0.7;text-decoration:none;white-space:nowrap;padding:4px 8px;border:1px solid rgba(255,255,255,0.25);border-radius:5px;">&#8962; Home</a>
+  <a href="wheremagichappens.html" style="color:white;font-size:11px;opacity:0.7;text-decoration:none;white-space:nowrap;padding:4px 8px;border:1px solid rgba(255,255,255,0.25);border-radius:5px;">&#8592; Report Comments</a>
 </div>
 
 <!-- MAIN -->
@@ -271,6 +272,40 @@ const CAPS_TOPICS = {
     11: ['Leesbegrip','Skryfwerk','Taalstrukture','Mondeling','Transaksionele tekste','Opsomming'],
     12: ['Leesbegrip','Skryfwerk','Taalstrukture','Mondeling','Transaksionele tekste','Opsomming'],
   },
+  'IsiZulu First Additional Language': {
+    6: ['Reading comprehension','Listening & speaking','Creative writing','Language structures','Vocabulary & spelling'],
+    7: ['Reading comprehension','Poetry','Oral communication','Writing skills','Language structures','Summary'],
+    8: ['Reading comprehension','Essay writing','Transactional texts','Language structures','Oral communication','Summary'],
+    9: ['Reading comprehension','Essay writing','Transactional texts','Language structures','Oral communication','Summary'],
+    10: ['Reading comprehension','Essay writing','Language structures & conventions','Oral communication','Transactional texts','Summary'],
+    11: ['Reading comprehension','Essay writing','Language structures','Oral communication','Transactional texts','Summary'],
+    12: ['Reading comprehension','Essay writing','Language structures','Oral communication','Transactional texts','Summary'],
+  },
+  'Sesotho First Additional Language': {
+    6: ['Reading comprehension','Listening & speaking','Creative writing','Language structures','Vocabulary & spelling'],
+    7: ['Reading comprehension','Poetry','Oral communication','Writing skills','Language structures','Summary'],
+    8: ['Reading comprehension','Essay writing','Transactional texts','Language structures','Oral communication','Summary'],
+    9: ['Reading comprehension','Essay writing','Transactional texts','Language structures','Oral communication','Summary'],
+    10: ['Reading comprehension','Essay writing','Language structures & conventions','Oral communication','Transactional texts','Summary'],
+    11: ['Reading comprehension','Essay writing','Language structures','Oral communication','Transactional texts','Summary'],
+    12: ['Reading comprehension','Essay writing','Language structures','Oral communication','Transactional texts','Summary'],
+  },
+  'French Second Additional Language': {
+    7: ['Listening & speaking','Basic vocabulary & phrases','Reading comprehension','Simple writing tasks','Language structures'],
+    8: ['Reading comprehension','Vocabulary development','Written expression','Listening & speaking','Language structures'],
+    9: ['Reading comprehension','Written expression','Oral communication','Language structures','Vocabulary in context'],
+    10: ['Reading comprehension','Written expression','Oral communication','Language structures','Vocabulary development'],
+    11: ['Reading comprehension','Written expression','Oral communication','Language structures & conventions','Transactional texts'],
+    12: ['Reading comprehension','Written expression','Oral communication','Language structures','Transactional texts','Summary'],
+  },
+  'Mandarin Second Additional Language': {
+    7: ['Listening & speaking','Character recognition & pinyin','Basic reading','Simple writing','Vocabulary & tones'],
+    8: ['Reading comprehension','Vocabulary building','Written expression','Listening & speaking','Language structures'],
+    9: ['Reading comprehension','Written expression','Oral communication','Character writing','Language structures'],
+    10: ['Reading comprehension','Written expression','Oral communication','Language structures','Character recognition & writing'],
+    11: ['Reading comprehension','Written expression','Oral communication','Language structures','Vocabulary in context'],
+    12: ['Reading comprehension','Written expression','Oral communication','Language structures','Transactional texts'],
+  },
   'Natural Sciences': {
     6: ['Life and living (nutrition & food)','Life and living (biodiversity)','Matter and materials','Energy and change','Planet Earth and beyond'],
     7: ['Cells (structure & function)','Life processes in plants','Life processes in animals','Matter and materials','Thermal energy','Visible light & properties','Magnetism','Plate tectonics'],
@@ -330,6 +365,10 @@ const CAPS_TOPICS = {
     8: ['Structures (trusses & bridges)','Processing materials','Mechanical systems','Electrical systems & circuits','Design process','Technical graphics'],
     9: ['Structures','Processing','Systems & control (electronics)','Design process','Technical graphics','Evaluation & testing'],
   },
+  'IT/CAT': {
+    8: ['Hardware & software components','Input & output devices','Network basics','Word processing (advanced)','Spreadsheets — formulas & data','Presentations','Internet & e-communication','Digital citizenship & e-safety'],
+    9: ['Computer hardware & architecture','Operating systems','Networks & internet','Advanced spreadsheets','Database basics','Programming concepts (introduction)','HTML & web design basics','Social implications of technology'],
+  },
   'Life Orientation': {
     6: ['Personal well-being','Healthy lifestyle choices','Social responsibility','Physical activity & fitness','Career awareness','Constitution & citizenship'],
     7: ['Personal development','Health & safety','Substance awareness','Physical activity','Study skills & goal setting','Career awareness'],
@@ -350,14 +389,22 @@ const FREE_TEXT_SUBJECTS = [
 ];
 
 const SUBJECT_GROUPS = [
-  { label: 'Languages', subjects: ['English Home Language','Afrikaans Home Language','Afrikaans First Additional Language'] },
+  { label: 'Languages', subjects: ['English Home Language','Afrikaans Home Language','Afrikaans First Additional Language','IsiZulu First Additional Language','Sesotho First Additional Language','French Second Additional Language','Mandarin Second Additional Language'] },
   { label: 'Mathematics', subjects: ['Mathematics','Mathematical Literacy'] },
   { label: 'Sciences', subjects: ['Natural Sciences','Physical Sciences','Life Sciences'] },
   { label: 'Humanities', subjects: ['Social Sciences','Geography','History'] },
   { label: 'Commerce', subjects: ['EMS','Business Studies','Economics','Accounting'] },
-  { label: 'Technology & Other', subjects: ['Technology','Life Orientation'] },
+  { label: 'Technology & Other', subjects: ['Technology','IT/CAT','Life Orientation'] },
   { label: 'Creative & Other', subjects: ['Art','Creative Arts','Visual Arts','Music','Drama','Dramatic Arts','Design','Computer Applications Technology','Information Technology','Agricultural Sciences','Engineering Graphics & Design','Tourism','Other'] },
 ];
+
+// Language subjects — commentary auto-generated in the subject's language
+const SUBJECT_LANGUAGES = {
+  'IsiZulu First Additional Language': 'zu',
+  'Sesotho First Additional Language': 'st',
+  'French Second Additional Language': 'fr',
+  'Mandarin Second Additional Language': 'zh',
+};
 
 // ══════════════════════════════════════════════════════════════
 // STATE
@@ -405,7 +452,7 @@ function addSubject(name) {
   const grade = getGrade();
   const topicNames = getTopics(name, grade);
   const topics = topicNames ? topicNames.map(n => ({ name: n, rating: 'fair' })) : [];
-  selectedSubjects.push({ subject: name, mark: '', topics, notes: '', editing: false });
+  selectedSubjects.push({ subject: name, mark: '', topics, notes: '', editing: false, useSubjectLang: name in SUBJECT_LANGUAGES });
   renderCards();
   hideDropdown();
   updateAddBtn();
@@ -480,8 +527,22 @@ function renderCards() {
   container.innerHTML = selectedSubjects.map((s, si) => renderCard(s, si)).join('');
 }
 
+function renderLangToggle(s, si) {
+  return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+  <span style="font-size:11px;color:var(--muted);white-space:nowrap">Commentary in:</span>
+  <button class="topic-action-btn${!s.useSubjectLang ? ' primary' : ''}" onclick="setSubjectLang(${si},false)">Default language</button>
+  <button class="topic-action-btn${s.useSubjectLang ? ' primary' : ''}" onclick="setSubjectLang(${si},true)">Match subject</button>
+</div>`;
+}
+
+function setSubjectLang(si, val) {
+  selectedSubjects[si].useSubjectLang = val;
+  renderCards();
+}
+
 function renderCard(s, si) {
   const isFreeText = !hasCapsData(s.subject, getGrade());
+  const langToggle = s.subject in SUBJECT_LANGUAGES ? renderLangToggle(s, si) : '';
   const bodyHtml = isFreeText ? renderFreeText(s, si) : (s.editing ? renderEditMode(s, si) : renderTopics(s, si));
   return `
 <div class="subject-card">
@@ -495,7 +556,7 @@ function renderCard(s, si) {
     </div>
     <button class="card-remove" onclick="removeSubject(${si})">×</button>
   </div>
-  <div class="card-body">${bodyHtml}</div>
+  <div class="card-body">${langToggle}${bodyHtml}</div>
 </div>`;
 }
 
@@ -596,12 +657,13 @@ async function generate() {
   document.getElementById('output-cards').innerHTML = selectedSubjects.map((s, i) => outputCardHTML(s, i, null, true)).join('');
 
   // Fire all calls in parallel
-  const promises = selectedSubjects.map((s, i) =>
-    fetch('/api/generate-subject-comment', {
+  const promises = selectedSubjects.map((s, i) => {
+    const subjectLang = (SUBJECT_LANGUAGES[s.subject] && s.useSubjectLang) ? SUBJECT_LANGUAGES[s.subject] : language;
+    return fetch('/api/generate-subject-comment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name, pronouns, grade, curriculum, tone, language, term, wordTarget,
+        name, pronouns, grade, curriculum, tone, language: subjectLang, term, wordTarget,
         subject: s.subject,
         mark: s.mark || null,
         topics: s.topics.length > 0 ? s.topics : null,
@@ -610,8 +672,8 @@ async function generate() {
     })
     .then(r => r.json())
     .then(data => ({ idx: i, comment: data.comment || '', error: null }))
-    .catch(e => ({ idx: i, comment: '', error: 'Generation failed — try again.' }))
-  );
+    .catch(e => ({ idx: i, comment: '', error: 'Generation failed — try again.' }));
+  });
 
   const results = await Promise.all(promises);
 
@@ -657,5 +719,10 @@ function copyOutput(idx) {
   });
 }
 </script>
+<!-- Powered by Asterion AI -->
+<a href="https://aiasterion.com" target="_blank" rel="noopener" style="position:fixed;bottom:8px;left:10px;z-index:50;font-family:'DM Sans',sans-serif;font-size:10px;color:#888;text-decoration:none;opacity:0.6;display:inline-flex;align-items:center;gap:5px;">
+  <span>Powered by</span>
+  <img src="assets/asterion-logo.png" alt="Asterion AI" style="height:16px;width:auto;display:block;">
+</a>
 </body>
 </html>
